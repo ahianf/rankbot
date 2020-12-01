@@ -1,3 +1,5 @@
+import random
+
 class Implementation:
     """
     A class that represents an implementation of the Elo Rating System
@@ -189,46 +191,81 @@ def loadItems(a):
     for j in a:
         i.addPlayer(j)
         
+lista = ("Airbag",
+         "Paranoid Android",
+         "Subterranean Homesick Alien",
+         "Exit Music (For a Film)",
+         "Let Down",
+         "Karma Police",
+         "Fitter Happier",
+         "Electioneering",
+         "Climbing Up the Walls",
+         "No Surprises",
+         "Lucky",
+         "The Tourist")
+
 lista = ("I Am Trying to Break Your Heart",
-         "Kamera",
-         "Radio Cure",
-         "War on War",
-         "Jesus, Etc.",
-         "Ashes of American Flags",
-         "Heavy Metal Drummer",
-         "I'm the Man Who Loves You",
-         "Pot Kettle Black",
-         "Poor Places",
-         "Reservations")
-           
+          "Kamera",
+          "Radio Cure",
+          "War on War",
+          "Jesus, Etc.",
+          "Ashes of American Flags",
+          "Heavy Metal Drummer",
+          "I'm the Man Who Loves You",
+          "Pot Kettle Black",
+          "Poor Places",
+          "Reservations")
+lista = ("Everything in Its Right Place",
+         "Kid A",
+         "The National Anthem",
+         "How to Disappear Completely",
+         "Treefingers",
+         "Optimistic",
+         "In Limbo",
+         "Idioteque",
+         "Morning Bell",
+         "Motion Picture Soundtrack",)
+
 permutations = triangle(len(lista) - 1)
 
 i = Implementation()
-print(i.getRatingList())
-loadItems(lista)
-print(i.getRatingList())
 
-for j in range(permutations):
+loadItems(lista)
+
+counter = 0
+for j in sorted(range(permutations),key=lambda _: random.random()):
     item_A, item_B = itemPermutator(j, len(lista))
     item_A = lista[item_A]
     item_B = lista[item_B]
-    print("Comparando entre:", item_A, "y", item_B)
-    print("Opción 1 para: ", item_A)
-    print("Opción 2 para: ", item_B)
-    # print("Presione 'n' para empate")
-    test = str(input(""))
-    if test == str(1):
-        test = item_A
-    if test == str(2):
-        test = item_B
-    # if test == str("n"):
-    #     test = lista[0]
-    i.recordMatch(item_A, item_B, winner=test)
+    counter += 1
+    while True:
+        
+        print("(" + str(counter) + "/" + str(permutations) + ")", 
+              "Comparando entre:", item_A, "y", item_B, "\n")
+        
+        print("Opción 1 para: ", item_A, "\n" +
+              "Opción 2 para: ", item_B, "\n" +
+              "Presione 'n' para empate")
+        winner = str(input(""))
+        draw = False
+        if winner == str(1):
+            winner = item_A
+            break
+        elif winner == str(2):
+            winner = item_B
+            break
+        elif winner == str("n"):
+            winner = None
+            draw = True
+            break
+        else:
+            print("Invalid input: Try again")
+        
+    i.recordMatch(item_A, item_B, winner = winner, draw = draw)   
 
-#print(i.getPlayerRating("a"), i.getPlayerRating("b"))
+data = sorted(i.getRatingList(), key=lambda tup: tup[1], reverse=True)
 
-print(i.getRatingList())
+print("Resultados:", "\n")
 
-
-
-
+for a, b in data:
+    print(a + ":", str(round(b)))
