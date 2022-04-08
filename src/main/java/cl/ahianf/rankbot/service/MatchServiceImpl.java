@@ -19,7 +19,5 @@ public class MatchServiceImpl implements MatchService {
 
         return repository.findById(theId)
                 .orElseThrow(() -> new EntityNotFoundException("Id no encontrado: " + theId));
-
-
     }
 }

@@ -11,4 +11,8 @@ public interface SongService {
     public void save(Song theSong);
 
     public void deleteById(int theId);
+
+    public Song findById(int id);
+
+    public long count();
 }
