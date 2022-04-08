@@ -1,16 +1,16 @@
 package cl.ahianf.rankbot.service;
 
 import cl.ahianf.rankbot.dao.SongRepository;
-import cl.ahianf.rankbot.entity.Match;
 import cl.ahianf.rankbot.entity.Song;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class SongServiceImpl implements SongService{
+public class SongServiceImpl implements SongService {
 
     @Autowired
     private SongRepository repository;
@@ -34,8 +34,8 @@ public class SongServiceImpl implements SongService{
 
     @Override
     public Song findById(int id) {
-            return repository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Id no encontrado: " + id));
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Id no encontrado: " + id));
 
     }
 

@@ -1,6 +1,7 @@
 package cl.ahianf.rankbot.service;
 
 import cl.ahianf.rankbot.entity.Song;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

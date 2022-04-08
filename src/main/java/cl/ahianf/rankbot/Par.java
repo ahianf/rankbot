@@ -14,7 +14,8 @@ public class Par {
 
     @Override
     public String toString() {
-        return "x, " + left + " : y, " + right;
+        //return "x, " + left + " : y, " + right;
+        return left + "," + right;
     }
 
     public int getLeft() {
@@ -24,4 +25,6 @@ public class Par {
     public int getRight() {
         return right;
     }
+
+
 }

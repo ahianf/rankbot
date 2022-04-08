@@ -20,6 +20,9 @@ public class Song {
     @Column(name = "artist")
     private String artist;
 
+    @Column(name = "art_url")
+    private String artUrl;
+
     public Song(int songId, String title) {
         this.songId = songId;
         this.title = title;
@@ -58,5 +61,13 @@ public class Song {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getArtUrl() {
+        return artUrl;
+    }
+
+    public void setArtUrl(String artUrl) {
+        this.artUrl = artUrl;
     }
 }
