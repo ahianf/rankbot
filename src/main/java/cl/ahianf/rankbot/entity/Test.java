@@ -8,8 +8,9 @@ public class Test {
 
     public static void main(String[] args) {
 
-        System.out.println(unrollPar(new Par(2234, 1233 )));
 
+        for (int i = 0 ; i< -14; i++)
+            System.out.println(i);
     }
 
     public static int unrollPar(Par par) {

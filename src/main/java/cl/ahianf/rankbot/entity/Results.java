@@ -3,8 +3,8 @@ package cl.ahianf.rankbot.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "matches", schema = "deathgrips")
-public class SinNombreDos {
+@Table(name = "results", schema = "deathgrips")
+public class Results {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,11 +26,10 @@ public class SinNombreDos {
         return matchId;
     }
 
-    public SinNombreDos() {
+    public Results() {
     }
 
-    public SinNombreDos(int matchId, int winsX, int winsY, int draws, int skipped) {
-        this.matchId = matchId;
+    public Results(int winsX, int winsY, int draws, int skipped) {
         this.winsX = winsX;
         this.winsY = winsY;
         this.draws = draws;

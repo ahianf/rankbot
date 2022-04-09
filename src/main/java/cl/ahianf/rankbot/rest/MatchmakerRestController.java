@@ -1,15 +1,16 @@
 package cl.ahianf.rankbot.rest;
 
 import cl.ahianf.rankbot.Par;
-import cl.ahianf.rankbot.entity.Match;
-import cl.ahianf.rankbot.entity.SinNombreDos;
-import cl.ahianf.rankbot.entity.Song;
-import cl.ahianf.rankbot.entity.Vote;
-import cl.ahianf.rankbot.service.SinNombreDosService;
+import cl.ahianf.rankbot.entity.*;
+import cl.ahianf.rankbot.service.ResultsService;
 import cl.ahianf.rankbot.service.SongService;
+import cl.ahianf.rankbot.service.VoteLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,12 +21,14 @@ public class MatchmakerRestController {
 
     @Autowired
     private SongService songService;
-    private SinNombreDosService sinNombreDosService;
+    private ResultsService resultsService;
+    private VoteLogService voteLogService;
 
     @Autowired
-    public MatchmakerRestController(SongService theSongService, SinNombreDosService theSinNombreDosService) {
+    public MatchmakerRestController(SongService theSongService, ResultsService theResultsService, VoteLogService theVoteLogService) {
         songService = theSongService;
-        sinNombreDosService = theSinNombreDosService;
+        resultsService = theResultsService;
+        voteLogService = theVoteLogService;
     }
 
     @GetMapping
@@ -36,40 +39,49 @@ public class MatchmakerRestController {
 
         Song songA = songService.findById(matchIdToPar.getLeft());
         Song songB = songService.findById(matchIdToPar.getRight());
-        return new Match(songA, songB, matchId);
-        //return matchId;
+
+
+
+        return new Match(songA, songB, possibleMatchesUpperbound);
+     //   return new Match(songA, songB, matchId);
 
     }
 
     @PostMapping
-    public void dfisod(@RequestBody Vote theVote) {
+    public Vote dfisod(@RequestBody Vote theVote, HttpServletRequest request) {
 
         int matchId = theVote.getMatchId();
         int vote = theVote.getVote();
+        int possibleMatchesUpperbound = nLessOneTriangular((int) songService.count());
 
-        switch(vote){
-            case 1:
-                sinNombreDosService.incrementarWinsX(matchId);
-                break;
-            case 2:
-                sinNombreDosService.incrementarWinsY(matchId);
-                break;
-            case 3:
-                sinNombreDosService.incrementarDraws(matchId);
-                break;
-            case 4:
-                sinNombreDosService.incrementarSkipped(matchId);
-                break;
-            default:
-                throw new RuntimeException("invalid vote");
+        inicializarDbResults();
+
+        if (matchId > possibleMatchesUpperbound || matchId < 0){
+            vote = 0;
         }
 
+        switch (vote) {
+            case 1:
+                resultsService.incrementarWinsX(matchId);
+                break;
+            case 2:
+                resultsService.incrementarWinsY(matchId);
+                break;
+            case 3:
+                resultsService.incrementarDraws(matchId);
+                break;
+            case 4:
+                resultsService.incrementarSkipped(matchId);
+                break;
+            default:
+                vote = 0;
+                System.out.println("invalid vote");
 
+        }
 
+        voteLogService.save(new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now()));
 
-        //return songService.findByFirstName("H");
-//return null;
-
+        return theVote;
     }
 
     public static int nLessOneTriangular(int i) {
@@ -91,6 +103,19 @@ public class MatchmakerRestController {
             }
         }
         return new Par(x, y);
+    }
+
+    public void inicializarDbResults() {
+        int possibleMatchesUpperbound = nLessOneTriangular((int) songService.count());
+        int rowsMissing = (possibleMatchesUpperbound - (int) resultsService.count());
+
+        List<Results> lista = new ArrayList<>();
+
+        for (int i = 0; i < rowsMissing; i++) {
+            lista.add(new Results(0, 0, 0, 0));
+        }
+
+        resultsService.saveAll(lista);
     }
 
 

@@ -1,18 +1,15 @@
 package cl.ahianf.rankbot.service;
 
-import cl.ahianf.rankbot.entity.SinNombreDos;
-import cl.ahianf.rankbot.entity.Song;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import cl.ahianf.rankbot.entity.Results;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface SinNombreDosService {
+public interface ResultsService {
 
-    public SinNombreDos findById(int theId);
+    public Results findById(int theId);
 
-    public List<SinNombreDos> findAll();
+    public List<Results> findAll();
 
     @Transactional
     public void incrementarWinsX(int matchId);
@@ -25,4 +22,8 @@ public interface SinNombreDosService {
 
     @Transactional
     public void incrementarSkipped(int matchId);
+
+    public void saveAll(List<Results> lista);
+
+    public long count();
 }

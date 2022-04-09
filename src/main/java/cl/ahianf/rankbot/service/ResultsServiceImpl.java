@@ -1,7 +1,7 @@
 package cl.ahianf.rankbot.service;
 
-import cl.ahianf.rankbot.dao.SinNombreRepository;
-import cl.ahianf.rankbot.entity.SinNombreDos;
+import cl.ahianf.rankbot.dao.ResultsRepository;
+import cl.ahianf.rankbot.entity.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,20 +9,20 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class SinNombreDosServiceImpl implements SinNombreDosService {
+public class ResultsServiceImpl implements ResultsService {
 
     @Autowired
-    private SinNombreRepository repository;
+    private ResultsRepository repository;
 
     @Override
-    public SinNombreDos findById(int theId) {
+    public Results findById(int theId) {
 
         return repository.findById(theId)
                 .orElseThrow(() -> new EntityNotFoundException("Id no encontrado: " + theId));
     }
 
     @Override
-    public List<SinNombreDos> findAll() {
+    public List<Results> findAll() {
         return repository.findAll();
     }
 
@@ -44,6 +44,15 @@ public class SinNombreDosServiceImpl implements SinNombreDosService {
     @Override
     public void incrementarSkipped(int matchId) {
         repository.incrementarSkipped(matchId);
+    }
+
+    @Override
+    public void saveAll(List<Results> lista) {
+        repository.saveAll(lista);
+    }
+    @Override
+    public long count() {
+        return repository.count();
     }
 
 
