@@ -23,6 +23,9 @@ public class Song {
     @Column(name = "art_url")
     private String artUrl;
 
+    @Column(name = "elo")
+    private double elo;
+
     public Song(int songId, String title) {
         this.songId = songId;
         this.title = title;
@@ -69,5 +72,25 @@ public class Song {
 
     public void setArtUrl(String artUrl) {
         this.artUrl = artUrl;
+    }
+
+    public double getElo() {
+        return elo;
+    }
+
+    public void setElo(double elo) {
+        this.elo = elo;
+    }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "songId=" + songId +
+                ", title='" + title + '\'' +
+                ", album='" + album + '\'' +
+                ", artist='" + artist + '\'' +
+                ", artUrl='" + artUrl + '\'' +
+                ", elo=" + elo +
+                '}';
     }
 }

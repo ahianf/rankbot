@@ -44,5 +44,14 @@ public class SongServiceImpl implements SongService {
         return repository.count();
     }
 
+    @Override
+    public void saveAll(List<Song> list) {
+        repository.saveAll(list);
+    }
+
+    @Override
+    public List<Song> findAllByOrderBySongIdAsc() {
+        return repository.findAllByOrderBySongIdAsc();
+    }
 
 }

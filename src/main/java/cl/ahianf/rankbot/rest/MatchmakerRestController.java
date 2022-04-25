@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static java.lang.Math.sqrt;
+
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 @RestController
 @RequestMapping("/mm")
 public class MatchmakerRestController {
@@ -35,19 +38,17 @@ public class MatchmakerRestController {
     public Match prueba() {
         int possibleMatchesUpperbound = nLessOneTriangular((int) songService.count());
         int matchId = rand.nextInt(possibleMatchesUpperbound) + 1;
-        Par matchIdToPar = duelGenerator(matchId);
+        Par matchIdToPar = unrollMatchId(matchId);
 
         Song songA = songService.findById(matchIdToPar.getLeft());
         Song songB = songService.findById(matchIdToPar.getRight());
 
-
-
-        return new Match(songA, songB, possibleMatchesUpperbound);
-     //   return new Match(songA, songB, matchId);
+        return new Match(songA, songB, matchId);
 
     }
 
     @PostMapping
+    @CrossOrigin(origins = "http://localhost")
     public Vote dfisod(@RequestBody Vote theVote, HttpServletRequest request) {
 
         int matchId = theVote.getMatchId();
@@ -56,7 +57,7 @@ public class MatchmakerRestController {
 
         inicializarDbResults();
 
-        if (matchId > possibleMatchesUpperbound || matchId < 0){
+        if (matchId > possibleMatchesUpperbound || matchId < 0) {
             vote = 0;
         }
 
@@ -89,19 +90,20 @@ public class MatchmakerRestController {
         return ((i * i) + i) >> 1; //xd!
     }
 
-    public static Par duelGenerator(int matchId) {
-        int x = 1;
-        int y = 1;
+    public static Par unrollMatchId(int matchId) {
 
-        for (int i = 1; i <= matchId; i++) {
-            if (y < x) {
-                y++;
-            }
-            if (y == x) {
-                y = 1;
-                x++;
-            }
+        int inverseTriangular = (int) ((-1 + sqrt(1 + (8 * matchId))) / 2) + 1;
+        int x;
+        int y;
+
+        if (nLessOneTriangular(inverseTriangular) == matchId) {
+            x = inverseTriangular;
+            y = x - 1;
+        } else {
+            x = inverseTriangular + 1;
+            y = (nLessOneTriangular(x - 1) - matchId) * -1;
         }
+
         return new Par(x, y);
     }
 
@@ -114,7 +116,6 @@ public class MatchmakerRestController {
         for (int i = 0; i < rowsMissing; i++) {
             lista.add(new Results(0, 0, 0, 0));
         }
-
         resultsService.saveAll(lista);
     }
 

@@ -72,7 +72,14 @@ public class Results {
         this.skipped = skipped;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Results{" +
+                "matchId=" + matchId +
+                ", winsX=" + winsX +
+                ", winsY=" + winsY +
+                ", draws=" + draws +
+                ", skipped=" + skipped +
+                '}';
+    }
 }

@@ -16,4 +16,8 @@ public interface SongService {
     public Song findById(int id);
 
     public long count();
+
+    public void saveAll(List <Song> list);
+
+    public List<Song> findAllByOrderBySongIdAsc();
 }
