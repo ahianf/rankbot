@@ -4,20 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4da2206-78a6-4c4c-90d0-17fe973fc379" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/VoteLogRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/VoteLog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/VoteLogService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/VoteLogServiceImpl.java" afterDir="false" />
+    <list default="true" id="a4da2206-78a6-4c4c-90d0-17fe973fc379" name="Changes" comment="matchId unroll, sql nativo para matches, generador match">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_giffing_bucket4j_spring_boot_starter_bucket4j_spring_boot_starter_0_6_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_giffing_bucket4j_spring_boot_starter_bucket4j_spring_boot_starter_context_0_6_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_vladimir_bukhtoyarov_bucket4j_core_7_0_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_vladimir_bukhtoyarov_bucket4j_jcache_7_0_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_cache_cache_api_1_1_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ehcache_ehcache_3_9_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_cache_2_6_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_5_3_18.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/EarthquakeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/RateLimiterTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/TestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ehcache.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/SinNombreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/ResultsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/SinNombreDos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Results.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rankbot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/rankbot.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/Elo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/Elo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/ParElo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/RankbotApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/RankbotApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/WebConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/WebConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/SongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/SongRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/MatchmakerRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/MatchmakerRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/SinNombreDosRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/ResultsRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/SinNombreDosService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/ResultsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/SinNombreDosServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/ResultsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/ResultsRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/ResultsRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/SongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/SongService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/SongServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/SongServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/Elo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/Elo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/ParElo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/RankbotApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/RankbotApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/WebConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/WebConfiguration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/dao/SongRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/dao/SongRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Test.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Test.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/MatchmakerRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/MatchmakerRestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/ResultsRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/ResultsRestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/service/SongService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/service/SongService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/service/SongServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/service/SongServiceImpl.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,13 +118,17 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="advanced.settings" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cl.ahianf.rankbot.rest" />
       <recent name="cl.ahianf.rankbot.dao" />
     </key>
   </component>
@@ -139,6 +171,9 @@
       <workItem from="1649434809307" duration="12000" />
       <workItem from="1649434857207" duration="330000" />
       <workItem from="1649435213228" duration="30431000" />
+      <workItem from="1650927070643" duration="12776000" />
+      <workItem from="1650978344822" duration="5549000" />
+      <workItem from="1650987057592" duration="27696000" />
     </task>
     <task id="LOCAL-00001" summary="Primer commit de proyecto Java Spring">
       <created>1649435533799</created>
@@ -183,6 +218,22 @@
     <MESSAGE value="Algoritmo para convertir matchId a par de int" />
     <MESSAGE value="matchId unroll, sql nativo para matches, generador match" />
     <option name="LAST_COMMIT_MESSAGE" value="matchId unroll, sql nativo para matches, generador match" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

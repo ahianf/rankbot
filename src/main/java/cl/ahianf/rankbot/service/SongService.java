@@ -1,7 +1,6 @@
 package cl.ahianf.rankbot.service;
 
 import cl.ahianf.rankbot.entity.Song;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -20,4 +19,6 @@ public interface SongService {
     public void saveAll(List <Song> list);
 
     public List<Song> findAllByOrderBySongIdAsc();
+
+    public List<Song> findAllByOrderByEloDesc();
 }

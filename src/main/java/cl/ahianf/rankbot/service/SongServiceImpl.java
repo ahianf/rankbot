@@ -3,7 +3,6 @@ package cl.ahianf.rankbot.service;
 import cl.ahianf.rankbot.dao.SongRepository;
 import cl.ahianf.rankbot.entity.Song;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -36,7 +35,6 @@ public class SongServiceImpl implements SongService {
     public Song findById(int id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Id no encontrado: " + id));
-
     }
 
     @Override
@@ -52,6 +50,11 @@ public class SongServiceImpl implements SongService {
     @Override
     public List<Song> findAllByOrderBySongIdAsc() {
         return repository.findAllByOrderBySongIdAsc();
+    }
+
+    @Override
+    public List<Song> findAllByOrderByEloDesc() {
+        return repository.findAllByOrderByEloDesc();
     }
 
 }

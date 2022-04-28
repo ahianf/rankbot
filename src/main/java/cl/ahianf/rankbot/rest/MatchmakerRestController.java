@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.Math.sqrt;
 
@@ -26,6 +27,7 @@ public class MatchmakerRestController {
     private SongService songService;
     private ResultsService resultsService;
     private VoteLogService voteLogService;
+
 
     @Autowired
     public MatchmakerRestController(SongService theSongService, ResultsService theResultsService, VoteLogService theVoteLogService) {
@@ -103,7 +105,6 @@ public class MatchmakerRestController {
             x = inverseTriangular + 1;
             y = (nLessOneTriangular(x - 1) - matchId) * -1;
         }
-
         return new Par(x, y);
     }
 
@@ -118,6 +119,5 @@ public class MatchmakerRestController {
         }
         resultsService.saveAll(lista);
     }
-
 
 }

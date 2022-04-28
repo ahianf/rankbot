@@ -1,24 +1,31 @@
 package cl.ahianf.rankbot;
 
-// Java program to count rotationally
 public class Elo {
+    private final double playerA;
+    private final double playerB;
 
-    // Function to calculate the Probability
-    static double probability(double rating1, double rating2) {
-        return 1.0d / (1 + (Math.pow(10, (rating1 - rating2) / 400)));
+    public Elo(double playerA, double playerB) {
+
+        this.playerA = playerA;
+        this.playerB = playerB;
+    }
+
+
+    static double probabilidad(double player1Elo, double player2Elo) {
+        return 1.0 / (1 + (Math.pow(10, (player1Elo - player2Elo) / 400)));
     }
 
     // Function to calculate Elo rating
     // K is a constant.
-    public static ParElo eloRating(ParElo parElo, int result) {
+    public static Elo eloRating(Elo elo, int result) {
 
-        double playerA = parElo.getLeft();
-        double playerB = parElo.getRight();
+        double playerA = elo.getPlayerA();
+        double playerB = elo.getPlayerB();
 
-        final int K = 20;
+        final int K = 10;
 
-        double probabilityPlayerA = probability(playerB, playerA);
-        double probabilityPlayerB = probability(playerA, playerB);
+        double probabilityPlayerA = probabilidad(playerB, playerA);
+        double probabilityPlayerB = probabilidad(playerA, playerB);
 
         switch (result) {
             case 1 -> {
@@ -33,19 +40,45 @@ public class Elo {
                 playerA += K * (0.5d - probabilityPlayerA);
                 playerB += K * (0.5d - probabilityPlayerB);
             }
+            default -> {
+                throw new RuntimeException("Invalid argument on eloRating");
+            }
         }
+        return new Elo(playerA, playerB);
 
-        return new ParElo(playerA, playerB);
     }
 
-    //driver code
-    public static void main(String[] args) {
 
-        // playerA and playerB are current ELO ratings
-        double playerA = 1238, playerB = 1656.5d;
+    public double getPlayerA() {
+        return playerA;
+    }
 
-        int result = 2;
+    public double getPlayerB() {
+        return playerB;
+    }
 
-//        eloRating(playerA, playerB, result);
+    @Override
+    public boolean equals(Object o) {
+
+        // Objeto comparado consigo mismo
+        if (o == this) {
+            return true;
+        }
+
+        //Revisa si o es una instancia de Elo
+        if (!(o instanceof Elo)) {
+            return false;
+        }
+
+        // Cast objeto a Elo para comparar los datos
+        Elo c = (Elo) o;
+
+        // Compara valores y devuelve
+        return playerA == c.playerA && playerB == c.playerB;
+    }
+
+    @Override
+    public String toString() {
+        return "x, " + playerA + " : y, " + playerB;
     }
 }
