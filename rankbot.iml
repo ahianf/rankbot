@@ -129,5 +129,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.3.18" level="project" />
     <orderEntry type="library" name="Maven: org.ehcache:ehcache:3.9.9" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.36" level="project" />
+    <orderEntry type="library" name="Maven: net.jodah:expiringmap:0.5.10" level="project" />
   </component>
 </module>

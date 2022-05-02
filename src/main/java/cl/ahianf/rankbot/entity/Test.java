@@ -1,11 +1,29 @@
 package cl.ahianf.rankbot.entity;
 
 import cl.ahianf.rankbot.Par;
+import net.jodah.expiringmap.ExpiringMap;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Test {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
+        Map<Integer, String> map = ExpiringMap.builder()
+                .maxSize(123)
+                .expiration(30, TimeUnit.SECONDS)
+                .build();
+
+
+        map.put(123, "Unodostres");
+        map.put(456, "cuatrocincoseis");
+
+        System.out.println(map.get(123));
+        System.out.println(map.get(000));
+        System.out.println(map.get(456));
+
 
     }
 
@@ -34,7 +52,7 @@ public class Test {
 //        int x = par.getLeft();
 //        int y = par.getRight();
 //
-//        int resultado = nLessOneTriangular(x - 1);
+//        int resultado = nMenosUnoTriangular(x - 1);
 //        return resultado + y;
 //    }
 

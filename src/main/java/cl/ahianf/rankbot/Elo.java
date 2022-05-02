@@ -15,8 +15,6 @@ public class Elo {
         return 1.0 / (1 + (Math.pow(10, (player1Elo - player2Elo) / 400)));
     }
 
-    // Function to calculate Elo rating
-    // K is a constant.
     public static Elo eloRating(Elo elo, int result) {
 
         double playerA = elo.getPlayerA();
@@ -41,11 +39,10 @@ public class Elo {
                 playerB += K * (0.5d - probabilityPlayerB);
             }
             default -> {
-                throw new RuntimeException("Invalid argument on eloRating");
+                throw new RuntimeException("Argumento inválido");
             }
         }
         return new Elo(playerA, playerB);
-
     }
 
 
@@ -58,23 +55,23 @@ public class Elo {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object objeto) {
 
         // Objeto comparado consigo mismo
-        if (o == this) {
+        if (objeto == this) {
             return true;
         }
 
-        //Revisa si o es una instancia de Elo
-        if (!(o instanceof Elo)) {
+        //Instancia de Elo?
+        if (!(objeto instanceof Elo)) {
             return false;
         }
 
         // Cast objeto a Elo para comparar los datos
-        Elo c = (Elo) o;
+        Elo elo = (Elo) objeto;
 
         // Compara valores y devuelve
-        return playerA == c.playerA && playerB == c.playerB;
+        return playerA == elo.playerA && playerB == elo.playerB;
     }
 
     @Override

@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VoteLogRepository extends JpaRepository<VoteLog, Integer> {
 
-
 }
 

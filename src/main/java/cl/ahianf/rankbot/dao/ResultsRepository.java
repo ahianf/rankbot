@@ -21,7 +21,7 @@ public interface ResultsRepository extends JpaRepository<Results, Integer> {
     void incrementarWinsY(int matchId);
 
     @Modifying
-    @Query("UPDATE Results u SET u.draws = u.draws + 1 where u.matchId = :matchId")
+    @Query("UPDATE Results u SET u.empates = u.empates + 1 where u.matchId = :matchId")
     void incrementarDraws(int matchId);
 
     @Modifying

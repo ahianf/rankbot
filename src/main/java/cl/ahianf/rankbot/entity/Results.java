@@ -18,7 +18,7 @@ public class Results {
     private int winsY;
 
     @Column(name = "draws")
-    private int draws;
+    private int empates;
 
     @Column(name = "skipped")
     private int skipped;
@@ -29,10 +29,10 @@ public class Results {
     public Results() {
     }
 
-    public Results(int winsX, int winsY, int draws, int skipped) {
+    public Results(int winsX, int winsY, int empates, int skipped) {
         this.winsX = winsX;
         this.winsY = winsY;
-        this.draws = draws;
+        this.empates = empates;
         this.skipped = skipped;
     }
 
@@ -56,12 +56,12 @@ public class Results {
         this.winsY = winsY;
     }
 
-    public int getDraws() {
-        return draws;
+    public int getEmpates() {
+        return empates;
     }
 
-    public void setDraws(int draws) {
-        this.draws = draws;
+    public void setEmpates(int draws) {
+        this.empates = draws;
     }
 
     public int getSkipped() {
@@ -78,7 +78,7 @@ public class Results {
                 "matchId=" + matchId +
                 ", winsX=" + winsX +
                 ", winsY=" + winsY +
-                ", draws=" + draws +
+                ", draws=" + empates +
                 ", skipped=" + skipped +
                 '}';
     }

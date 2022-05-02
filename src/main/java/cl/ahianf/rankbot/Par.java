@@ -5,32 +5,25 @@ public class Par {
     private final int right;
 
     public Par(int left, int right) {
-        // assert left != null;
-        // assert right != null;
 
         this.left = left;
         this.right = right;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object objeto) {
 
-        // If the object is compared with itself then return true
-        if (o == this) {
+        if (objeto == this) {
             return true;
         }
 
-        /* Check if o is an instance of Complex or not
-          "null instanceof [type]" also returns false */
-        if (!(o instanceof Par)) {
+        if (!(objeto instanceof Par)) {
             return false;
         }
 
-        // typecast o to Complex so that we can compare data members
-        Par c = (Par) o;
+        Par par = (Par) objeto;
 
-        // Compare the data members and return accordingly
-        return left == c.left && right == c.right;
+        return left == par.left && right == par.right;
     }
 
     @Override
