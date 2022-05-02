@@ -1,4 +1,4 @@
-package cl.ahianf.rankbot;
+package cl.ahianf.rankbot.entity;
 
 public class Elo {
     private final double playerA;
@@ -38,9 +38,7 @@ public class Elo {
                 playerA += K * (0.5d - probabilityPlayerA);
                 playerB += K * (0.5d - probabilityPlayerB);
             }
-            default -> {
-                throw new RuntimeException("Argumento inválido");
-            }
+            default -> throw new RuntimeException("Argumento inválido");
         }
         return new Elo(playerA, playerB);
     }

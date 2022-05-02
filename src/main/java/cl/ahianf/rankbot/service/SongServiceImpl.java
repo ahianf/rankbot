@@ -16,9 +16,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> findAll() {
-        var songs = (List<Song>) repository.findAll();
-
-        return songs;
+        return repository.findAll();
     }
 
     @Override

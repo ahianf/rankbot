@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface SongRepository extends JpaRepository<Song, Integer> {
 
-    public List<Song> findAllByOrderBySongIdAsc();
+    List<Song> findAllByOrderBySongIdAsc();
 
-    public List<Song> findAllByOrderByEloDesc();
+    List<Song> findAllByOrderByEloDesc();
 
 }
 

@@ -4,37 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4da2206-78a6-4c4c-90d0-17fe973fc379" name="Changes" comment="matchId unroll, sql nativo para matches, generador match">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_jodah_expiringmap_0_5_10.xml" afterDir="false" />
+    <list default="true" id="a4da2206-78a6-4c4c-90d0-17fe973fc379" name="Changes" comment="agregado token para get/post">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rankbot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/rankbot.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/Elo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/Elo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/Par.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/Par.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/RankbotApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/RankbotApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/ResultsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/ResultsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/VoteLogRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/VoteLogRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/Elo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Elo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/Par.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Par.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/SongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/dao/SongRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Match.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Match.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Results.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Results.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Song.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Vote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Vote.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/EarthquakeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/MatchmakerRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/MatchmakerRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/RateLimiterTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/MatchmakerRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/MatchvoteRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/ResultsRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/ResultsRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/SongRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/SongRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/TestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/Elo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/Elo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/Par.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/Par.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/RankbotApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/RankbotApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/dao/ResultsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/dao/ResultsRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/rest/SongRestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/ResultsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/ResultsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/ResultsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/ResultsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/SongServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/SongServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/VoteLogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/service/VoteLogService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/Elo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/Par.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Match.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Match.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Results.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Results.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Song.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Song.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Test.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Test.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Vote.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/entity/Vote.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/MatchmakerRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/MatchmakerRestController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/ResultsRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/ResultsRestController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/SongRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/SongRestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cl/ahianf/rankbot/rest/SongRestController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +87,9 @@
         <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="27WTNaaqTRIhMdS1sukNbVGM7aW" />
   <component name="ProjectLevelVcsManager">
@@ -171,7 +172,7 @@
       <workItem from="1651429611080" duration="358000" />
       <workItem from="1651430047742" duration="80000" />
       <workItem from="1651430240656" duration="69000" />
-      <workItem from="1651496089494" duration="3606000" />
+      <workItem from="1651496089494" duration="8722000" />
     </task>
     <task id="LOCAL-00001" summary="Primer commit de proyecto Java Spring">
       <created>1649435533799</created>
@@ -194,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649460906836</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="agregado token para get/post">
+      <created>1651500011292</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1651500011292</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,23 +223,8 @@
     <MESSAGE value="Primer commit de proyecto Java Spring" />
     <MESSAGE value="Algoritmo para convertir matchId a par de int" />
     <MESSAGE value="matchId unroll, sql nativo para matches, generador match" />
-    <option name="LAST_COMMIT_MESSAGE" value="matchId unroll, sql nativo para matches, generador match" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java</url>
-          <line>60</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cl/ahianf/rankbot/entity/Test.java</url>
-          <line>87</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="agregado token para get/post" />
+    <option name="LAST_COMMIT_MESSAGE" value="agregado token para get/post" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

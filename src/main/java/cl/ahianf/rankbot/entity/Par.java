@@ -1,4 +1,4 @@
-package cl.ahianf.rankbot;
+package cl.ahianf.rankbot.entity;
 
 public class Par {
     private final int left;

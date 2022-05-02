@@ -1,12 +1,14 @@
 package cl.ahianf.rankbot.rest;
 
-import cl.ahianf.rankbot.Par;
+import cl.ahianf.rankbot.entity.Par;
 import cl.ahianf.rankbot.entity.*;
 import cl.ahianf.rankbot.service.ResultsService;
 import cl.ahianf.rankbot.service.SongService;
 import cl.ahianf.rankbot.service.VoteLogService;
 import net.jodah.expiringmap.ExpiringMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ import static java.lang.Math.sqrt;
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 @RestController
 @RequestMapping("/deathgrips")
-public class MatchmakerRestController {
+public class MatchvoteRestController {
     Random rand = new Random();
     @Autowired
     private SongService songService;
@@ -30,11 +32,11 @@ public class MatchmakerRestController {
     private VoteLogService voteLogService;
     Map<Integer, Integer> map = ExpiringMap.builder()
             .maxSize(5000)
-            .expiration(120, TimeUnit.SECONDS)
+            .expiration(90, TimeUnit.SECONDS)
             .build();
 
     @Autowired
-    public MatchmakerRestController(SongService theSongService, ResultsService theResultsService, VoteLogService theVoteLogService) {
+    public MatchvoteRestController(SongService theSongService, ResultsService theResultsService, VoteLogService theVoteLogService) {
         songService = theSongService;
         resultsService = theResultsService;
         voteLogService = theVoteLogService;
@@ -58,28 +60,15 @@ public class MatchmakerRestController {
 
     @PostMapping
     @CrossOrigin(origins = "http://localhost")
-    public Vote recibirVotoRest(@RequestBody Vote theVote, HttpServletRequest request) {
-
-        int matchId = theVote.getMatchId();
-        int vote = theVote.getVote();
+    public ResponseEntity<Vote> recibirVotoRest(@RequestBody Vote theVote, HttpServletRequest request) {
         int token = theVote.getToken();
 
-
         if (map.get(token) == null) {
-            System.out.println("fuck off");
-        } else if (map.get(token) == matchId) {
-            System.out.println("ok");
-        } else {
-            System.out.println("fuck off");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // token no existe
         }
-
-        int possibleMatchesUpperbound = nMenosUnoTriangular((int) songService.count());
-
-        inicializarDbResults(); // genera valores hasta el upperbound inicializados a 0
-
-        if (matchId > possibleMatchesUpperbound || matchId < 0) {
-            vote = 0;
-        } // cualquier voto fuera del upperbound es inválido
+        int vote = theVote.getVote();
+        int matchId = map.get(token);
+        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound inicializados a 0
 
         switch (vote) {
             case 1:
@@ -96,17 +85,19 @@ public class MatchmakerRestController {
                 break;
             default:
                 vote = 0; // 0 == voto invalido
-                System.out.println("voto invalido");
+                map.remove(token);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+        map.remove(token);
         voteLogService.save(new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now()));
-
-        return theVote;
+        System.out.println("voto ok");
+        return new ResponseEntity<>(theVote,HttpStatus.OK);
     }
 
     public static int nMenosUnoTriangular(int i) {
         i--;
-        return ((i * i) + i) >> 1; //xd!
+        return ((i * i) + i) / 2; //xd!
     }
 
     public static Par unrollMatchId(int matchId) {
@@ -136,10 +127,4 @@ public class MatchmakerRestController {
         }
         resultsService.saveAll(lista);
     }
-
-    @GetMapping("/maps")
-    public Map<Integer, Integer> getMap() {
-        return map;
-    }
-
 }

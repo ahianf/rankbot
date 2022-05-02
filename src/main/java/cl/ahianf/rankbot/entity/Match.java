@@ -1,5 +1,8 @@
 package cl.ahianf.rankbot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties("matchId")
 public class Match {
     private Song songA;
     private Song songB;

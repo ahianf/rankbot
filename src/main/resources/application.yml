@@ -8,7 +8,7 @@ bucket4j:
       rate-limits:
         - expression: "getRemoteAddr()"
           bandwidths:
-            - capacity: 60
+            - capacity: 30
               time: 30
               unit: seconds
               fixed-refill-interval: 30

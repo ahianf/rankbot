@@ -5,7 +5,6 @@ import cl.ahianf.rankbot.entity.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -13,13 +12,6 @@ public class ResultsServiceImpl implements ResultsService {
 
     @Autowired
     private ResultsRepository repository;
-
-    @Override
-    public Results findById(int theId) {
-
-        return repository.findById(theId)
-                .orElseThrow(() -> new EntityNotFoundException("Id no encontrado: " + theId));
-    }
 
     @Override
     public List<Results> findAll() {

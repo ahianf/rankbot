@@ -1,6 +1,6 @@
 function getMatch() {
 
-    fetch('http://localhost:8080/mm')
+    fetch('http://localhost:8080/deathgrips')
         .then(result => result.json())
         .then((a) => {
             song_a_title = a.songA.title
@@ -12,6 +12,7 @@ function getMatch() {
             songAId = a.songA.songId
             songBId = a.songB.songId
             matchId = a.matchId
+            token = a.token
 
         }).catch(err => console.error(err));
     document.getElementById("song_a_arturl").src = song_a_arturl
@@ -51,7 +52,7 @@ function ui(matchId, vote) {
 function postResult(matchId, vote) {
 
     let xhr = new XMLHttpRequest();
-    let url = "http://localhost:8080/mm";
+    let url = "http://localhost:8080/deathgrips";
 
 
     xhr.open("POST", url, true);
@@ -63,7 +64,7 @@ function postResult(matchId, vote) {
 
     var data = JSON.stringify(
         {
-            "matchId": matchId,
+            "token": token,
             "vote": vote
         }
     );
@@ -93,7 +94,7 @@ const animateCSS = (element, animation, prefix = 'animate__') =>
 function start() {
     setTimeout(
         function () {
-            fetch('http://localhost:8080/mm')
+            fetch('http://localhost:8080/deathgrips')
                 .then(result => result.json())
                 .then((a) => {
                     song_a_title = a.songA.title
@@ -105,6 +106,7 @@ function start() {
                     songAId = a.songA.songId
                     songBId = a.songB.songId
                     matchId = a.matchId
+                    token = a.token
 
                     document.getElementById("song_a_arturl").src = a.songA.artUrl
                     document.getElementById("song_b_arturl").src = a.songB.artUrl

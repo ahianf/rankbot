@@ -5,5 +5,5 @@ import cl.ahianf.rankbot.entity.VoteLog;
 
 public interface VoteLogService {
 
-    public void save(VoteLog theVoteLog);
+    void save(VoteLog theVoteLog);
 }

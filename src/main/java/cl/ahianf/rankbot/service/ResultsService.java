@@ -7,23 +7,21 @@ import java.util.List;
 
 public interface ResultsService {
 
-    public Results findById(int theId);
-
-    public List<Results> findAll();
+    List<Results> findAll();
 
     @Transactional
-    public void incrementarWinsX(int matchId);
+    void incrementarWinsX(int matchId);
 
     @Transactional
-    public void incrementarWinsY(int matchId);
+    void incrementarWinsY(int matchId);
 
     @Transactional
-    public void incrementarDraws(int matchId);
+    void incrementarDraws(int matchId);
 
     @Transactional
-    public void incrementarSkipped(int matchId);
+    void incrementarSkipped(int matchId);
 
-    public void saveAll(List<Results> lista);
+    void saveAll(List<Results> lista);
 
-    public long count();
+    long count();
 }
