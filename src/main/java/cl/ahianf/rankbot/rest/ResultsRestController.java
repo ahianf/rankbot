@@ -16,13 +16,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 import static cl.ahianf.rankbot.entity.Elo.eloRating;
 import static cl.ahianf.rankbot.rest.MatchvoteRestController.unrollMatchId;
 
 
 @RestController
-@RequestMapping("/results")
+@RequestMapping("/deathgrips/results")
 public class ResultsRestController {
     @Autowired
     private ResultsService resultsService;

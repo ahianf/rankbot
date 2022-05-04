@@ -2,8 +2,10 @@ bucket4j:
   enabled: true
   filters:
     - cache-name: buckets
-      url: .*
-      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+#      url: .*
+#      url: .*/deathgrips/results/*
+      url: .*/deathgrips/*
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Quota, wait a little.\" }"
       hide-http-response-headers: true
       rate-limits:
         - expression: "getRemoteAddr()"

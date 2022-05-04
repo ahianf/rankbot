@@ -1,0 +1,39 @@
+version: '2'
+services:
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    ports:
+      - 54320:5432
+    environment:
+      - POSTGRES_DB=rankbot_db
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=passworder
+    restart: always
+  nginx:
+    container_name: nginx
+    image: nginx:1.13
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/static:/static
+    depends_on:
+      - db
+  app:
+    image: 'rankbot:latest'
+    container_name: app
+    expose:
+      - "8080"
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/rankbot_db
+      - SPRING_DATASOURCE_USERNAME=app
+      - SPRING_DATASOURCE_PASSWORD=passworder
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update

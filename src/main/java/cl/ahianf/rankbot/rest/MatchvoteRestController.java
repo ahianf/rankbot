@@ -1,6 +1,5 @@
 package cl.ahianf.rankbot.rest;
 
-import cl.ahianf.rankbot.entity.Par;
 import cl.ahianf.rankbot.entity.*;
 import cl.ahianf.rankbot.service.ResultsService;
 import cl.ahianf.rankbot.service.SongService;
@@ -91,7 +90,6 @@ public class MatchvoteRestController {
 
         map.remove(token);
         voteLogService.save(new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now()));
-        System.out.println("voto ok");
         return new ResponseEntity<>(theVote,HttpStatus.OK);
     }
 

@@ -37,7 +37,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:2.6.6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:2.6.6" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.3.18" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.6.6" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:4.0.3" level="project" />
@@ -130,5 +129,23 @@
     <orderEntry type="library" name="Maven: org.ehcache:ehcache:3.9.9" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.36" level="project" />
     <orderEntry type="library" name="Maven: net.jodah:expiringmap:0.5.10" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-actuator:2.6.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator-autoconfigure:2.6.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator:2.6.6" level="project" />
+    <orderEntry type="library" name="Maven: io.micrometer:micrometer-core:1.8.4" level="project" />
+    <orderEntry type="library" name="Maven: org.hdrhistogram:HdrHistogram:2.1.12" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.latencyutils:LatencyUtils:2.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-security:2.6.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.3.18" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:5.6.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:5.6.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:5.6.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:5.6.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.micrometer:micrometer-registry-prometheus:1.8.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.prometheus:simpleclient_common:0.12.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.prometheus:simpleclient:0.12.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.prometheus:simpleclient_tracer_otel:0.12.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.prometheus:simpleclient_tracer_common:0.12.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.prometheus:simpleclient_tracer_otel_agent:0.12.0" level="project" />
   </component>
 </module>
