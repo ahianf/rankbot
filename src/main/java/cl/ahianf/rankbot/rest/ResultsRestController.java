@@ -37,7 +37,7 @@ public class ResultsRestController {
         return songService.findAllByOrderByEloDesc();
     }
 
-    @Scheduled(cron = "0 0/5 * * * *") // cálculo de Elo se ejecuta cada 5 minutos y se guarda en db/results
+    @Scheduled(cron = "0 0/10 * * * *") // cálculo de Elo se ejecuta cada 10 minutos y se guarda en db/results
     public void calculateElo() {
         List<Results> listaResultados = resultsService.findAll(); //se hace en memoria para evitar golpear la db excesivamente
         List<Song> listaCanciones = songService.findAllByOrderBySongIdAsc(); // La db las envía sin orden, y estamos usando indices.

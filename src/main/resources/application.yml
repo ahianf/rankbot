@@ -2,8 +2,6 @@ bucket4j:
   enabled: true
   filters:
     - cache-name: buckets
-#      url: .*
-#      url: .*/deathgrips/results/*
       url: .*/deathgrips/*
       http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Quota, wait a little.\" }"
       hide-http-response-headers: true

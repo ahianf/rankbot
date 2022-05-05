@@ -25,14 +25,16 @@ import static java.lang.Math.sqrt;
 @RequestMapping("/deathgrips")
 public class MatchvoteRestController {
     Random rand = new Random();
-    @Autowired
-    private SongService songService;
-    private ResultsService resultsService;
-    private VoteLogService voteLogService;
     Map<Integer, Integer> map = ExpiringMap.builder()
             .maxSize(5000)
             .expiration(90, TimeUnit.SECONDS)
             .build();
+
+    @Autowired
+    private SongService songService;
+    private ResultsService resultsService;
+    private VoteLogService voteLogService;
+
 
     @Autowired
     public MatchvoteRestController(SongService theSongService, ResultsService theResultsService, VoteLogService theVoteLogService) {
