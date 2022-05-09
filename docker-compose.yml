@@ -3,13 +3,14 @@ services:
   db:
     image: 'postgres:13.1-alpine'
     container_name: db
-    ports:
-      - 54320:5432
+#    ports:
+#      - 54320:5432
     environment:
       - POSTGRES_DB=rankbot_db
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     restart: always
+
   nginx:
     container_name: nginx
     build:
@@ -21,8 +22,8 @@ services:
       - 443:443
     depends_on:
       - app
+
   app:
-#    image: 'rankbot:rankbot'
     build:
       dockerfile: rankbot.dockerfile
       context: .
