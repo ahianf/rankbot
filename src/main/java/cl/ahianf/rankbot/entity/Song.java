@@ -1,13 +1,14 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "songs", schema = "deathgrips")
+@Table(name = "songs", schema = "public")
 public class Song {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "song_id")
     private int songId;
 
@@ -31,8 +32,7 @@ public class Song {
         this.title = title;
     }
 
-    public Song() {
-    }
+    public Song() {}
 
     public String getAlbum() {
         return album;
@@ -84,13 +84,23 @@ public class Song {
 
     @Override
     public String toString() {
-        return "Song{" +
-                "songId=" + songId +
-                ", title='" + title + '\'' +
-                ", album='" + album + '\'' +
-                ", artist='" + artist + '\'' +
-                ", artUrl='" + artUrl + '\'' +
-                ", elo=" + elo +
-                '}';
+        return "Song{"
+                + "songId="
+                + songId
+                + ", title='"
+                + title
+                + '\''
+                + ", album='"
+                + album
+                + '\''
+                + ", artist='"
+                + artist
+                + '\''
+                + ", artUrl='"
+                + artUrl
+                + '\''
+                + ", elo="
+                + elo
+                + '}';
     }
 }

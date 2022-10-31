@@ -1,13 +1,14 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "results", schema = "deathgrips")
+@Table(name = "results", schema = "public")
 public class Results {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_id")
     private int matchId;
 
@@ -22,12 +23,12 @@ public class Results {
 
     @Column(name = "skipped")
     private int skipped;
+
     public int getMatchId() {
         return matchId;
     }
 
-    public Results() {
-    }
+    public Results() {}
 
     public Results(int winsX, int winsY, int empates, int skipped) {
         this.winsX = winsX;
@@ -74,12 +75,17 @@ public class Results {
 
     @Override
     public String toString() {
-        return "Results{" +
-                "matchId=" + matchId +
-                ", winsX=" + winsX +
-                ", winsY=" + winsY +
-                ", draws=" + empates +
-                ", skipped=" + skipped +
-                '}';
+        return "Results{"
+                + "matchId="
+                + matchId
+                + ", winsX="
+                + winsX
+                + ", winsY="
+                + winsY
+                + ", draws="
+                + empates
+                + ", skipped="
+                + skipped
+                + '}';
     }
 }

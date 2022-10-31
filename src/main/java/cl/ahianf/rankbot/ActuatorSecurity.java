@@ -1,3 +1,4 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot;
 
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
@@ -12,18 +13,17 @@ public class ActuatorSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
+        http.csrf()
                 .disable()
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.to("health", "flyway", "info"))
-                .permitAll().requestMatchers(EndpointRequest.toAnyEndpoint())
+                .permitAll()
+                .requestMatchers(EndpointRequest.toAnyEndpoint())
                 .hasRole("ENDPOINT_ADMIN")
                 .and()
                 .httpBasic();
 
-                // habilita spring security solo para /actuator/*
+        // habilita spring security solo para /actuator/*
 
     }
-
 }

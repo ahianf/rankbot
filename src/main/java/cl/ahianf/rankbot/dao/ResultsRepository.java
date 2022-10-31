@@ -1,5 +1,5 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.dao;
-
 
 import cl.ahianf.rankbot.entity.Results;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +27,4 @@ public interface ResultsRepository extends JpaRepository<Results, Integer> {
     @Modifying
     @Query("UPDATE Results u SET u.skipped = u.skipped + 1 where u.matchId = :matchId")
     void incrementarSkipped(int matchId);
-
 }

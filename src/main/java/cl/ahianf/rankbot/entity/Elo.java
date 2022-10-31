@@ -1,15 +1,7 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
-public class Elo {
-    private final double playerA;
-    private final double playerB;
-
-    public Elo(double playerA, double playerB) {
-
-        this.playerA = playerA;
-        this.playerB = playerB;
-    }
-
+public record Elo(double playerA, double playerB) {
 
     static double probabilidad(double player1Elo, double player2Elo) {
         return 1.0 / (1 + (Math.pow(10, (player1Elo - player2Elo) / 400)));
@@ -17,8 +9,8 @@ public class Elo {
 
     public static Elo eloRating(Elo elo, int result) {
 
-        double playerA = elo.getPlayerA();
-        double playerB = elo.getPlayerB();
+        double playerA = elo.playerA();
+        double playerB = elo.playerB();
 
         final int K = 10;
 
@@ -43,15 +35,6 @@ public class Elo {
         return new Elo(playerA, playerB);
     }
 
-
-    public double getPlayerA() {
-        return playerA;
-    }
-
-    public double getPlayerB() {
-        return playerB;
-    }
-
     @Override
     public boolean equals(Object objeto) {
 
@@ -60,13 +43,12 @@ public class Elo {
             return true;
         }
 
-        //Instancia de Elo?
-        if (!(objeto instanceof Elo)) {
+        // Instancia de Elo?
+        if (!(objeto instanceof Elo elo)) {
             return false;
         }
 
         // Cast objeto a Elo para comparar los datos
-        Elo elo = (Elo) objeto;
 
         // Compara valores y devuelve
         return playerA == elo.playerA && playerB == elo.playerB;

@@ -1,3 +1,4 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.service;
 
 import cl.ahianf.rankbot.dao.VoteLogRepository;
@@ -6,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VoteLogServiceImpl implements VoteLogService{
+public class VoteLogServiceImpl implements VoteLogService {
 
-    @Autowired
-    private VoteLogRepository repository;
+    @Autowired private VoteLogRepository repository;
 
     @Override
     public void save(VoteLog theVoteLog) {

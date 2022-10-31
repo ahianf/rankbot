@@ -1,11 +1,11 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
-
-import javax.persistence.*;
 import java.time.Instant;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "log", schema = "deathgrips")
+@Table(name = "log", schema = "public")
 public class VoteLog {
 
     @Id
@@ -32,9 +32,7 @@ public class VoteLog {
         this.instant = instant;
     }
 
-    public VoteLog() {
-
-    }
+    public VoteLog() {}
 
     public int getId() {
         return id;
@@ -67,5 +65,4 @@ public class VoteLog {
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
-
 }

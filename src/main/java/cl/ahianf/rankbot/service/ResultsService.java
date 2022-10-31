@@ -1,9 +1,9 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.service;
 
 import cl.ahianf.rankbot.entity.Results;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ResultsService {
 

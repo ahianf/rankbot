@@ -1,24 +1,24 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.service;
 
 import cl.ahianf.rankbot.entity.Song;
-
 import java.util.List;
 
 public interface SongService {
 
-    public List<Song> findAll();
+    List<Song> findAll();
 
-    public void save(Song theSong);
+    void save(Song theSong);
 
-    public void deleteById(int theId);
+    void deleteById(int theId);
 
-    public Song findById(int id);
+    Song findById(int id);
 
-    public long count();
+    long count();
 
-    public void saveAll(List <Song> list);
+    void saveAll(List<Song> list);
 
-    public List<Song> findAllByOrderBySongIdAsc();
+    List<Song> findAllByOrderBySongIdAsc();
 
-    public List<Song> findAllByOrderByEloDesc();
+    List<Song> findAllByOrderByEloDesc();
 }

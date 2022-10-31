@@ -1,3 +1,4 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot;
 
 import org.springframework.boot.SpringApplication;
@@ -10,8 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class RankbotApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(RankbotApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(RankbotApplication.class, args);
+    }
 }

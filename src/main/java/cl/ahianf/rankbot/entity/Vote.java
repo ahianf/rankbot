@@ -1,3 +1,4 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
 public class Vote {
@@ -8,6 +9,7 @@ public class Vote {
         this.vote = vote;
         this.token = token;
     }
+
     public int getVote() {
         return vote;
     }

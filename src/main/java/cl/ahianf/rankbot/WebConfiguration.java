@@ -1,3 +1,4 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot;
 
 import org.springframework.context.annotation.Configuration;
@@ -12,4 +13,3 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addMapping("/**").allowedMethods("*");
     }
 }
-

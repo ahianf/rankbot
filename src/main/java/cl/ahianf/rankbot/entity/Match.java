@@ -1,3 +1,4 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,6 +9,7 @@ public class Match {
     private Song songB;
     private int matchId;
     private int token;
+
     public Match(Song songA, Song songB, int matchId, int token) {
         this.songA = songA;
         this.songB = songB;
