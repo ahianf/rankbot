@@ -1,5 +1,5 @@
 /* (C)2022 - Ahian Fernández Puelles*/
-package cl.ahianf.rankbot;
+package cl.ahianf.rankbot.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

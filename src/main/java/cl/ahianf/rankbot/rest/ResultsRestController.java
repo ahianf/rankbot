@@ -2,7 +2,7 @@
 package cl.ahianf.rankbot.rest;
 
 import static cl.ahianf.rankbot.entity.Elo.eloRating;
-import static cl.ahianf.rankbot.rest.MatchvoteRestController.unrollMatchId;
+import static cl.ahianf.rankbot.extra.Functions.unrollMatchId;
 
 import cl.ahianf.rankbot.entity.Elo;
 import cl.ahianf.rankbot.entity.Par;

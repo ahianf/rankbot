@@ -24,6 +24,9 @@ public class Results {
     @Column(name = "skipped")
     private int skipped;
 
+    @Column(name = "artist_id", nullable = false)
+    private Integer artistId;
+
     public int getMatchId() {
         return matchId;
     }
@@ -71,6 +74,14 @@ public class Results {
 
     public void setSkipped(int skipped) {
         this.skipped = skipped;
+    }
+
+    public Integer getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(Integer artistId) {
+        this.artistId = artistId;
     }
 
     @Override

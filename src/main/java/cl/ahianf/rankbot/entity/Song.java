@@ -18,7 +18,7 @@ public class Song {
     @Column(name = "album")
     private String album;
 
-    @Column(name = "artist")
+    @Column(name = "artist_id")
     private String artist;
 
     @Column(name = "art_url")
@@ -26,6 +26,7 @@ public class Song {
 
     @Column(name = "elo")
     private double elo;
+
 
     public Song(int songId, String title) {
         this.songId = songId;

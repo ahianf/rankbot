@@ -8,9 +8,9 @@ public class Match {
     private Song songA;
     private Song songB;
     private int matchId;
-    private int token;
+    private long token;
 
-    public Match(Song songA, Song songB, int matchId, int token) {
+    public Match(Song songA, Song songB, int matchId, long token) {
         this.songA = songA;
         this.songB = songB;
         this.matchId = matchId;
@@ -41,11 +41,11 @@ public class Match {
         this.matchId = matchId;
     }
 
-    public int getToken() {
+    public long getToken() {
         return token;
     }
 
-    public void setToken(int token) {
+    public void setToken(long token) {
         this.token = token;
     }
 }

@@ -25,11 +25,16 @@ public class VoteLog {
     @Column(name = "timestamp")
     private Instant instant;
 
-    public VoteLog(int matchId, int vote, String ipAddress, Instant instant) {
+    @Column(name = "artist_id", nullable = false)
+    private Integer artistId;
+
+
+    public VoteLog(int matchId, int vote, String ipAddress, Instant instant, Integer artistId) {
         this.matchId = matchId;
         this.vote = vote;
         this.ipAddress = ipAddress;
         this.instant = instant;
+        this.artistId = artistId;
     }
 
     public VoteLog() {}
@@ -64,5 +69,13 @@ public class VoteLog {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public Integer getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(Integer artistId) {
+        this.artistId = artistId;
     }
 }

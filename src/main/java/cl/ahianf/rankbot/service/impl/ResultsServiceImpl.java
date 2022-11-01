@@ -1,16 +1,21 @@
 /* (C)2022 - Ahian Fernández Puelles*/
-package cl.ahianf.rankbot.service;
+package cl.ahianf.rankbot.service.impl;
 
 import cl.ahianf.rankbot.dao.ResultsRepository;
 import cl.ahianf.rankbot.entity.Results;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import cl.ahianf.rankbot.service.ResultsService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ResultsServiceImpl implements ResultsService {
 
-    @Autowired private ResultsRepository repository;
+    private final ResultsRepository repository;
+
+    public ResultsServiceImpl(ResultsRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<Results> findAll() {

@@ -1,8 +1,6 @@
 /* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.rest;
 
-import static java.lang.Math.sqrt;
-
 import cl.ahianf.rankbot.entity.*;
 import cl.ahianf.rankbot.service.ResultsService;
 import cl.ahianf.rankbot.service.SongService;
@@ -15,10 +13,11 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import net.jodah.expiringmap.ExpiringMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static cl.ahianf.rankbot.extra.Functions.*;
 
 @CrossOrigin(
         origins = "*",
@@ -27,20 +26,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/deathgrips")
 public class MatchvoteRestController {
     final Random rand = new Random();
-    final Map<Integer, Integer> map =
+    final Map<Long, Integer> map =
             ExpiringMap.builder().maxSize(5000).expiration(90, TimeUnit.SECONDS).build();
 
     private final SongService songService;
     private final ResultsService resultsService;
     private final VoteLogService voteLogService;
 
-    @Autowired
     public MatchvoteRestController(
-            ResultsService theResultsService,
-            VoteLogService theVoteLogService,
-            SongService songService) {
-        this.resultsService = theResultsService;
-        this.voteLogService = theVoteLogService;
+            ResultsService resultsService, VoteLogService voteLogService, SongService songService) {
+        this.resultsService = resultsService;
+        this.voteLogService = voteLogService;
         this.songService = songService;
     }
 
@@ -53,7 +49,8 @@ public class MatchvoteRestController {
         Song songA = songService.findById(matchIdToPar.left());
         Song songB = songService.findById(matchIdToPar.right());
 
-        int token = rand.nextInt(2147483647);
+
+        long token = rand.nextLong(Long.MAX_VALUE);
         map.put(token, matchId);
 
         return new Match(songA, songB, matchId, token);
@@ -62,15 +59,18 @@ public class MatchvoteRestController {
     @PostMapping
     @CrossOrigin(origins = "http://localhost")
     public ResponseEntity<Vote> recibirVotoRest(
-            @RequestBody Vote theVote, HttpServletRequest request) {
-        int token = theVote.getToken();
+            @RequestBody Vote voteBody, HttpServletRequest request) {
+
+        long token = voteBody.getToken();
 
         if (map.get(token) == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // token no existe
         }
-        int vote = theVote.getVote();
+
+        int vote = voteBody.getVote();
         int matchId = map.get(token);
-        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
+
+//        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
         // inicializados a 0
 
         switch (vote) {
@@ -86,29 +86,13 @@ public class MatchvoteRestController {
         }
 
         map.remove(token);
-        voteLogService.save(new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now()));
-        return new ResponseEntity<>(theVote, HttpStatus.OK);
+        voteLogService.save(new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now(), 2225756));
+        return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
 
-    public static int nMenosUnoTriangular(int i) {
-        i--;
-        return ((i * i) + i) / 2; // xd!
-    }
-
-    public static Par unrollMatchId(int matchId) {
-
-        int inverseTriangular = (int) ((-1 + sqrt(1 + (8 * matchId))) / 2) + 1;
-        int x;
-        int y;
-
-        if (nMenosUnoTriangular(inverseTriangular) == matchId) {
-            x = inverseTriangular;
-            y = x - 1;
-        } else {
-            x = inverseTriangular + 1;
-            y = (nMenosUnoTriangular(x - 1) - matchId) * -1;
-        }
-        return new Par(x, y);
+    @GetMapping("/s")
+    public Vote foo() {
+        return new Vote(2, 3, 4);
     }
 
     public void inicializarDbResults() {

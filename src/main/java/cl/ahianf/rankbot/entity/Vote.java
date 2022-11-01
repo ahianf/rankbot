@@ -3,9 +3,9 @@ package cl.ahianf.rankbot.entity;
 
 public class Vote {
     private int vote;
-    private int token;
+    private long token;
 
-    public Vote(int matchId, int vote, int token) {
+    public Vote(int matchId, int vote, long token) {
         this.vote = vote;
         this.token = token;
     }
@@ -18,11 +18,11 @@ public class Vote {
         this.vote = vote;
     }
 
-    public int getToken() {
+    public long getToken() {
         return token;
     }
 
-    public void setToken(int token) {
+    public void setToken(long token) {
         this.token = token;
     }
 }
