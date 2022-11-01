@@ -1,5 +1,5 @@
 /* (C)2022 - Ahian Fernández Puelles*/
-package cl.ahianf.rankbot.dao;
+package cl.ahianf.rankbot.repository;
 
 import cl.ahianf.rankbot.entity.Results;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,25 +14,28 @@ public interface ResultsRepository extends JpaRepository<Results, Integer> {
 
     @Modifying
     @Query(
-            "UPDATE Results u SET u.winsX = u.winsX + 1 where u.matchId = :matchId and u.artistId ="
-                    + " :artistId")
+            "UPDATE Results u SET u.winsX = u.winsX + 1 where u.id.matchId = :matchId and"
+                    + " u.id.artistId = :artistId")
     void incrementarWinsX(int matchId, int artistId);
 
     @Modifying
     @Query(
-            "UPDATE Results u SET u.winsY = u.winsY + 1 where u.matchId = :matchId and u.artistId ="
-                    + " :artistId")
+            "UPDATE Results u SET u.winsY = u.winsY + 1 where u.id.matchId = :matchId and"
+                    + " u.id.artistId = :artistId")
     void incrementarWinsY(int matchId, int artistId);
 
     @Modifying
     @Query(
-            "UPDATE Results u SET u.empates = u.empates + 1 where u.matchId = :matchId and"
-                    + " u.artistId = :artistId")
+            "UPDATE Results u SET u.empates = u.empates + 1 where u.id.matchId = :matchId and"
+                    + " u.id.artistId = :artistId")
     void incrementarDraws(int matchId, int artistId);
 
     @Modifying
     @Query(
-            "UPDATE Results u SET u.skipped = u.skipped + 1 where u.matchId = :matchId and"
-                    + " u.artistId = :artistId")
+            "UPDATE Results u SET u.skipped = u.skipped + 1 where u.id.matchId = :matchId and"
+                    + " u.id.artistId = :artistId")
     void incrementarSkipped(int matchId, int artistId);
+
+    @Query("select max(u.id.matchId) from Results u WHERE u.id.artistId = :artistId")
+    Integer obtenerMax(int artistId);
 }

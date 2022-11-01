@@ -3,8 +3,10 @@ package cl.ahianf.rankbot.rest;
 
 import static cl.ahianf.rankbot.extra.Functions.*;
 
-import cl.ahianf.rankbot.dao.SongRepository;
 import cl.ahianf.rankbot.entity.*;
+import cl.ahianf.rankbot.repository.ArtistRepository;
+import cl.ahianf.rankbot.repository.ResultsRepository;
+import cl.ahianf.rankbot.repository.SongRepository;
 import cl.ahianf.rankbot.service.ResultsService;
 import cl.ahianf.rankbot.service.SongService;
 import cl.ahianf.rankbot.service.VoteLogService;
@@ -40,19 +42,28 @@ public class MatchvoteRestController {
 
     private final SongRepository songRepository;
 
+    private final ArtistRepository artistRepository;
+
+    private final ResultsRepository resultsRepository;
+
     public MatchvoteRestController(
             ResultsService resultsService,
             VoteLogService voteLogService,
             SongService songService,
-            SongRepository songRepository) {
+            SongRepository songRepository,
+            ArtistRepository artistRepository,
+            ResultsRepository resultsRepository) {
         this.resultsService = resultsService;
         this.voteLogService = voteLogService;
         this.songService = songService;
         this.songRepository = songRepository;
+        this.artistRepository = artistRepository;
+        this.resultsRepository = resultsRepository;
     }
 
     @GetMapping
     public Match generarMatchRest(@RequestParam(defaultValue = "2225756") Integer artist) {
+        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
         int possibleMatchesUpperbound =
                 nMenosUnoTriangular((int) songRepository.countAllByArtist(artist));
         logger.info("possibleMatchesUpperbound: " + possibleMatchesUpperbound);
@@ -74,7 +85,8 @@ public class MatchvoteRestController {
     @CrossOrigin(origins = "http://localhost")
     public ResponseEntity<Vote> recibirVotoRest(
             @RequestBody Vote voteBody, HttpServletRequest request) {
-
+        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
+        // inicializados a 0
         long token = voteBody.getToken();
 
         if (map.get(token) == null) {
@@ -84,9 +96,6 @@ public class MatchvoteRestController {
         int vote = voteBody.getVote();
         int matchId = map.get(token).left();
         int artist = map.get(token).right();
-
-        //        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
-        // inicializados a 0
 
         switch (vote) {
             case 1 -> resultsService.incrementarWinsX(matchId, artist);
@@ -107,14 +116,21 @@ public class MatchvoteRestController {
     }
 
     public void inicializarDbResults() {
-        int possibleMatchesUpperbound = nMenosUnoTriangular((int) songService.count());
-        int rowsMissing = (possibleMatchesUpperbound - (int) resultsService.count());
 
+        List<Artist> all = artistRepository.findAll();
         List<Results> lista = new ArrayList<>();
 
-        for (int i = 0; i < rowsMissing; i++) {
-            lista.add(new Results(0, 0, 0, 0, 2225756));
+        for (Artist artist : all) {
+            int artistId = artist.getId();
+            long entriesByArtist = songRepository.countAllByArtist(artistId);
+            int possibleMatchesUpperbound = nMenosUnoTriangular((int) entriesByArtist);
+
+            int max = resultsService.obtenerMax(artistId);
+
+            for (int i = max; i < possibleMatchesUpperbound; i++) {
+                lista.add(new Results(i + 1, 0, 0, 0, 0, artistId));
+            }
         }
-        resultsService.saveAll(lista);
+        resultsRepository.saveAll(lista);
     }
 }

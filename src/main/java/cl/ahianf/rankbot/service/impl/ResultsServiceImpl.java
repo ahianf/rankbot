@@ -1,8 +1,8 @@
 /* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.service.impl;
 
-import cl.ahianf.rankbot.dao.ResultsRepository;
 import cl.ahianf.rankbot.entity.Results;
+import cl.ahianf.rankbot.repository.ResultsRepository;
 import cl.ahianf.rankbot.service.ResultsService;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -49,5 +49,15 @@ public class ResultsServiceImpl implements ResultsService {
     @Override
     public long count() {
         return repository.count();
+    }
+
+    @Override
+    public int obtenerMax(int artistId) {
+
+        Integer integer = repository.obtenerMax(artistId);
+        if (integer == null) {
+            integer = 0;
+        }
+        return integer;
     }
 }

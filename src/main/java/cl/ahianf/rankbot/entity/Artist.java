@@ -1,8 +1,6 @@
 /* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
 import javax.persistence.*;
 
 @Entity
@@ -12,12 +10,11 @@ public class Artist {
     @Column(name = "artist_id", nullable = false)
     private Integer id;
 
-    @Lob
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "artist")
-    private Set<Song> songs = new LinkedHashSet<>();
+    //    @OneToMany(mappedBy = "artist")
+    //    private Set<Song> songs = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -35,11 +32,16 @@ public class Artist {
         this.name = name;
     }
 
-    public Set<Song> getSongs() {
-        return songs;
+    @Override
+    public String toString() {
+        return "Artist{" + "id=" + id + ", name='" + name + '\'' + '}';
     }
 
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
-    }
+    //    public Set<Song> getSongs() {
+    //        return songs;
+    //    }
+    //
+    //    public void setSongs(Set<Song> songs) {
+    //        this.songs = songs;
+    //    }
 }

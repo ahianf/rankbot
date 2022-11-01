@@ -24,4 +24,6 @@ public interface ResultsService {
     void saveAll(List<Results> lista);
 
     long count();
+
+    int obtenerMax(int artistId);
 }

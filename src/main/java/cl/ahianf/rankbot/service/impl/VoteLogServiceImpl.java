@@ -1,8 +1,8 @@
 /* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.service.impl;
 
-import cl.ahianf.rankbot.dao.VoteLogRepository;
 import cl.ahianf.rankbot.entity.VoteLog;
+import cl.ahianf.rankbot.repository.VoteLogRepository;
 import cl.ahianf.rankbot.service.VoteLogService;
 import org.springframework.stereotype.Service;
 
