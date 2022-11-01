@@ -10,16 +10,16 @@ public interface ResultsService {
     List<Results> findAll();
 
     @Transactional
-    void incrementarWinsX(int matchId);
+    void incrementarWinsX(int matchId, int artistId);
 
     @Transactional
-    void incrementarWinsY(int matchId);
+    void incrementarWinsY(int matchId, int artistId);
 
     @Transactional
-    void incrementarDraws(int matchId);
+    void incrementarDraws(int matchId, int artistId);
 
     @Transactional
-    void incrementarSkipped(int matchId);
+    void incrementarSkipped(int matchId, int artistId);
 
     void saveAll(List<Results> lista);
 

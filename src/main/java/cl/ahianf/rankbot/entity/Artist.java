@@ -1,10 +1,9 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
-import cl.ahianf.rankbot.entity.Song;
-
-import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "artists")
@@ -43,5 +42,4 @@ public class Artist {
     public void setSongs(Set<Song> songs) {
         this.songs = songs;
     }
-
 }

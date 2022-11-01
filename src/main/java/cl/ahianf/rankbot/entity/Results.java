@@ -33,11 +33,12 @@ public class Results {
 
     public Results() {}
 
-    public Results(int winsX, int winsY, int empates, int skipped) {
+    public Results(int winsX, int winsY, int empates, int skipped, int artistId) {
         this.winsX = winsX;
         this.winsY = winsY;
         this.empates = empates;
         this.skipped = skipped;
+        this.artistId = artistId;
     }
 
     public void setMatchId(int matchId) {

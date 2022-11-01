@@ -3,9 +3,8 @@ package cl.ahianf.rankbot.service.impl;
 
 import cl.ahianf.rankbot.dao.ResultsRepository;
 import cl.ahianf.rankbot.entity.Results;
-import java.util.List;
-
 import cl.ahianf.rankbot.service.ResultsService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,23 +22,23 @@ public class ResultsServiceImpl implements ResultsService {
     }
 
     @Override
-    public void incrementarWinsX(int matchId) {
-        repository.incrementarWinsX(matchId);
+    public void incrementarWinsX(int matchId, int artistId) {
+        repository.incrementarWinsX(matchId, artistId);
     }
 
     @Override
-    public void incrementarWinsY(int matchId) {
-        repository.incrementarWinsY(matchId);
+    public void incrementarWinsY(int matchId, int artistId) {
+        repository.incrementarWinsY(matchId, artistId);
     }
 
     @Override
-    public void incrementarDraws(int matchId) {
-        repository.incrementarDraws(matchId);
+    public void incrementarDraws(int matchId, int artistId) {
+        repository.incrementarDraws(matchId, artistId);
     }
 
     @Override
-    public void incrementarSkipped(int matchId) {
-        repository.incrementarSkipped(matchId);
+    public void incrementarSkipped(int matchId, int artistId) {
+        repository.incrementarSkipped(matchId, artistId);
     }
 
     @Override

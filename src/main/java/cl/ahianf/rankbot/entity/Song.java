@@ -19,14 +19,13 @@ public class Song {
     private String album;
 
     @Column(name = "artist_id")
-    private String artist;
+    private int artist;
 
     @Column(name = "art_url")
     private String artUrl;
 
     @Column(name = "elo")
     private double elo;
-
 
     public Song(int songId, String title) {
         this.songId = songId;
@@ -43,11 +42,11 @@ public class Song {
         this.album = album;
     }
 
-    public String getArtist() {
+    public int getArtist() {
         return artist;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(int artist) {
         this.artist = artist;
     }
 

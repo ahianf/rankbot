@@ -13,18 +13,26 @@ public interface ResultsRepository extends JpaRepository<Results, Integer> {
     // https://stackoverflow.com/questions/27284487/jpa-hibernate-how-to-properly-increment-a-counter-in-the-database
 
     @Modifying
-    @Query("UPDATE Results u SET u.winsX = u.winsX + 1 where u.matchId = :matchId")
-    void incrementarWinsX(int matchId);
+    @Query(
+            "UPDATE Results u SET u.winsX = u.winsX + 1 where u.matchId = :matchId and u.artistId ="
+                    + " :artistId")
+    void incrementarWinsX(int matchId, int artistId);
 
     @Modifying
-    @Query("UPDATE Results u SET u.winsY = u.winsY + 1 where u.matchId = :matchId")
-    void incrementarWinsY(int matchId);
+    @Query(
+            "UPDATE Results u SET u.winsY = u.winsY + 1 where u.matchId = :matchId and u.artistId ="
+                    + " :artistId")
+    void incrementarWinsY(int matchId, int artistId);
 
     @Modifying
-    @Query("UPDATE Results u SET u.empates = u.empates + 1 where u.matchId = :matchId")
-    void incrementarDraws(int matchId);
+    @Query(
+            "UPDATE Results u SET u.empates = u.empates + 1 where u.matchId = :matchId and"
+                    + " u.artistId = :artistId")
+    void incrementarDraws(int matchId, int artistId);
 
     @Modifying
-    @Query("UPDATE Results u SET u.skipped = u.skipped + 1 where u.matchId = :matchId")
-    void incrementarSkipped(int matchId);
+    @Query(
+            "UPDATE Results u SET u.skipped = u.skipped + 1 where u.matchId = :matchId and"
+                    + " u.artistId = :artistId")
+    void incrementarSkipped(int matchId, int artistId);
 }

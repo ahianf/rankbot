@@ -28,7 +28,6 @@ public class VoteLog {
     @Column(name = "artist_id", nullable = false)
     private Integer artistId;
 
-
     public VoteLog(int matchId, int vote, String ipAddress, Instant instant, Integer artistId) {
         this.matchId = matchId;
         this.vote = vote;

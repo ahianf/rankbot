@@ -13,7 +13,8 @@ import cl.ahianf.rankbot.service.SongService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/deathgrips/results")
 public class ResultsRestController {
+
+    Logger logger = LoggerFactory.getLogger(ResultsRestController.class);
     private final ResultsService resultsService;
     private final SongService songService;
 
@@ -34,9 +37,11 @@ public class ResultsRestController {
         return songService.findAllByOrderByEloDesc();
     }
 
-    @Scheduled(cron = "0 0/10 * * * *") // cálculo de Elo se ejecuta cada 10 minutos y se guarda en
+    //    @Scheduled(cron = "0 0/10 * * * *") // cálculo de Elo se ejecuta cada 10 minutos y se
+    // guarda en
     // db/results
     public void calculateElo() {
+        logger.info("Elo calculado correctamente");
         List<Results> listaResultados =
                 resultsService
                         .findAll(); // se hace en memoria para evitar golpear la db excesivamente
