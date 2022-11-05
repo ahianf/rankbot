@@ -4,17 +4,15 @@ package cl.ahianf.rankbot.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "artists")
+@Table(name = "artist_credit")
 public class Artist {
     @Id
-    @Column(name = "artist_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    //    @OneToMany(mappedBy = "artist")
-    //    private Set<Song> songs = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -31,17 +29,4 @@ public class Artist {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Override
-    public String toString() {
-        return "Artist{" + "id=" + id + ", name='" + name + '\'' + '}';
-    }
-
-    //    public Set<Song> getSongs() {
-    //        return songs;
-    //    }
-    //
-    //    public void setSongs(Set<Song> songs) {
-    //        this.songs = songs;
-    //    }
 }

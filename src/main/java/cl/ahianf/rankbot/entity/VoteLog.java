@@ -5,7 +5,7 @@ import java.time.Instant;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "log", schema = "public")
+@Table(name = "log_app", schema = "public")
 public class VoteLog {
 
     @Id

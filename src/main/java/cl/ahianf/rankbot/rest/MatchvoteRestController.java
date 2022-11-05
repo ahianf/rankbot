@@ -62,23 +62,24 @@ public class MatchvoteRestController {
     }
 
     @GetMapping
-    public Match generarMatchRest(@RequestParam(defaultValue = "2225756") Integer artist) {
+    public Match generarMatchRest(@RequestParam(defaultValue = "826255") Integer artist) {
         inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
+
         int possibleMatchesUpperbound =
-                nMenosUnoTriangular((int) songRepository.countAllByArtist(artist));
-        logger.info("possibleMatchesUpperbound: " + possibleMatchesUpperbound);
+                nMenosUnoTriangular((int) songRepository.countAllByArtistId(artist));
 
         int matchId = rand.nextInt(possibleMatchesUpperbound) + 1;
-        logger.info("MatchId: " + matchId);
         Par matchIdToPar = unrollMatchId(matchId);
 
-        Song songA = songRepository.findSongBySongIdAndArtist(matchIdToPar.left(), artist);
-        Song songB = songRepository.findSongBySongIdAndArtist(matchIdToPar.right(), artist);
+        Song songA = songRepository.findSongBySongIdAndArtistId(matchIdToPar.left(), artist);
+        Song songB = songRepository.findSongBySongIdAndArtistId(matchIdToPar.right(), artist);
 
         long token = rand.nextLong(Long.MAX_VALUE);
         map.put(token, new Par(matchId, artist));
 
-        return new Match(songA, songB, matchId, token);
+        Match match = new Match(songA, songB, matchId, token);
+        logger.info("Nuevo match generado: " + match);
+        return match;
     }
 
     @PostMapping
@@ -87,6 +88,9 @@ public class MatchvoteRestController {
             @RequestBody Vote voteBody, HttpServletRequest request) {
         inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
         // inicializados a 0
+
+        logger.info("Voto recibido: " + voteBody);
+
         long token = voteBody.getToken();
 
         if (map.get(token) == null) {
@@ -122,7 +126,7 @@ public class MatchvoteRestController {
 
         for (Artist artist : all) {
             int artistId = artist.getId();
-            long entriesByArtist = songRepository.countAllByArtist(artistId);
+            long entriesByArtist = songRepository.countAllByArtistId(artistId);
             int possibleMatchesUpperbound = nMenosUnoTriangular((int) entriesByArtist);
 
             int max = resultsService.obtenerMax(artistId);

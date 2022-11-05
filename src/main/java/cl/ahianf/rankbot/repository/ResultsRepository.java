@@ -2,6 +2,7 @@
 package cl.ahianf.rankbot.repository;
 
 import cl.ahianf.rankbot.entity.Results;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -38,4 +39,7 @@ public interface ResultsRepository extends JpaRepository<Results, Integer> {
 
     @Query("select max(u.id.matchId) from Results u WHERE u.id.artistId = :artistId")
     Integer obtenerMax(int artistId);
+
+    @Query("from Results u WHERE u.id.artistId = :artistId")
+    List<Results> findAllByArtistId(int artistId);
 }

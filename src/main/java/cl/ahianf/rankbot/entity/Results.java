@@ -7,7 +7,7 @@ import javax.persistence.*;
 import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "results")
+@Table(name = "results_app")
 public class Results {
     @EmbeddedId private ResultsId id;
 
