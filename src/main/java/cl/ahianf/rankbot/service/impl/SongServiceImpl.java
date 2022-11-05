@@ -1,12 +1,11 @@
 /* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.service.impl;
 
-import cl.ahianf.rankbot.dao.SongRepository;
 import cl.ahianf.rankbot.entity.Song;
+import cl.ahianf.rankbot.repository.SongRepository;
+import cl.ahianf.rankbot.service.SongService;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
-
-import cl.ahianf.rankbot.service.SongService;
 import org.springframework.stereotype.Service;
 
 @Service

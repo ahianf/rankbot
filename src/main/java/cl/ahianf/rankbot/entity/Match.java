@@ -48,4 +48,14 @@ public class Match {
     public void setToken(long token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "Match{" +
+                "songA=" + songA +
+                ", songB=" + songB +
+                ", matchId=" + matchId +
+                ", token=" + token +
+                '}';
+    }
 }

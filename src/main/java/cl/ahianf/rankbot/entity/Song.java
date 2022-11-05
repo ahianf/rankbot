@@ -4,36 +4,57 @@ package cl.ahianf.rankbot.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "songs", schema = "public")
+@Table(name = "track_app")
 public class Song {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "song_id")
-    private int songId;
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @Column(name = "title")
+    @Column(name = "song_id")
+    private Integer songId;
+
+    @Column(name = "title", length = 10485760)
     private String title;
 
-    @Column(name = "album")
+    @Column(name = "album", length = 10485760)
     private String album;
 
-    @Column(name = "artist_id")
+    @Column(name = "artist", length = 10485760)
     private String artist;
+
+    @Column(name = "artist_id", nullable = false)
+    private Integer artistId;
+
+    @Column(name = "elo")
+    private Double elo;
 
     @Column(name = "art_url")
     private String artUrl;
 
-    @Column(name = "elo")
-    private double elo;
-
-
-    public Song(int songId, String title) {
-        this.songId = songId;
-        this.title = title;
+    public Integer getId() {
+        return id;
     }
 
-    public Song() {}
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getSongId() {
+        return songId;
+    }
+
+    public void setSongId(Integer songId) {
+        this.songId = songId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getAlbum() {
         return album;
@@ -51,20 +72,20 @@ public class Song {
         this.artist = artist;
     }
 
-    public int getSongId() {
-        return songId;
+    public Integer getArtistId() {
+        return artistId;
     }
 
-    public void setSongId(int song_id) {
-        this.songId = song_id;
+    public void setArtistId(Integer artistId) {
+        this.artistId = artistId;
     }
 
-    public String getTitle() {
-        return title;
+    public Double getElo() {
+        return elo;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setElo(Double elo) {
+        this.elo = elo;
     }
 
     public String getArtUrl() {
@@ -75,33 +96,13 @@ public class Song {
         this.artUrl = artUrl;
     }
 
-    public double getElo() {
-        return elo;
-    }
-
-    public void setElo(double elo) {
-        this.elo = elo;
-    }
-
     @Override
     public String toString() {
-        return "Song{"
-                + "songId="
-                + songId
-                + ", title='"
-                + title
-                + '\''
-                + ", album='"
-                + album
-                + '\''
-                + ", artist='"
-                + artist
-                + '\''
-                + ", artUrl='"
-                + artUrl
-                + '\''
-                + ", elo="
-                + elo
-                + '}';
+        return "Song{" +
+                ", songId=" + songId +
+                ", title='" + title + '\'' +
+                ", album='" + album + '\'' +
+                ", artist='" + artist + '\'' +
+                '}';
     }
 }

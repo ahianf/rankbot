@@ -25,4 +25,12 @@ public class Vote {
     public void setToken(long token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "vote=" + vote +
+                ", token=" + token +
+                '}';
+    }
 }

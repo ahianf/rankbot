@@ -1,8 +1,9 @@
+/* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.extra;
 
-import cl.ahianf.rankbot.entity.Par;
-
 import static java.lang.Math.sqrt;
+
+import cl.ahianf.rankbot.entity.Par;
 
 public class Functions {
     public static int nMenosUnoTriangular(int i) {

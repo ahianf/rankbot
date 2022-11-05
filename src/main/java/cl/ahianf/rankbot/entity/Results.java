@@ -1,102 +1,127 @@
 /* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
+import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.*;
+import org.hibernate.Hibernate;
 
 @Entity
-@Table(name = "results", schema = "public")
+@Table(name = "results_app")
 public class Results {
+    @EmbeddedId private ResultsId id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "match_id")
-    private int matchId;
+    @Column(name = "wins_x", nullable = false)
+    private Integer winsX;
 
-    @Column(name = "wins_x")
-    private int winsX;
+    @Column(name = "wins_y", nullable = false)
+    private Integer winsY;
 
-    @Column(name = "wins_y")
-    private int winsY;
+    @Column(name = "draws", nullable = false)
+    private Integer empates;
 
-    @Column(name = "draws")
-    private int empates;
+    @Column(name = "skipped", nullable = false)
+    private Integer skipped;
 
-    @Column(name = "skipped")
-    private int skipped;
-
-    @Column(name = "artist_id", nullable = false)
-    private Integer artistId;
-
-    public int getMatchId() {
-        return matchId;
-    }
-
-    public Results() {}
-
-    public Results(int winsX, int winsY, int empates, int skipped) {
+    public Results(int matchId, int winsX, int winsY, int empates, int skipped, int artistId) {
         this.winsX = winsX;
         this.winsY = winsY;
         this.empates = empates;
         this.skipped = skipped;
+        this.id = new ResultsId(matchId, artistId);
     }
 
-    public void setMatchId(int matchId) {
-        this.matchId = matchId;
+    public Results() {}
+
+    public ResultsId getId() {
+        return id;
     }
 
-    public int getWinsX() {
+    public void setId(ResultsId id) {
+        this.id = id;
+    }
+
+    public Integer getWinsX() {
         return winsX;
     }
 
-    public void setWinsX(int winsX) {
+    public void setWinsX(Integer winsX) {
         this.winsX = winsX;
     }
 
-    public int getWinsY() {
+    public Integer getWinsY() {
         return winsY;
     }
 
-    public void setWinsY(int winsY) {
+    public void setWinsY(Integer winsY) {
         this.winsY = winsY;
     }
 
-    public int getEmpates() {
+    public Integer getEmpates() {
         return empates;
     }
 
-    public void setEmpates(int draws) {
+    public void setEmpates(Integer draws) {
         this.empates = draws;
     }
 
-    public int getSkipped() {
+    public Integer getSkipped() {
         return skipped;
     }
 
-    public void setSkipped(int skipped) {
+    public void setSkipped(Integer skipped) {
         this.skipped = skipped;
     }
 
-    public Integer getArtistId() {
-        return artistId;
+    public int getMatchId() {
+        return this.id.getMatchId();
     }
 
-    public void setArtistId(Integer artistId) {
-        this.artistId = artistId;
-    }
+    @Embeddable
+    public static class ResultsId implements Serializable {
+        private static final long serialVersionUID = -1522298751762847986L;
 
-    @Override
-    public String toString() {
-        return "Results{"
-                + "matchId="
-                + matchId
-                + ", winsX="
-                + winsX
-                + ", winsY="
-                + winsY
-                + ", draws="
-                + empates
-                + ", skipped="
-                + skipped
-                + '}';
+        @Column(name = "match_id", nullable = false)
+        private Integer matchId;
+
+        @Column(name = "artist_id", nullable = false)
+        private Integer artistId;
+
+        public ResultsId(Integer matchId, Integer artistId) {
+            this.matchId = matchId;
+            this.artistId = artistId;
+        }
+
+        public ResultsId() {}
+
+        public Integer getMatchId() {
+            return matchId;
+        }
+
+        public void setMatchId(Integer matchId) {
+            this.matchId = matchId;
+        }
+
+        public Integer getArtistId() {
+            return artistId;
+        }
+
+        public void setArtistId(Integer artistId) {
+            this.artistId = artistId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+            ResultsId entity = (ResultsId) o;
+            return Objects.equals(this.artistId, entity.artistId)
+                    && Objects.equals(this.matchId, entity.matchId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(artistId, matchId);
+        }
     }
 }
