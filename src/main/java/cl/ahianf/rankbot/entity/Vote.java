@@ -28,9 +28,6 @@ public class Vote {
 
     @Override
     public String toString() {
-        return "Vote{" +
-                "vote=" + vote +
-                ", token=" + token +
-                '}';
+        return "Vote{" + "vote=" + vote + ", token=" + token + '}';
     }
 }

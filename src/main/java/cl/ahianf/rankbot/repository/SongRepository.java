@@ -9,12 +9,13 @@ public interface SongRepository extends JpaRepository<Song, Integer> {
 
     List<Song> findAllByOrderBySongIdAsc();
 
-    List<Song> findAllByArtistOrderBySongIdAsc(int artistId);
+    List<Song> findAllByArtistIdOrderBySongIdAsc(int artistId);
 
     List<Song> findAllByOrderByEloDesc();
 
-    Song findSongBySongIdAndArtistId(int songId, int artistId);
+    List<Song> findAllByArtistIdOrderByEloDesc(int artistId);
 
+    Song findSongBySongIdAndArtistId(int songId, int artistId);
 
     long countAllByArtistId(int artistId);
 }

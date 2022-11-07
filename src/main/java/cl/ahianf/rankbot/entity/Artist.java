@@ -1,17 +1,19 @@
 /* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "artist_credit")
+@Table(name = "ARTIST_CREDIT")
 public class Artist {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     public Integer getId() {

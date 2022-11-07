@@ -5,69 +5,76 @@ import java.time.Instant;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "log_app", schema = "public")
+@Table(name = "LOG_APP")
 public class VoteLog {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "ID", nullable = false)
+    private Long id;
 
-    @Column(name = "match_id")
-    private int matchId;
+    @Column(name = "MATCH_ID", nullable = false)
+    private Integer matchId;
 
-    @Column(name = "vote")
-    private int vote;
+    @Column(name = "VOTE", nullable = false)
+    private Integer vote;
 
-    @Column(name = "ip_addr")
-    private String ipAddress;
+    @Column(name = "IP_ADDR", length = 16)
+    private String ipAddr;
 
-    @Column(name = "timestamp")
-    private Instant instant;
+    @Column(name = "instant", nullable = false)
+    private Instant timestamp;
 
-    @Column(name = "artist_id", nullable = false)
+    @Column(name = "ARTIST_ID", nullable = false)
     private Integer artistId;
 
-    public VoteLog(int matchId, int vote, String ipAddress, Instant instant, Integer artistId) {
+    public VoteLog(int matchId, int vote, String ipAddr, Instant timestamp, Integer artistId) {
         this.matchId = matchId;
         this.vote = vote;
-        this.ipAddress = ipAddress;
-        this.instant = instant;
+        this.ipAddr = ipAddr;
+        this.timestamp = timestamp;
         this.artistId = artistId;
     }
 
     public VoteLog() {}
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getMatchId() {
+    public Integer getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(int matchId) {
+    public void setMatchId(Integer matchId) {
         this.matchId = matchId;
     }
 
-    public int getVote() {
+    public Integer getVote() {
         return vote;
     }
 
-    public void setVote(int vote) {
+    public void setVote(Integer vote) {
         this.vote = vote;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public String getIpAddr() {
+        return ipAddr;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setIpAddr(String ipAddr) {
+        this.ipAddr = ipAddr;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Integer getArtistId() {

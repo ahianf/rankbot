@@ -8,7 +8,7 @@ import cl.ahianf.rankbot.entity.Par;
 public class Functions {
     public static int nMenosUnoTriangular(int i) {
         i--;
-        return ((i * i) + i) / 2; // xd!
+        return ((i * i) + i) >> 1; // xd!
     }
 
     public static Par unrollMatchId(int matchId) {
