@@ -1,35 +1,39 @@
 /* (C)2022 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "track_app")
+@Table(name = "TRACK_APP")
+@JsonIgnoreProperties({"id", "artistId", "songId"})
 public class Song {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @Column(name = "song_id")
+    @Column(name = "SONG_ID")
     private Integer songId;
 
-    @Column(name = "title", length = 10485760)
+    @Column(name = "TITLE")
     private String title;
 
-    @Column(name = "album", length = 10485760)
+    @Column(name = "ALBUM")
     private String album;
 
-    @Column(name = "artist", length = 10485760)
+    @Column(name = "ARTIST")
     private String artist;
 
-    @Column(name = "artist_id", nullable = false)
+    @Column(name = "ARTIST_ID", nullable = false)
     private Integer artistId;
 
-    @Column(name = "elo")
+    @Column(name = "ELO")
     private Double elo;
 
-    @Column(name = "art_url")
+    @Column(name = "ART_URL")
     private String artUrl;
 
     public Integer getId() {
@@ -94,15 +98,5 @@ public class Song {
 
     public void setArtUrl(String artUrl) {
         this.artUrl = artUrl;
-    }
-
-    @Override
-    public String toString() {
-        return "Song{" +
-                ", songId=" + songId +
-                ", title='" + title + '\'' +
-                ", album='" + album + '\'' +
-                ", artist='" + artist + '\'' +
-                '}';
     }
 }
