@@ -83,3 +83,8 @@ nb-configuration.xml
 ##############################
 .DS_Store
 src/main/resources/database/
+
+##############################
+## Rankbot
+##############################
+nginx/static/*

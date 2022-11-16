@@ -51,15 +51,13 @@ public class Match {
 
     @Override
     public String toString() {
-        return "Match{"
-                + "songA="
+        return "song A: "
                 + songA
-                + ", songB="
+                + "; song B: "
                 + songB
-                + ", matchId="
+                + "; matchId: "
                 + matchId
-                + ", token="
-                + token
-                + '}';
+                + ", token: "
+                + token;
     }
 }

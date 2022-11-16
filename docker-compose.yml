@@ -1,16 +1,16 @@
-version: '2'
+version: '3.8'
 services:
   db:
-    image: 'postgres:13.1-alpine'
-    container_name: db
-#    ports:
-#      - 54320:5432
+    image: postgres:14-bullseye
+    restart: always
     environment:
-      - POSTGRES_DB=rankbot_db
+      - POSTGRES_DB=postgres
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-    restart: always
-
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
   nginx:
     container_name: nginx
     build:
@@ -18,8 +18,8 @@ services:
       context: .
     restart: always
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+    #      - "443:443"
     depends_on:
       - app
 
@@ -34,10 +34,10 @@ services:
       - db
     restart: always
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/rankbot_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
       - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_SECURITY_USER_NAME=${SPRING_SECURITY_USERNAME}
-      - SPRING_SECURITY_USER_PASSWORD=${SPRING_SECURITY_PASSWORD}
-      - SPRING_SECURITY_USER_ROLES=ENDPOINT_ADMIN
+
+volumes:
+  db:
+    driver: local

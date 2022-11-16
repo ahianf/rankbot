@@ -28,11 +28,10 @@ import org.springframework.web.bind.annotation.*;
         methods = {RequestMethod.GET, RequestMethod.POST})
 @RestController
 @RequestMapping("/api")
-public class RankbotRestController {
+public class RankbotController {
 
-    Logger logger = LoggerFactory.getLogger(RankbotRestController.class);
+    Logger logger = LoggerFactory.getLogger(RankbotController.class);
     final Random rand = new Random();
-    private final SongService songService;
     private final ResultsService resultsService;
     private final VoteLogService voteLogService;
     private final SongRepository songRepository;
@@ -40,9 +39,9 @@ public class RankbotRestController {
     private final ResultsRepository resultsRepository;
     Map<String, Integer> hashMap;
     final Map<Long, Par> map =
-            ExpiringMap.builder().maxSize(5000).expiration(60, TimeUnit.SECONDS).build();
+            ExpiringMap.builder().maxSize(50000).expiration(60, TimeUnit.SECONDS).build();
 
-    public RankbotRestController(
+    public RankbotController(
             ResultsService resultsService,
             VoteLogService voteLogService,
             SongService songService,
@@ -51,7 +50,6 @@ public class RankbotRestController {
             ResultsRepository resultsRepository) {
         this.resultsService = resultsService;
         this.voteLogService = voteLogService;
-        this.songService = songService;
         this.songRepository = songRepository;
         this.artistRepository = artistRepository;
         this.resultsRepository = resultsRepository;
@@ -64,9 +62,14 @@ public class RankbotRestController {
     }
 
     @GetMapping("/match/{artist}")
-    public Match generarMatchRest(@PathVariable(value = "artist") String param) {
+    public ResponseEntity<Match> generarMatchRest(
+            @PathVariable(value = "artist") String param, HttpServletRequest request) {
 
-        int artist = hashMap.get(param.toLowerCase().replace('-', ' '));
+        Integer artist = hashMap.get(param.toLowerCase().replace('-', ' '));
+
+        if (artist == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         int possibleMatchesUpperbound =
                 nMenosUnoTriangular((int) songRepository.countAllByArtistId(artist));
@@ -76,10 +79,14 @@ public class RankbotRestController {
         Song songA = songRepository.findSongBySongIdAndArtistId(matchIdToPar.left(), artist);
         Song songB = songRepository.findSongBySongIdAndArtistId(matchIdToPar.right(), artist);
 
-        long token = rand.nextLong(Long.MAX_VALUE);
+        long token = rand.nextLong(9007199254740991L); // JavaScript max value
         map.put(token, new Par(matchId, artist));
 
-        return new Match(songA, songB, matchId, token);
+        Match match = new Match(songA, songB, matchId, token);
+        logger.info(
+                "Match: " + songA.getArtist() + "; " + match + ", ip: " + request.getRemoteAddr());
+
+        return new ResponseEntity<>(match, HttpStatus.OK);
     }
 
     @PostMapping("/match")
@@ -115,6 +122,7 @@ public class RankbotRestController {
         map.remove(token);
         voteLogService.save(
                 new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now(), artist));
+
         return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
 
@@ -167,10 +175,9 @@ public class RankbotRestController {
             for (Results resultado : listaResultados) {
 
                 int matchId = resultado.getMatchId();
-                Par numeros = unrollMatchId(matchId);
 
-                int songAIndex = numeros.left() - 1;
-                int songBIndex = numeros.right() - 1;
+                int songAIndex = unrollMatchId(matchId).left() - 1;
+                int songBIndex = unrollMatchId(matchId).right() - 1;
 
                 double eloSongA = listaCanciones.get(songAIndex).getElo();
                 double eloSongB = listaCanciones.get(songBIndex).getElo();

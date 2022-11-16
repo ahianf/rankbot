@@ -28,6 +28,6 @@ public class Vote {
 
     @Override
     public String toString() {
-        return "Vote{" + "vote=" + vote + ", token=" + token + '}';
+        return "vote: " + vote + ", token: " + token;
     }
 }

@@ -8,32 +8,32 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TRACK_APP")
+@Table(name = "track_app")
 @JsonIgnoreProperties({"id", "artistId", "songId"})
 public class Song {
     @Id
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @Column(name = "SONG_ID")
+    @Column(name = "song_id")
     private Integer songId;
 
-    @Column(name = "TITLE")
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "ALBUM")
+    @Column(name = "album")
     private String album;
 
-    @Column(name = "ARTIST")
+    @Column(name = "artist")
     private String artist;
 
-    @Column(name = "ARTIST_ID", nullable = false)
+    @Column(name = "artist_id", nullable = false)
     private Integer artistId;
 
-    @Column(name = "ELO")
+    @Column(name = "elo")
     private Double elo;
 
-    @Column(name = "ART_URL")
+    @Column(name = "art_url", length = 40)
     private String artUrl;
 
     public Integer getId() {
@@ -48,10 +48,6 @@ public class Song {
         return songId;
     }
 
-    public void setSongId(Integer songId) {
-        this.songId = songId;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -64,24 +60,12 @@ public class Song {
         return album;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
     public String getArtist() {
         return artist;
     }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
     public Integer getArtistId() {
         return artistId;
-    }
-
-    public void setArtistId(Integer artistId) {
-        this.artistId = artistId;
     }
 
     public Double getElo() {
@@ -96,7 +80,8 @@ public class Song {
         return artUrl;
     }
 
-    public void setArtUrl(String artUrl) {
-        this.artUrl = artUrl;
+    @Override
+    public String toString() {
+        return title + ", " + album;
     }
 }
