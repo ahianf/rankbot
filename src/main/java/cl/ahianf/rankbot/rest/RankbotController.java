@@ -11,13 +11,17 @@ import cl.ahianf.rankbot.repository.SongRepository;
 import cl.ahianf.rankbot.service.ResultsService;
 import cl.ahianf.rankbot.service.SongService;
 import cl.ahianf.rankbot.service.VoteLogService;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import javax.servlet.http.HttpServletRequest;
 import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -41,13 +45,15 @@ public class RankbotController {
     final Map<Long, Par> map =
             ExpiringMap.builder().maxSize(50000).expiration(60, TimeUnit.SECONDS).build();
 
+    @Autowired
     public RankbotController(
             ResultsService resultsService,
             VoteLogService voteLogService,
             SongService songService,
             SongRepository songRepository,
             ArtistRepository artistRepository,
-            ResultsRepository resultsRepository) {
+            ResultsRepository resultsRepository,
+            MeterRegistry registry) {
         this.resultsService = resultsService;
         this.voteLogService = voteLogService;
         this.songRepository = songRepository;
@@ -55,10 +61,17 @@ public class RankbotController {
         this.resultsRepository = resultsRepository;
         this.hashMap = new HashMap<>();
 
+        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
+        // inicializados a 0
+
         List<Artist> all = artistRepository.findAll();
         for (Artist i : all) {
             hashMap.put(i.getName().toLowerCase(), i.getId());
         }
+
+        Gauge.builder("rankbotcontroller.expiringmap.size", fetchExpiringMapSize())
+                .description("Current size of ExpiringMap")
+                .register(registry);
     }
 
     @GetMapping("/match/{artist}")
@@ -93,8 +106,6 @@ public class RankbotController {
     @CrossOrigin(origins = "http://localhost")
     public ResponseEntity<Vote> recibirVotoRest(
             @RequestBody Vote voteBody, HttpServletRequest request) {
-        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
-        // inicializados a 0
 
         logger.info("Voto recibido: " + voteBody);
 
@@ -210,4 +221,9 @@ public class RankbotController {
         long duration = (endTime - startTime); // divide by 1000000 to get milliseconds.
         logger.info("Elo scores calculated. Time elapsed: " + duration / 1000000 + " ms");
     }
+
+    private Supplier<Number> fetchExpiringMapSize() {
+        return map::size;
+    }
+
 }
