@@ -5,26 +5,26 @@ import java.time.Instant;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "LOG_APP")
+@Table(name = "log_app")
 public class VoteLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Long id;
 
-    @Column(name = "MATCH_ID", nullable = false)
+    @Column(name = "match_id", nullable = false)
     private Integer matchId;
 
     @Column(name = "VOTE", nullable = false)
     private Integer vote;
 
-    @Column(name = "IP_ADDR", length = 16)
+    @Column(name = "ip_addr")
     private String ipAddr;
 
     @Column(name = "instant", nullable = false)
     private Instant timestamp;
 
-    @Column(name = "ARTIST_ID", nullable = false)
+    @Column(name = "artist_id", nullable = false)
     private Integer artistId;
 
     public VoteLog(int matchId, int vote, String ipAddr, Instant timestamp, Integer artistId) {

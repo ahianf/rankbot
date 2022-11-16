@@ -1,12 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:file:./src/main/resources/database/maindb
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    driver-class-name: org.postgresql.Driver
+    username: ahian
+    password: r04jb-m2khw-8g2u0-yizwv-6ahov
+    url: jdbc:postgresql://192.168.181.1:5432/postgres
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   cache:
     jcache:
       config: classpath:ehcache.xml
@@ -17,6 +18,7 @@ bucket4j:
     - cache-name: buckets
       url: .*/api/.*
       http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Quota, wait a little.\" }"
+      hide-http-response-headers: true
       rate-limits:
         - expression: "getRemoteAddr()"
           bandwidths:
@@ -32,7 +34,16 @@ rankbot:
 
 server:
   forward-headers-strategy: native
+  error:
+    whitelabel:
+      enabled: false
 
 logging:
   level:
     org.springframework: ERROR
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
