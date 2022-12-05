@@ -10,7 +10,7 @@ La aplicación tiene varias formas de protección contra votos ilegitimos, inclu
 Creado con Java, Spring Framework, Nginx y Postgres. 
 Desplegado con Docker.
 
-[Demo](ahian.cl/daftpunk)
+[Demo](https://rankbot.me/daft-punk/index.html)
 
 ***
 
@@ -23,4 +23,4 @@ This app has various forms of protection against malformed votes, including rate
 Written with Java, Spring Framework, Nginx and Postgres.
 Deployed with Docker.
 
-[Demo](ahian.cl/daftpunk)
+[Demo](https://rankbot.me/daftpunk/index.html)
