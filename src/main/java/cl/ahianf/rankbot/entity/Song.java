@@ -36,6 +36,9 @@ public class Song {
     @Column(name = "art_url", length = 40)
     private String artUrl;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
     public Integer getId() {
         return id;
     }
@@ -78,6 +81,14 @@ public class Song {
 
     public String getArtUrl() {
         return artUrl;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

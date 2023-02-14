@@ -23,12 +23,20 @@ public class Results {
     @Column(name = "skipped", nullable = false)
     private Integer skipped;
 
-    public Results(int matchId, int winsX, int winsY, int empates, int skipped, int artistId) {
+    @Column(name = "track_x", nullable = false)
+    private Integer trackX;
+
+    @Column(name = "track_y", nullable = false)
+    private Integer trackY;
+
+    public Results(int matchId, int winsX, int winsY, int empates, int skipped, int artistId, int trackX, int trackY) {
         this.winsX = winsX;
         this.winsY = winsY;
         this.empates = empates;
         this.skipped = skipped;
         this.id = new ResultsId(matchId, artistId);
+        this.trackX = trackX;
+        this.trackY = trackY;
     }
 
     public Results() {}
@@ -75,6 +83,22 @@ public class Results {
 
     public int getMatchId() {
         return this.id.getMatchId();
+    }
+
+    public Integer getTrackX() {
+        return trackX;
+    }
+
+    public void setTrackX(Integer trackX) {
+        this.trackX = trackX;
+    }
+
+    public Integer getTrackY() {
+        return trackY;
+    }
+
+    public void setTrackY(Integer trackY) {
+        this.trackY = trackY;
     }
 
     @Embeddable

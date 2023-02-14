@@ -13,9 +13,9 @@ public interface SongRepository extends JpaRepository<Song, Integer> {
 
     List<Song> findAllByOrderByEloDesc();
 
-    List<Song> findAllByArtistIdOrderByEloDesc(int artistId);
+    List<Song> findAllByArtistIdAndEnabledTrueOrderByEloDesc(int artistId);
 
-    Song findSongBySongIdAndArtistId(int songId, int artistId);
+    Song findSongBySongIdAndArtistIdAndEnabledIsTrue(int songId, int artistId);
 
     long countAllByArtistId(int artistId);
 }

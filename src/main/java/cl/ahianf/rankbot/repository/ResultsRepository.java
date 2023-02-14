@@ -42,4 +42,7 @@ public interface ResultsRepository extends JpaRepository<Results, Integer> {
 
     @Query("from Results u WHERE u.id.artistId = :artistId")
     List<Results> findAllByArtistId(int artistId);
+
+    @Query("from Results u WHERE u.id.matchId = :matchId")
+    List<Results> findAllByMatchId(int matchId);
 }

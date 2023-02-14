@@ -89,8 +89,8 @@ public class RankbotController {
 
         int matchId = rand.nextInt(possibleMatchesUpperbound) + 1;
         Par matchIdToPar = unrollMatchId(matchId);
-        Song songA = songRepository.findSongBySongIdAndArtistId(matchIdToPar.left(), artist);
-        Song songB = songRepository.findSongBySongIdAndArtistId(matchIdToPar.right(), artist);
+        Song songA = songRepository.findSongBySongIdAndArtistIdAndEnabledIsTrue(matchIdToPar.left(), artist);
+        Song songB = songRepository.findSongBySongIdAndArtistIdAndEnabledIsTrue(matchIdToPar.right(), artist);
 
         long token = rand.nextLong(9007199254740991L); // JavaScript max value
         map.put(token, new Par(matchId, artist));
@@ -147,10 +147,13 @@ public class RankbotController {
             long entriesByArtist = songRepository.countAllByArtistId(artistId);
             int possibleMatchesUpperbound = nMenosUnoTriangular((int) entriesByArtist);
 
+
             int max = resultsService.obtenerMax(artistId);
 
             for (int i = max; i < possibleMatchesUpperbound; i++) {
-                lista.add(new Results(i + 1, 0, 0, 0, 0, artistId));
+                int matchId = i + 1;
+                Par p = unrollMatchId(matchId);
+                lista.add(new Results(matchId, 0, 0, 0, 0, artistId, p.left(), p.right()));
             }
         }
         resultsRepository.saveAll(lista);
@@ -159,7 +162,7 @@ public class RankbotController {
     @GetMapping("/results/{artist}")
     public List<Song> devolverSongsElo(@PathVariable(value = "artist") String param) {
         int artist = hashMap.get(param.toLowerCase().replace('-', ' '));
-        return songRepository.findAllByArtistIdOrderByEloDesc(artist);
+        return songRepository.findAllByArtistIdAndEnabledTrueOrderByEloDesc(artist);
     }
 
     @Scheduled(fixedRateString = "${rankbot.elo.scheduling}")
