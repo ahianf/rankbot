@@ -1,4 +1,4 @@
-/* (C)2022 - Ahian Fernández Puelles*/
+/* (C)2022-2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.config;
 
 import org.springframework.context.annotation.Configuration;

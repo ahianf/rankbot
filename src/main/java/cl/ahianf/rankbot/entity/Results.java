@@ -1,4 +1,4 @@
-/* (C)2022 - Ahian Fernández Puelles*/
+/* (C)2022-2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
 import java.io.Serializable;
@@ -29,7 +29,15 @@ public class Results {
     @Column(name = "track_y", nullable = false)
     private Integer trackY;
 
-    public Results(int matchId, int winsX, int winsY, int empates, int skipped, int artistId, int trackX, int trackY) {
+    public Results(
+            int matchId,
+            int winsX,
+            int winsY,
+            int empates,
+            int skipped,
+            int artistId,
+            int trackX,
+            int trackY) {
         this.winsX = winsX;
         this.winsY = winsY;
         this.empates = empates;

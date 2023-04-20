@@ -3,11 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: ahian
     password: r04jb-m2khw-8g2u0-yizwv-6ahov
-    url: jdbc:postgresql://192.168.181.1:5432/postgres
-  jpa:
-    open-in-view: false
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    jdbc-url: jdbc:postgresql://192.168.181.1:5432/postgres
   cache:
     jcache:
       config: classpath:ehcache.xml
