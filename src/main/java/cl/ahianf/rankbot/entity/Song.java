@@ -1,13 +1,7 @@
 /* (C)2022-2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Data
 public class Song {
@@ -20,4 +14,6 @@ public class Song {
     private Double elo;
     private String artUrl;
     private boolean enabled;
+
+
 }
