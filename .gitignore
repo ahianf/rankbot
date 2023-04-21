@@ -87,4 +87,4 @@ src/main/resources/database/
 ##############################
 ## Rankbot
 ##############################
-nginx/static/*
+#nginx/static/*
