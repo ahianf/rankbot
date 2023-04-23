@@ -1,0 +1,41 @@
+@media only screen and (max-width: 767px) {
+  .img-container {
+    margin-bottom: 10px;
+  }
+  .button-container {
+    text-align: center;
+  }
+  .button-container button {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+
+.img-container {
+  position: relative;
+  text-align: center;
+}
+.img-container img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  margin-top: 10px;
+}
+.caption h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.button-container {
+  text-align: center;
+  margin-top: 10px;
+}
