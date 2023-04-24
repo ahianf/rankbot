@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {DOCUMENT} from '@angular/common';
 
 @Component({
-  selector: 'app-my',
+  selector: 'app-rate',
   templateUrl: './rate.component.html',
   styleUrls: ['./rate.component.css']
 })
@@ -56,7 +56,15 @@ export class RateComponent implements OnInit {
         this.renderer.appendChild(document.head, link);
         this.fontFamily = "'Didact Gothic', sans-serif";
 
-      } else {
+      } else if (url[0]?.path === 'wilco') {
+        this.fontType = 'sans';
+        this.backgroundColor = '#618bae';
+        this.renderer.setAttribute(link, 'rel', 'stylesheet');
+        this.renderer.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+        this.renderer.appendChild(document.head, link);
+        this.fontFamily = "'Raleway', sans-serif";
+
+      }else {
         this.backgroundColor = 'rgba(0,0,0,0.5)';
       }
     });

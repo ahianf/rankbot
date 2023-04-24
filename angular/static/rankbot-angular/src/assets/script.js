@@ -12,77 +12,82 @@ let token;
 
 // Función para obtener las nuevas imágenes del servidor
 function obtenerImagenes() {
-    // Enviar solicitud GET para obtener nuevas URL de imágenes y token
-    fetch('http://localhost:8080/api/match/lana-del-rey')
-        .then(response => response.json())
-        .then(data => {
-            // Actualizar los elementos de imagen con las nuevas URL de origen y el texto alternativo
-            imageA.src = data.songA.artUrl;
-            imageA.alt = data.songA.title;
-            titleA.innerText = data.songA.title;
-            albumA.innerText = data.songA.album;
+  // Enviar solicitud GET para obtener nuevas URL de imágenes y token
+  // const servidor = 'https://rankbot.me/api/match/'
+  const servidor = 'http://localhost:8080/api/match/'
+  const urlDividida = window.location.href.split("/");
+  const variable = urlDividida[urlDividida.length - 1];
 
-            imageB.src = data.songB.artUrl;
-            imageB.alt = data.songB.title;
-            titleB.innerText = data.songB.title;
-            albumB.innerText = data.songB.album;
+  fetch(servidor + variable)
+    .then(response => response.json())
+    .then(data => {
+      // Actualizar los elementos de imagen con las nuevas URL de origen y el texto alternativo
+      imageA.src = data.songA.artUrl;
+      imageA.alt = data.songA.title;
+      titleA.innerText = data.songA.title;
+      albumA.innerText = data.songA.album;
 
-            imageA.classList.remove('animate__zoomOut');
-            imageA.classList.add('animate__animated', 'animate__zoomIn');
+      imageB.src = data.songB.artUrl;
+      imageB.alt = data.songB.title;
+      titleB.innerText = data.songB.title;
+      albumB.innerText = data.songB.album;
 
-            imageB.classList.remove('animate__zoomOut');
-            imageB.classList.add('animate__animated', 'animate__zoomIn');
+      imageA.classList.remove('animate__zoomOut');
+      imageA.classList.add('animate__animated', 'animate__zoomIn');
 
-            // Almacenar el nuevo token para su uso posterior
-            token = data.token;
-        })
-        .catch(error => {
-            console.error('Error updating images:', error);
-        });
+      imageB.classList.remove('animate__zoomOut');
+      imageB.classList.add('animate__animated', 'animate__zoomIn');
+
+      // Almacenar el nuevo token para su uso posterior
+      token = data.token;
+    })
+    .catch(error => {
+      console.error('Error updating images:', error);
+    });
 }
 
 // Función para enviar el voto al servidor
 function enviarVoto(vote) {
-    // Crear objeto de datos para enviar en petición POST
-    const data = {
-        token: token,
-        vote: vote
-    };
+  // Crear objeto de datos para enviar en petición POST
+  const data = {
+    token: token,
+    vote: vote
+  };
 
-    // Enviar solicitud POST a la primera URL
-    fetch('http://localhost:8080/api/test', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+  // Enviar solicitud POST a la primera URL
+  fetch('http://localhost:8080/api/test', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(() => {
+      // Obtener imágenes del servidor
+      obtenerImagenes();
     })
-        .then(() => {
-            // Obtener imágenes del servidor
-            obtenerImagenes();
-        })
-        .catch(error => {
-            console.error('Error sending vote:', error);
-        });
-    imageA.classList.add('animate__animated', 'animate__zoomOut');
-    imageB.classList.add('animate__animated', 'animate__zoomOut');
+    .catch(error => {
+      console.error('Error sending vote:', error);
+    });
+  imageA.classList.add('animate__animated', 'animate__zoomOut');
+  imageB.classList.add('animate__animated', 'animate__zoomOut');
 }
 
 // Añadir escuchadores de eventos click a los elementos de imagen
 imageA.addEventListener('click', () => {
-    enviarVoto(1);
+  enviarVoto(1);
 });
 
 imageB.addEventListener('click', () => {
-    enviarVoto(2);
+  enviarVoto(2);
 });
 
 drawButton.addEventListener('click', () => {
-    enviarVoto(3);
+  enviarVoto(3);
 });
 
 nextButton.addEventListener('click', () => {
-    enviarVoto(4);
+  enviarVoto(4);
 });
 
 // Obtener imágenes iniciales del servidor
