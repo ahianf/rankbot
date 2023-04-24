@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MyComponent implements OnInit {
   backgroundColor: string = 'green'
+  backgroundImage: string = ''
 
   constructor(private route: ActivatedRoute, private renderer: Renderer2) { }
 
@@ -16,7 +17,8 @@ export class MyComponent implements OnInit {
       if (url[0]?.path === 'lana-del-rey') {
         this.backgroundColor = '#9a162d';
       } else if (url[0]?.path === 'death-grips') {
-        this.backgroundColor = 'blue';
+        this.backgroundColor = 'rgba(0,0,0,0.5)';
+        this.backgroundImage = 'url("/assets/images/death-grips/back.png")'
       } else {
         this.backgroundColor = 'white';
       }
