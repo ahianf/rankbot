@@ -9,14 +9,24 @@ import {ActivatedRoute} from '@angular/router';
 export class MyComponent implements OnInit {
   backgroundColor: string = 'green'
   backgroundImage: string = ''
-
+  fontFamily: string = ''
   constructor(private route: ActivatedRoute, private renderer: Renderer2) {
   }
 
   ngOnInit(): void {
+
+    const head = this.renderer.selectRootElement('head', true);
+
+
     this.route.url.subscribe(url => {
       if (url[0]?.path === 'lana-del-rey') {
         this.backgroundColor = '#9a162d';
+        const link = this.renderer.createElement('link');
+        this.renderer.setAttribute(link, 'rel', 'stylesheet');
+        this.renderer.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+        this.renderer.appendChild(document.head, link);
+        this.fontFamily = "'Abril Fatface', serif"
+
       } else if (url[0]?.path === 'death-grips') {
         this.backgroundColor = 'rgb(0,0,0)';
         this.backgroundImage = 'url("/assets/images/death-grips/back.png")'
