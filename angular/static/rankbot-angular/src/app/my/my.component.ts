@@ -1,5 +1,5 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, Renderer2} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-my',
@@ -10,17 +10,21 @@ export class MyComponent implements OnInit {
   backgroundColor: string = 'green'
   backgroundImage: string = ''
 
-  constructor(private route: ActivatedRoute, private renderer: Renderer2) { }
+  constructor(private route: ActivatedRoute, private renderer: Renderer2) {
+  }
 
   ngOnInit(): void {
     this.route.url.subscribe(url => {
       if (url[0]?.path === 'lana-del-rey') {
         this.backgroundColor = '#9a162d';
       } else if (url[0]?.path === 'death-grips') {
-        this.backgroundColor = 'rgba(0,0,0,0.5)';
+        this.backgroundColor = 'rgb(0,0,0)';
         this.backgroundImage = 'url("/assets/images/death-grips/back.png")'
+      } else if (url[0]?.path === 'daft-punk') {
+        this.backgroundColor = 'rgba(0,0,0,0.5)';
+        this.backgroundImage = 'url("/assets/images/daft-punk/back.png")'
       } else {
-        this.backgroundColor = 'white';
+        this.backgroundColor = 'rgba(0,0,0,0.5)';
       }
     });
 

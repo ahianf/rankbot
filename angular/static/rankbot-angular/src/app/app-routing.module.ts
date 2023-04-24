@@ -6,6 +6,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/' },
   { path: 'lana-del-rey', component: MyComponent },
   { path: 'death-grips', component: MyComponent },
+  { path: 'daft-punk', component: MyComponent },
 ];
 
 @NgModule({
