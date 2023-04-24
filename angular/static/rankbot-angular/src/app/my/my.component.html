@@ -1,6 +1,6 @@
-<div class="">Hello, world!</div>
-
-<div id="vineta" [style.background-color]="backgroundColor" [style.background-image]="backgroundImage" [style.font-family]="fontFamily">
+<body [style.font-family]="fontFamily"
+      [ngClass]="{'font-sans': fontType === 'sans', 'font-serif': fontType === 'serif'}">
+<div id="vineta" [style.background-color]="backgroundColor" [style.background-image]="backgroundImage">
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-md-6">
@@ -28,3 +28,4 @@
     </div>
   </div>
 </div>
+</body>

@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: 'lana-del-rey', component: MyComponent },
   { path: 'death-grips', component: MyComponent },
   { path: 'daft-punk', component: MyComponent },
+  { path: 'radiohead', component: MyComponent },
 ];
 
 @NgModule({
