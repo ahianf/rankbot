@@ -12,17 +12,17 @@ export class RateComponent implements OnInit {
   backgroundImage: string = ''
   fontFamily: string = ''
   fontType = 'sans';
+  artista: string = ''
 
   constructor(private route: ActivatedRoute, private renderer: Renderer2, @Inject(DOCUMENT) private document: Document) {
   }
 
   ngOnInit(): void {
-
     const head = this.renderer.selectRootElement('head', true);
     const link = this.renderer.createElement('link');
-
     this.route.url.subscribe(url => {
-      if (url[0]?.path === 'lana-del-rey') {
+      this.artista = url[0]?.path
+      if (this.artista === 'lana-del-rey') {
         this.fontType = 'serif';
         this.backgroundColor = '#9a162d';
         this.renderer.setAttribute(link, 'rel', 'stylesheet');
@@ -30,7 +30,7 @@ export class RateComponent implements OnInit {
         this.renderer.appendChild(document.head, link);
         this.fontFamily = "'Abril Fatface', serif"
 
-      } else if (url[0]?.path === 'death-grips') {
+      } else if (this.artista === 'death-grips') {
         this.backgroundColor = 'rgb(0,0,0)';
         this.backgroundImage = 'url("/assets/images/death-grips/back.png")'
         this.renderer.setAttribute(link, 'rel', 'stylesheet');
@@ -38,7 +38,7 @@ export class RateComponent implements OnInit {
         this.renderer.appendChild(document.head, link);
         this.fontFamily = "'Courier Prime', monospace"
 
-      } else if (url[0]?.path === 'daft-punk') {
+      } else if (this.artista === 'daft-punk') {
         this.fontType = 'sans';
         this.backgroundColor = 'purple';
         this.backgroundImage = 'url("/assets/images/daft-punk/back.png")'
@@ -47,7 +47,7 @@ export class RateComponent implements OnInit {
         this.renderer.appendChild(document.head, link);
         this.fontFamily = "'Orbitron', sans-serif";
 
-      } else if (url[0]?.path === 'radiohead') {
+      } else if (this.artista === 'radiohead') {
         this.fontType = 'sans';
         this.backgroundColor = 'rgb(0,0,0)';
         this.backgroundImage = 'url("/assets/images/radiohead/back.png")'
@@ -56,7 +56,7 @@ export class RateComponent implements OnInit {
         this.renderer.appendChild(document.head, link);
         this.fontFamily = "'Didact Gothic', sans-serif";
 
-      } else if (url[0]?.path === 'wilco') {
+      } else if (this.artista === 'wilco') {
         this.fontType = 'sans';
         this.backgroundColor = '#618bae';
         this.renderer.setAttribute(link, 'rel', 'stylesheet');
