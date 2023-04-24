@@ -1,17 +1,18 @@
 import {Component, Inject, OnInit, Renderer2} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import { DOCUMENT } from '@angular/common';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
   selector: 'app-my',
-  templateUrl: './my.component.html',
-  styleUrls: ['./my.component.css']
+  templateUrl: './rate.component.html',
+  styleUrls: ['./rate.component.css']
 })
-export class MyComponent implements OnInit {
+export class RateComponent implements OnInit {
   backgroundColor: string = 'green'
   backgroundImage: string = ''
   fontFamily: string = ''
   fontType = 'sans';
+
   constructor(private route: ActivatedRoute, private renderer: Renderer2, @Inject(DOCUMENT) private document: Document) {
   }
 
@@ -19,7 +20,6 @@ export class MyComponent implements OnInit {
 
     const head = this.renderer.selectRootElement('head', true);
     const link = this.renderer.createElement('link');
-
 
     this.route.url.subscribe(url => {
       if (url[0]?.path === 'lana-del-rey') {
@@ -47,17 +47,16 @@ export class MyComponent implements OnInit {
         this.renderer.appendChild(document.head, link);
         this.fontFamily = "'Orbitron', sans-serif";
 
-      }else if (url[0]?.path === 'radiohead') {
+      } else if (url[0]?.path === 'radiohead') {
         this.fontType = 'sans';
-        this.backgroundColor = '#9a162d';
+        this.backgroundColor = 'rgb(0,0,0)';
         this.backgroundImage = 'url("/assets/images/radiohead/back.png")'
         this.renderer.setAttribute(link, 'rel', 'stylesheet');
         this.renderer.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
         this.renderer.appendChild(document.head, link);
         this.fontFamily = "'Didact Gothic', sans-serif";
 
-
-      }else {
+      } else {
         this.backgroundColor = 'rgba(0,0,0,0.5)';
       }
     });

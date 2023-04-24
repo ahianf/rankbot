@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module'; // Importamos el módulo de rutas
 import { AppComponent } from './app.component';
-import { MyComponent } from './my/my.component';
+import { RateComponent } from './rate/rate.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MyComponent
+    RateComponent
   ],
   imports: [
     BrowserModule,
