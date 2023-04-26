@@ -1,3 +1,0 @@
-2023-02-14 15:30:55 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ARTIST_CREDIT" not found (this database is empty); SQL statement:
-select artist0_.id as id1_0_, artist0_.name as name2_0_ from artist_credit artist0_ [42104-214]
