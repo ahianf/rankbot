@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'death-grips', component: RateComponent },
   { path: 'daft-punk', component: RateComponent },
   { path: 'radiohead', component: RateComponent },
+  { path: 'taylor-swift', component: RateComponent },
   { path: 'wilco', component: RateComponent },
   { path: 'ranking/:artist', component: RankComponent },
 ];

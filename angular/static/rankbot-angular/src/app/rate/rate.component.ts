@@ -56,6 +56,14 @@ export class RateComponent implements OnInit {
         this.renderer.appendChild(document.head, link);
         this.fontFamily = "'Didact Gothic', sans-serif";
 
+      } else if (this.artista === 'taylor-swift') {
+        this.fontType = 'serif';
+        this.backgroundColor = 'rgb(235,224,228)';
+        this.renderer.setAttribute(link, 'rel', 'stylesheet');
+        this.renderer.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=swap');
+        this.renderer.appendChild(document.head, link);
+        this.fontFamily = "'Source Serif Pro', serif";
+
       } else if (this.artista === 'wilco') {
         this.fontType = 'sans';
         this.backgroundColor = '#618bae';

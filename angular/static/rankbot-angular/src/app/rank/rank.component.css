@@ -37,3 +37,9 @@ body {
   color: white;
 }
 
+.footer {
+  height: 35px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+}
