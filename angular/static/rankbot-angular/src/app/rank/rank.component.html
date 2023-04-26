@@ -1,0 +1,26 @@
+<body [style.background-color]="backgroundColor" [style.background-image]="backgroundImage"
+      [style.font-family]="fontFamily"
+      [ngClass]="{'font-sans': fontType === 'sans', 'font-serif': fontType === 'serif'}">
+<nav class="navbar">
+  <div class="navbar-left">
+    <a href="#"></a>
+  </div>
+  <div class="navbar-right">
+    <a href="#">Rankbot.me</a>
+  </div>
+  <div class="navbar-right">
+    <a href="{{artista}}/">Back</a>
+  </div>
+</nav>
+<div class="container" id="tablecontainer">
+  <div>
+    <table class="table table-dark" id="rankings"></table>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <span class="text-muted">2023</span>
+  </div>
+</footer>
+
+</body>

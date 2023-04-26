@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Two Image Voting System</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-top: 50px;
+		}
+
+		.container {
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			width: 90%;
+			max-width: 800px;
+		}
+
+		img {
+			cursor: pointer;
+			max-width: 40%;
+			height: auto;
+			transition: all 0.3s ease-in-out;
+		}
+
+		img:hover {
+			transform: scale(1.1);
+		}
+	</style>
+</head>
+<body>
+	<h1>Two Image Voting System</h1>
+	<div class="container">
+		<img id="image-a" src="" alt="">
+		<img id="image-b" src="" alt="">
+	</div>
+	
+	<script>
+		// Select the image elements
+		const imageA = document.getElementById('image-a');
+		const imageB = document.getElementById('image-b');
+		let token;
+
+		// Function to get the new images from the server
+		function getNewImages() {
+			// Send GET request to get new image URLs and token
+			fetch('http://localhost:8080/api/match/lana-del-rey')
+				.then(response => response.json())
+				.then(data => {
+					// Update image elements with new source URLs and alt text
+					imageA.src = data.songA.artUrl;
+					imageA.alt = data.songA.title;
+					imageB.src = data.songB.artUrl;
+					imageB.alt = data.songB.title;
+
+					// Store the new token for later use
+					token = data.token;
+				})
+				.catch(error => {
+					console.error('Error updating images:', error);
+				});
+		}
+
+		// Function to send vote to server
+		function sendVote(vote) {
+			// Create data object to send in POST request
+			const data = {
+				token: token,
+				vote: vote
+			};
+
+			// Send POST request to first URL
+			fetch('http://localhost:8080/api/test', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+				.then(() => {
+					// Get new images from server
+					getNewImages();
+				})
+				.catch(error => {
+					console.error('Error sending vote:', error);
+				});
+		}
+
+		// Add click event listeners to the image elements
+		imageA.addEventListener('click', () => {
+			// Send vote of 1 to server
+			sendVote(1);
+		});
+
+		imageB.addEventListener('click', () => {
+			// Send vote of 2 to server
+			sendVote(2);
+		});
+
+		// Get initial images from server
+		getNewImages();
+	</script>
+</body>
+</html>

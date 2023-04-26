@@ -1,28 +1,27 @@
-/* (C)2022 - Ahian Fernández Puelles*/
+/* (C)2022-2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.rest;
 
 import static cl.ahianf.rankbot.entity.Elo.eloRating;
-import static cl.ahianf.rankbot.extra.Functions.*;
+import static cl.ahianf.rankbot.extra.Functions.nMenosUnoTriangular;
+import static cl.ahianf.rankbot.extra.Functions.unrollMatchId;
 
 import cl.ahianf.rankbot.entity.*;
-import cl.ahianf.rankbot.repository.ArtistRepository;
-import cl.ahianf.rankbot.repository.ResultsRepository;
-import cl.ahianf.rankbot.repository.SongRepository;
-import cl.ahianf.rankbot.service.ResultsService;
-import cl.ahianf.rankbot.service.SongService;
-import cl.ahianf.rankbot.service.VoteLogService;
+import cl.ahianf.rankbot.service.JdbiService;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
+
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
@@ -34,37 +33,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class RankbotController {
 
+    JdbiService jdbiService;
     Logger logger = LoggerFactory.getLogger(RankbotController.class);
     final Random rand = new Random();
-    private final ResultsService resultsService;
-    private final VoteLogService voteLogService;
-    private final SongRepository songRepository;
-    private final ArtistRepository artistRepository;
-    private final ResultsRepository resultsRepository;
     Map<String, Integer> hashMap;
     final Map<Long, Par> map =
             ExpiringMap.builder().maxSize(50000).expiration(60, TimeUnit.SECONDS).build();
 
     @Autowired
-    public RankbotController(
-            ResultsService resultsService,
-            VoteLogService voteLogService,
-            SongService songService,
-            SongRepository songRepository,
-            ArtistRepository artistRepository,
-            ResultsRepository resultsRepository,
-            MeterRegistry registry) {
-        this.resultsService = resultsService;
-        this.voteLogService = voteLogService;
-        this.songRepository = songRepository;
-        this.artistRepository = artistRepository;
-        this.resultsRepository = resultsRepository;
+    public RankbotController(MeterRegistry registry, JdbiService jdbiService) {
+        this.jdbiService = jdbiService;
+
         this.hashMap = new HashMap<>();
 
-        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
+        //        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
         // inicializados a 0
 
-        List<Artist> all = artistRepository.findAll();
+        List<Artist> all = jdbiService.findAllArtist();
         for (Artist i : all) {
             hashMap.put(i.getName().toLowerCase(), i.getId());
         }
@@ -73,6 +58,35 @@ public class RankbotController {
                 .description("Current size of ExpiringMap")
                 .register(registry);
     }
+
+    @GetMapping("/test/")
+    public String generarMatchRest() {
+
+        return "d";
+    }
+
+    @GetMapping(value = "/test/lana-del-rey", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Match test() {
+
+        var a = new Song();
+        var b = new Song();
+
+        a.setArtUrl("./imagen3.jpg");
+        b.setArtUrl("./imagen3.jpg");
+
+        var m = new Match(a, b, 22, 20);
+        return m;
+    }
+
+    @PostMapping("/test")
+    @CrossOrigin(origins = "http://localhost")
+    public Vote test(
+            @RequestBody Vote voteBody, HttpServletRequest request) {
+
+        System.out.println(voteBody);
+        return voteBody;
+    }
+
 
     @GetMapping("/match/{artist}")
     public ResponseEntity<Match> generarMatchRest(
@@ -84,13 +98,12 @@ public class RankbotController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        int possibleMatchesUpperbound =
-                nMenosUnoTriangular((int) songRepository.countAllByArtistId(artist));
+        int possibleMatchesUpperbound = nMenosUnoTriangular(jdbiService.countAllByArtistId(artist));
 
         int matchId = rand.nextInt(possibleMatchesUpperbound) + 1;
         Par matchIdToPar = unrollMatchId(matchId);
-        Song songA = songRepository.findSongBySongIdAndArtistId(matchIdToPar.left(), artist);
-        Song songB = songRepository.findSongBySongIdAndArtistId(matchIdToPar.right(), artist);
+        Song songA = jdbiService.encontrarSong(matchIdToPar.left(), artist);
+        Song songB = jdbiService.encontrarSong(matchIdToPar.right(), artist);
 
         long token = rand.nextLong(9007199254740991L); // JavaScript max value
         map.put(token, new Par(matchId, artist));
@@ -120,10 +133,10 @@ public class RankbotController {
         int artist = map.get(token).right();
 
         switch (vote) {
-            case 1 -> resultsService.incrementarWinsX(matchId, artist);
-            case 2 -> resultsService.incrementarWinsY(matchId, artist);
-            case 3 -> resultsService.incrementarDraws(matchId, artist);
-            case 4 -> resultsService.incrementarSkipped(matchId, artist);
+            case 1 -> jdbiService.incrementarWinsX(matchId, artist);
+            case 2 -> jdbiService.incrementarWinsY(matchId, artist);
+            case 3 -> jdbiService.incrementarDraws(matchId, artist);
+            case 4 -> jdbiService.incrementarSkipped(matchId, artist);
             default -> {
                 map.remove(token);
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -131,53 +144,66 @@ public class RankbotController {
         }
 
         map.remove(token);
-        voteLogService.save(
+        jdbiService.voteLogSave(
                 new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now(), artist));
 
         return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
 
-    public void inicializarDbResults() {
-
-        List<Artist> all = artistRepository.findAll();
-        List<Results> lista = new ArrayList<>();
-
-        for (Artist artist : all) {
-            int artistId = artist.getId();
-            long entriesByArtist = songRepository.countAllByArtistId(artistId);
-            int possibleMatchesUpperbound = nMenosUnoTriangular((int) entriesByArtist);
-
-            int max = resultsService.obtenerMax(artistId);
-
-            for (int i = max; i < possibleMatchesUpperbound; i++) {
-                lista.add(new Results(i + 1, 0, 0, 0, 0, artistId));
-            }
-        }
-        resultsRepository.saveAll(lista);
-    }
+    //    public void inicializarDbResults() {
+    //
+    //        List<Artist> all = artistRepository.findAll();
+    //        List<Results> lista = new ArrayList<>();
+    //
+    //        for (Artist artist : all) {
+    //            int artistId = artist.getId();
+    //            long entriesByArtist = jdbiService.countAllByArtistId(artistId);
+    //            int possibleMatchesUpperbound = nMenosUnoTriangular((int) entriesByArtist);
+    //
+    //            int max = jdbiService.obtenerMax(artistId);
+    //
+    //            for (int i = max; i < possibleMatchesUpperbound; i++) {
+    //                int matchId = i + 1;
+    //                Par p = unrollMatchId(matchId);
+    //
+    //                Results build = Results.builder()
+    //                        .matchId(matchId)
+    //                        .winsX(0)
+    //                        .winsY(0)
+    //                        .draws(0)
+    //                        .skipped(0)
+    //                        .artistId(artistId)
+    //                        .trackX(p.left())
+    //                        .trackY(p.right())
+    //                        .build();
+    //
+    //                lista.add(build);
+    //            }
+    //        }
+    //        jdbiService.saveAll(lista);
+    //    }
 
     @GetMapping("/results/{artist}")
     public List<Song> devolverSongsElo(@PathVariable(value = "artist") String param) {
         int artist = hashMap.get(param.toLowerCase().replace('-', ' '));
-        return songRepository.findAllByArtistIdOrderByEloDesc(artist);
+
+        return jdbiService.obtenerCanciones(artist);
     }
 
     @Scheduled(fixedRateString = "${rankbot.elo.scheduling}")
     public void calculateElo() {
         long startTime = System.nanoTime();
-        List<Artist> all = artistRepository.findAll();
-
+        List<Artist> all = jdbiService.findAllArtist();
         for (Artist artist : all) {
             int artistId = artist.getId();
 
             List<Results> listaResultados =
-                    resultsRepository.findAllByArtistId(
+                    jdbiService.findAllByArtistId(
                             artistId); // se hace en memoria para evitar golpear la db excesivamente
 
             List<Song> listaCanciones =
-                    songRepository.findAllByArtistIdOrderBySongIdAsc(
-                            artistId); // La db las envía sin orden, y estamos usandoindices.
-
+                    jdbiService.findAllByArtistIdOrderBySongIdAsc(
+                            artistId); // La db las envía sin orden, y estamos usando indices.
             for (Song cancion : listaCanciones) {
                 // Inicializar valores de Elo a 1000
                 cancion.setElo(1000.0);
@@ -200,11 +226,17 @@ public class RankbotController {
                 // elementos
                 // de la lista de canciones. Es una limitación de Elo.
                 ArrayList<Integer> listaDeResultsShuffled = new ArrayList<>();
-                for (int i = 0; i < resultado.getWinsX(); i++) listaDeResultsShuffled.add(1);
+                for (int i = 0; i < resultado.getWinsX(); i++) {
+                    listaDeResultsShuffled.add(1);
+                }
 
-                for (int i = 0; i < resultado.getWinsY(); i++) listaDeResultsShuffled.add(2);
+                for (int i = 0; i < resultado.getWinsY(); i++) {
+                    listaDeResultsShuffled.add(2);
+                }
 
-                for (int i = 0; i < resultado.getEmpates(); i++) listaDeResultsShuffled.add(3);
+                for (int i = 0; i < resultado.getDraws(); i++) {
+                    listaDeResultsShuffled.add(3);
+                }
 
                 Collections.shuffle(listaDeResultsShuffled);
 
@@ -214,7 +246,7 @@ public class RankbotController {
                 listaCanciones.get(songAIndex).setElo(eloCalculado.playerA());
                 listaCanciones.get(songBIndex).setElo(eloCalculado.playerB());
             }
-            songRepository.saveAll(listaCanciones);
+            jdbiService.saveAllListaSongs(listaCanciones);
         }
 
         long endTime = System.nanoTime();
@@ -225,5 +257,4 @@ public class RankbotController {
     private Supplier<Number> fetchExpiringMapSize() {
         return map::size;
     }
-
 }

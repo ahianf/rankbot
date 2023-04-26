@@ -1,4 +1,4 @@
-/* (C)2022 - Ahian Fernández Puelles*/
+/* (C)2022-2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.extra;
 
 import static java.lang.Math.sqrt;
