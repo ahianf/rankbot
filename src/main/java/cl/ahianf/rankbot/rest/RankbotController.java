@@ -9,19 +9,16 @@ import cl.ahianf.rankbot.entity.*;
 import cl.ahianf.rankbot.service.JdbiService;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
-
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-
-import jakarta.servlet.http.HttpServletRequest;
 import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +43,6 @@ public class RankbotController {
 
         this.hashMap = new HashMap<>();
 
-        //        inicializarDbResults(); // en caso que falten, genera valores hasta el upperbound
-        // inicializados a 0
-
         List<Artist> all = jdbiService.findAllArtist();
         for (Artist i : all) {
             hashMap.put(i.getName().toLowerCase(), i.getId());
@@ -59,34 +53,10 @@ public class RankbotController {
                 .register(registry);
     }
 
-    @GetMapping("/test/")
-    public String generarMatchRest() {
-
-        return "d";
+    @GetMapping("/rate")
+    public String test() {
+        return "dsdsd";
     }
-
-    @GetMapping(value = "/test/lana-del-rey", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Match test() {
-
-        var a = new Song();
-        var b = new Song();
-
-        a.setArtUrl("./imagen3.jpg");
-        b.setArtUrl("./imagen3.jpg");
-
-        var m = new Match(a, b, 22, 20);
-        return m;
-    }
-
-    @PostMapping("/test")
-    @CrossOrigin(origins = "http://localhost")
-    public Vote test(
-            @RequestBody Vote voteBody, HttpServletRequest request) {
-
-        System.out.println(voteBody);
-        return voteBody;
-    }
-
 
     @GetMapping("/match/{artist}")
     public ResponseEntity<Match> generarMatchRest(
@@ -149,39 +119,6 @@ public class RankbotController {
 
         return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
-
-    //    public void inicializarDbResults() {
-    //
-    //        List<Artist> all = artistRepository.findAll();
-    //        List<Results> lista = new ArrayList<>();
-    //
-    //        for (Artist artist : all) {
-    //            int artistId = artist.getId();
-    //            long entriesByArtist = jdbiService.countAllByArtistId(artistId);
-    //            int possibleMatchesUpperbound = nMenosUnoTriangular((int) entriesByArtist);
-    //
-    //            int max = jdbiService.obtenerMax(artistId);
-    //
-    //            for (int i = max; i < possibleMatchesUpperbound; i++) {
-    //                int matchId = i + 1;
-    //                Par p = unrollMatchId(matchId);
-    //
-    //                Results build = Results.builder()
-    //                        .matchId(matchId)
-    //                        .winsX(0)
-    //                        .winsY(0)
-    //                        .draws(0)
-    //                        .skipped(0)
-    //                        .artistId(artistId)
-    //                        .trackX(p.left())
-    //                        .trackY(p.right())
-    //                        .build();
-    //
-    //                lista.add(build);
-    //            }
-    //        }
-    //        jdbiService.saveAll(lista);
-    //    }
 
     @GetMapping("/results/{artist}")
     public List<Song> devolverSongsElo(@PathVariable(value = "artist") String param) {

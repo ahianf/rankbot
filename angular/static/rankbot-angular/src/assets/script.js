@@ -13,7 +13,7 @@ let token;
 // Función para obtener las nuevas imágenes del servidor
 function obtenerImagenes() {
   // Enviar solicitud GET para obtener nuevas URL de imágenes y token
-  const servidor = 'https://rankbot.me/api/match/'
+  const servidor = 'https://rankmachine.me/api/match/'
   // const servidor = 'http://localhost:8080/api/match/'
   const urlDividida = window.location.href.split("/");
   const variable = urlDividida[urlDividida.length - 1];
@@ -54,7 +54,7 @@ function enviarVoto(vote) {
     vote: vote
   };
 
-  const servidor = 'https://rankbot.me/api/match'
+  const servidor = 'https://rankmachine.me/api/match'
   // const servidor = 'http://localhost:8080/api/test'
 
   // Enviar solicitud POST a la primera URL

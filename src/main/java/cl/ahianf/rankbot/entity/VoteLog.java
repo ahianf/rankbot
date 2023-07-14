@@ -1,10 +1,8 @@
 /* (C)2022-2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.entity;
 
-
-import lombok.Data;
-
 import java.time.Instant;
+import lombok.Data;
 
 @Data
 public class VoteLog {

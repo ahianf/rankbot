@@ -14,6 +14,4 @@ public class Song {
     private Double elo;
     private String artUrl;
     private boolean enabled;
-
-
 }

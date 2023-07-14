@@ -14,8 +14,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 @Configuration
 public class DatabaseConfig {
 
-    // DataSourceConfig
-    // DCH
     @Primary
     @Bean(name = "postgresDataSource")
     @ConfigurationProperties(prefix = "spring.datasource")
@@ -23,8 +21,6 @@ public class DatabaseConfig {
         return DataSourceBuilder.create().build();
     }
 
-    // Transaction Managers
-    // dch
     @Bean(name = "tm1")
     @Autowired
     @Primary

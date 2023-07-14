@@ -7,7 +7,7 @@ El endpoint /results devuelve el calculo de Elo de la lista
 
 La aplicación tiene varias formas de protección contra votos ilegitimos, incluyendo Rate Limiting (via bucket4j) y tiempo límite en el que el usuario puede enviar una respuesta, usando ExpiringMap.
 
-Creado con Java, Spring Framework, Nginx y Postgres. 
+Creado con Java, Spring Framework, Nginx y Postgres.
 Desplegado con Docker.
 
 [Demo](https://rankbot.me/daft-punk/index.html)

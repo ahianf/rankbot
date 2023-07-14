@@ -11,7 +11,6 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 @Configuration
 public class JdbiConfig {
 
-    // dch
     @Bean("postgresJdbi")
     public Jdbi postgresJdbi(@Qualifier("postgresDataSource") DataSource ds) {
         TransactionAwareDataSourceProxy proxy = new TransactionAwareDataSourceProxy(ds);

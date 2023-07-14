@@ -1,7 +1,7 @@
 const urlDividida = window.location.href.split("/");
 const variable = urlDividida[urlDividida.length - 1];
 
-fetch("https://rankbot.me/api/results/" + variable)
+fetch("https://rankmachine.me/api/results/" + variable)
   .then((response) => response.json())
   .then((json) => {
     let li = `<thead>
