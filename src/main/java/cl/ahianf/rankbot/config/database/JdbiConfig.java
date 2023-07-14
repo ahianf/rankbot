@@ -1,5 +1,5 @@
 /* (C)2023 - Ahian Fernández Puelles*/
-package cl.ahianf.rankbot.config;
+package cl.ahianf.rankbot.config.database;
 
 import javax.sql.DataSource;
 import org.jdbi.v3.core.Jdbi;

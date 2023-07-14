@@ -5,6 +5,7 @@ import static cl.ahianf.rankbot.entity.Elo.eloRating;
 import static cl.ahianf.rankbot.extra.Functions.nMenosUnoTriangular;
 import static cl.ahianf.rankbot.extra.Functions.unrollMatchId;
 
+import cl.ahianf.rankbot.config.annotation.RateLimited;
 import cl.ahianf.rankbot.entity.*;
 import cl.ahianf.rankbot.service.JdbiService;
 import io.micrometer.core.instrument.Gauge;
@@ -53,11 +54,13 @@ public class RankbotController {
                 .register(registry);
     }
 
+    @RateLimited(23)
     @GetMapping("/rate")
     public String test() {
-        return "dsdsd";
+        return "Rate limiting testing";
     }
 
+    @RateLimited(45)
     @GetMapping("/match/{artist}")
     public ResponseEntity<Match> generarMatchRest(
             @PathVariable(value = "artist") String param, HttpServletRequest request) {
@@ -85,6 +88,7 @@ public class RankbotController {
         return new ResponseEntity<>(match, HttpStatus.OK);
     }
 
+    @RateLimited(23)
     @PostMapping("/match")
     @CrossOrigin(origins = "http://localhost")
     public ResponseEntity<Vote> recibirVotoRest(
@@ -120,6 +124,7 @@ public class RankbotController {
         return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
 
+    @RateLimited(100)
     @GetMapping("/results/{artist}")
     public List<Song> devolverSongsElo(@PathVariable(value = "artist") String param) {
         int artist = hashMap.get(param.toLowerCase().replace('-', ' '));
