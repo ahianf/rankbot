@@ -24,7 +24,7 @@ pipeline {
         stage('Save Docker Image as Tarball') {
             steps {
                 // Save the Docker image as a tarball
-                sh "docker save -o ${tagImagen}.tar.gz ${tagImagen}"
+                sh "docker save -o rankbot:0.9.0.tar.gz ${tagImagen}"
             }
         }
         stage('Copy Docker Image to Remote Server') {
