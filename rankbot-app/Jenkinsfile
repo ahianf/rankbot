@@ -4,9 +4,7 @@ def tagImagen = "registry:5000/rankbot:0.9.0"
 def ipServidor = "prod@10.69.203.240"
 pipeline {
 
-    agent {
-        // Run the pipeline on any available agent
-        any
+    agent any {
         // Set a custom workspace for the entire pipeline
         customWorkspace './rankbot-app'
     }
