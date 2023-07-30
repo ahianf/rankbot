@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
-def tagImagen = "registry:5000/rankbot:0.9.0"
-def ipServidor = "prod@10.69.203.240"
+def tagImagen = "local/rankbot:0.9.0"
+def ipServidor = "ubuntu@141.148.185.27"
 pipeline {
 
     agent any
@@ -21,40 +21,39 @@ pipeline {
                 }
             }
         }
-        stage('Save Docker Image as Tarball') {
+        stage('Guardar imagen') {
             steps {
                 // Save the Docker image as a tarball
                 sh "docker save -o rankbot-0.9.0.tar.gz ${tagImagen}"
             }
         }
-        stage('Copy Docker Image to Remote Server') {
+        stage('Copiar imagen a servidor remoto') {
             steps {
                 // Start an SSH agent and add the private key associated with your SSH credentials
                 sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
                     // Use scp to copy the local Docker image tarball to the remote server
-                    sh "scp -o StrictHostKeyChecking=no rankbot-0.9.0.tar.gz ubuntu@141.148.185.27:/home/ubuntu"
+                    sh "scp -o StrictHostKeyChecking=no rankbot-0.9.0.tar.gz ${ipServidor}:/home/ubuntu"
                 }
             }
         }
-//
-//        stage('Desplegar a prod') {
-//            steps {
-//                script {
-//                    sshagent(credentials : ['0f60cd81-f21f-448b-baa3-fbe738f0050b']) {
-//
-//                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker stop genesis || true'"
-//                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker rm genesis || true'"
-//                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker pull ${tagImagen}'"
-//                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker run -d --name genesis --restart unless-stopped --network plataforma_default -v \"/etc/localtime:/etc/localtime:ro\" -v \"/etc/timezone:/etc/timezone:ro\" ${tagImagen}'"
-//                    }
-//                }
-//            }
-//        }
-//
-//        stage('Limpieza') {
-//            steps{
-//                sh "docker rmi ${tagImagen}"
-//            }
-//        }
+
+        stage('Desplegar a prod') {
+            steps {
+                script {
+                    sshagent(credentials : ['0f60cd81-f21f-448b-baa3-fbe738f0050b']) {
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker load -i /home/ubuntu/rankbot-0.9.0.tar.gz'"
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker stop rankbot || true'"
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker rm rankbot || true'"
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker run -d --name rankbot --restart unless-stopped --network rankbot_default -v \"/etc/localtime:/etc/localtime:ro\" -v \"/etc/timezone:/etc/timezone:ro\" ${tagImagen}'"
+                    }
+                }
+            }
+        }
+
+        stage('Limpieza') {
+            steps{
+                sh "docker rmi ${tagImagen}"
+            }
+        }
     }
 }
