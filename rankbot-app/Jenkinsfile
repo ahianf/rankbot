@@ -10,7 +10,7 @@ pipeline {
         stage('Git clone') {
             steps {
                 script {
-                    sshagent(credentials : ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
+                    sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp && rm -rf /tmp/rankbot && git clone git@github.com:ahianf/rankbot.git'"
                     }
                 }
@@ -20,14 +20,18 @@ pipeline {
         stage('Build aplicación') {
             steps {
                 script {
-                    sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker build --target build -t ${tagImagen} ./rankbot-app'"
+                    sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp/rankbot/ && docker build --target build -t ${tagImagen} ./rankbot-app'"
+                    }
                 }
             }
         }
         stage('Generar imagen') {
             steps {
                 script {
-                    sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker build --target final -t ${tagImagen} ./rankbot-app'"
+                    sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp/rankbot/ && docker build --target final -t ${tagImagen} ./rankbot-app'"
+                    }
                 }
             }
         }
@@ -35,7 +39,7 @@ pipeline {
         stage('Desplegar a prod') {
             steps {
                 script {
-                    sshagent(credentials : ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
+                    sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker stop rankbot || true'"
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker rm rankbot || true'"
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker run -d --name rankbot --restart unless-stopped --network rankbot_default -v \"/etc/localtime:/etc/localtime:ro\" -v \"/etc/timezone:/etc/timezone:ro\" ${tagImagen}'"
@@ -43,5 +47,15 @@ pipeline {
                 }
             }
         }
+
+        stage('Limpieza') {
+            steps {
+                script {
+                    sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'rm -rf /tmp/rankbot'"
+                    }
+                }
             }
+        }
+    }
 }
