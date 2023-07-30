@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: ahian
-#    jdbc-url: jdbc:postgresql://db:5432/postgres
-    jdbc-url: jdbc:postgresql://192.168.181.1:5432/postgres
+    jdbc-url: jdbc:postgresql://db:5432/postgres
+#    jdbc-url: jdbc:postgresql://192.168.181.1:5432/postgres
     password: r04jb-m2khw-8g2u0-yizwv-6ahov
 logging:
   level:
