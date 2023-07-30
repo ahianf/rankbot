@@ -4,18 +4,13 @@ def tagImagen = "registry:5000/rankbot:0.9.0"
 def ipServidor = "prod@10.69.203.240"
 pipeline {
 
-    agent any {
-        // Set a custom workspace for the entire pipeline
-        customWorkspace './rankbot-app'
-    }
+    agent any
     stages {
-
-
 
         stage('Build aplicación') {
             steps {
                 script {
-                    sh "docker build --target build -t ${tagImagen} ."
+                    sh "docker build --target build -t ${tagImagen} ./rankbot-app"
                 }
             }
         }
