@@ -40,7 +40,7 @@ pipeline {
         stage('Desplegar a prod') {
             steps {
                 script {
-                    sshagent(credentials : ['0f60cd81-f21f-448b-baa3-fbe738f0050b']) {
+                    sshagent(credentials : ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker load -i /home/ubuntu/rankbot-0.9.0.tar.gz'"
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker stop rankbot || true'"
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker rm rankbot || true'"
