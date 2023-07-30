@@ -23,9 +23,9 @@ public class Match {
     public String toString() {
         return "song A: "
                 + songA
-                + "; song B: "
+                + ", song B: "
                 + songB
-                + "; matchId: "
+                + ", matchId: "
                 + matchId
                 + ", token: "
                 + token;

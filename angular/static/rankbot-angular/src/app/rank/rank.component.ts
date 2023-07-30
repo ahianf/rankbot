@@ -32,7 +32,7 @@ export class RankComponent implements OnInit {
       this.fontFamily = "'Abril Fatface', serif"
 
     } else if (this.artista === 'death-grips') {
-      this.backgroundColor = 'rgb(16, 15, 17';
+      this.backgroundColor = 'rgb(16, 15, 17)';
       this.renderer.setAttribute(link, 'rel', 'stylesheet');
       this.renderer.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
       this.renderer.appendChild(document.head, link);
@@ -58,7 +58,7 @@ export class RankComponent implements OnInit {
 
     } else if (this.artista === 'taylor-swift') {
       this.fontType = 'serif';
-      this.backgroundColor = 'rgb(235,224,228)';
+      this.backgroundColor = 'rgb(238,141,141)';
       this.renderer.setAttribute(link, 'rel', 'stylesheet');
       this.renderer.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=swap');
       this.renderer.appendChild(document.head, link);

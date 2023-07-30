@@ -54,7 +54,7 @@ public class RankbotController {
                 .register(registry);
     }
 
-    @RateLimited(23)
+    @RateLimited(2)
     @GetMapping("/rate")
     public String test() {
         return "Rate limiting testing";
@@ -83,7 +83,7 @@ public class RankbotController {
 
         Match match = new Match(songA, songB, matchId, token);
         logger.info(
-                "Match: " + songA.getArtist() + "; " + match + ", ip: " + request.getRemoteAddr());
+                "Match: " + songA.getArtist() + " | " + match + ", ip: " + request.getRemoteAddr());
 
         return new ResponseEntity<>(match, HttpStatus.OK);
     }

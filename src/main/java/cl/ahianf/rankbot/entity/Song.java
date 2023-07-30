@@ -14,4 +14,9 @@ public class Song {
     private Double elo;
     private String artUrl;
     private boolean enabled;
+
+    @Override
+    public String toString() {
+        return title + " (" + album + ")";
+    }
 }
