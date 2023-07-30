@@ -30,7 +30,7 @@ pipeline {
         stage('Copy Docker Image to Remote Server') {
             steps {
                 // Start an SSH agent and add the private key associated with your SSH credentials
-                sshagent(credentials: ['d8480059-bf09-46e4-9689-86542ca8eca7']) {
+                sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
                     // Use scp to copy the local Docker image tarball to the remote server
                     sh "scp rankbot-0.9.0.tar.gz ubuntu@141.148.185.27:/home/ubuntu"
                 }
