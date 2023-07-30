@@ -27,7 +27,7 @@ public class JdbiService {
     }
 
     public List<Artist> findAllArtist() {
-        String sql = "SELECT * FROM public.artist_credit";
+        String sql = "SELECT * FROM public.artist_credit_musicbrainz";
         return jdbi.withHandle(handle -> handle.createQuery(sql).mapToBean(Artist.class).list());
     }
 
