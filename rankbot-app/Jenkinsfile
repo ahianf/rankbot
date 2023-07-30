@@ -1,0 +1,52 @@
+#!/usr/bin/env groovy
+
+def tagImagen = "registry:5000/rankbot:0.9.0"
+def ipServidor = "prod@10.69.203.240"
+pipeline {
+
+    agent any
+    stages {
+        stage('Build aplicación') {
+            steps {
+                script {
+                    sh "docker build --target build -t ${tagImagen} ."
+                }
+            }
+        }
+//        stage('Generar imagen') {
+//            steps {
+//                script {
+//                    sh "docker build --target final -t ${tagImagen} ."
+//                }
+//            }
+//        }
+//        stage('Subir a registry') {
+//            steps {
+//                script {
+//
+//                    sh "docker push ${tagImagen}"
+//                }
+//            }
+//        }
+//
+//        stage('Desplegar a prod') {
+//            steps {
+//                script {
+//                    sshagent(credentials : ['0f60cd81-f21f-448b-baa3-fbe738f0050b']) {
+//
+//                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker stop genesis || true'"
+//                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker rm genesis || true'"
+//                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker pull ${tagImagen}'"
+//                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker run -d --name genesis --restart unless-stopped --network plataforma_default -v \"/etc/localtime:/etc/localtime:ro\" -v \"/etc/timezone:/etc/timezone:ro\" ${tagImagen}'"
+//                    }
+//                }
+//            }
+//        }
+//
+//        stage('Limpieza') {
+//            steps{
+//                sh "docker rmi ${tagImagen}"
+//            }
+//        }
+    }
+}
