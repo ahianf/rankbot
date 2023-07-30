@@ -10,7 +10,7 @@ pipeline {
         stage('Build aplicación') {
             steps {
                 script {
-                    sh "docker buildx build --platform linux/arm64 --target build -t ${tagImagen} ./rankbot-app"
+                    sh "docker buildx build --platform linux/amd64 --target build -t ${tagImagen} ./rankbot-app"
                 }
             }
         }
