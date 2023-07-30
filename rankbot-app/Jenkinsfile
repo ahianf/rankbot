@@ -14,21 +14,28 @@ pipeline {
                 }
             }
         }
-//        stage('Generar imagen') {
-//            steps {
-//                script {
-//                    sh "docker build --target final -t ${tagImagen} ."
-//                }
-//            }
-//        }
-//        stage('Subir a registry') {
-//            steps {
-//                script {
-//
-//                    sh "docker push ${tagImagen}"
-//                }
-//            }
-//        }
+        stage('Generar imagen') {
+            steps {
+                script {
+                    sh "docker build --target final -t ${tagImagen} ./rankbot-app"
+                }
+            }
+        }
+        stage('Save Docker Image as Tarball') {
+            steps {
+                // Save the Docker image as a tarball
+                sh "docker save -o ${tagImagen}.tar.gz ${tagImagen}"
+            }
+        }
+        stage('Copy Docker Image to Remote Server') {
+            steps {
+                // Start an SSH agent and add the private key associated with your SSH credentials
+                sshagent(credentials: ['d8480059-bf09-46e4-9689-86542ca8eca7']) {
+                    // Use scp to copy the local Docker image tarball to the remote server
+                    sh "scp ${tagImagen}.tar.gz ubuntu@141.148.185.27:/home/ubuntu"
+                }
+            }
+        }
 //
 //        stage('Desplegar a prod') {
 //            steps {
