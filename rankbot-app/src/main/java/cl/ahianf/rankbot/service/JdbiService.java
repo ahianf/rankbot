@@ -5,7 +5,13 @@ import cl.ahianf.rankbot.entity.Artist;
 import cl.ahianf.rankbot.entity.Results;
 import cl.ahianf.rankbot.entity.Song;
 import cl.ahianf.rankbot.entity.VoteLog;
+
+import java.sql.SQLOutput;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.PreparedBatch;
@@ -92,6 +98,21 @@ public class JdbiService {
                                 .list());
     }
 
+    public List<Results> findAllByArtistIdAndUserUuid(int artistId, UUID uuid) {
+        var sql =
+                """
+                        SELECT * FROM results_app WHERE artist_id = :artistId and user_uuid = :uuid
+                """;
+
+        return jdbi.withHandle(
+                handle ->
+                        handle.createQuery(sql)
+                                .bind("artistId", artistId)
+                                .bind("uuid", uuid)
+                                .mapToBean(Results.class)
+                                .list());
+    }
+
     public List<Song> findAllByArtistIdOrderBySongIdAsc(int artistId) {
         var sql =
                 """
@@ -129,6 +150,29 @@ public class JdbiService {
         }
     }
 
+    public void saveAllListaSongsPerUser(List<Song> listaCanciones, UUID uuid) {
+        PreparedBatch batch;
+        try (Handle handle = jdbi.open()) {
+            String sql =
+                    """
+                                INSERT INTO songs_elo_app (song_id, artist_id, user_uuid, elo)
+                                VALUES (:songId, :artistId, :uuid, :elo)
+                                ON CONFLICT (song_id, artist_id, user_uuid) DO UPDATE SET elo = :elo;
+                    """;
+
+            batch = handle.prepareBatch(sql);
+
+            for (Song i : listaCanciones) {
+                batch.bind("songId", i.getSongId())
+                        .bind("artistId", i.getArtistId())
+                        .bind("elo", i.getElo())
+                        .bind("uuid", uuid)
+                        .add();
+            }
+            batch.execute();
+        }
+    }
+
     public void incrementarWinsX(int matchId, int artist) {
 
         String sql =
@@ -143,6 +187,24 @@ public class JdbiService {
                         handle.createUpdate(sql)
                                 .bind("artistId", artist)
                                 .bind("matchId", matchId)
+                                .execute());
+    }
+
+    public void incrementarWinsXByUser(int matchId, int artist, UUID uuid) {
+
+        String sql =
+                """
+                    INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped, user_uuid)
+                    VALUES (:matchId, :artistId, 1, 0, 0, 0, :uuid)
+                    ON CONFLICT (match_id, artist_id, user_uuid) DO UPDATE SET wins_x = results_app.wins_x + 1;
+                """;
+
+        jdbi.withHandle(
+                handle ->
+                        handle.createUpdate(sql)
+                                .bind("artistId", artist)
+                                .bind("matchId", matchId)
+                                .bind("uuid", uuid)
                                 .execute());
     }
 
@@ -163,6 +225,25 @@ public class JdbiService {
                                 .execute());
     }
 
+    public void incrementarWinsYByUser(int matchId, int artist, UUID uuid) {
+
+        String sql =
+                """
+                    INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped, user_uuid)
+                    VALUES (:matchId, :artistId, 0, 1, 0, 0, :uuid)
+                    ON CONFLICT (match_id, artist_id, user_uuid) DO UPDATE SET wins_y = results_app.wins_y + 1;
+                """;
+
+        jdbi.withHandle(
+                handle ->
+                        handle.createUpdate(sql)
+                                .bind("artistId", artist)
+                                .bind("matchId", matchId)
+                                .bind("uuid", uuid)
+
+                                .execute());
+    }
+
     public void incrementarDraws(int matchId, int artist) {
 
         String sql =
@@ -177,6 +258,23 @@ public class JdbiService {
                         handle.createUpdate(sql)
                                 .bind("artistId", artist)
                                 .bind("matchId", matchId)
+                                .execute());
+    }
+    public void incrementarDrawsByUser(int matchId, int artist, UUID uuid) {
+
+        String sql =
+                """
+                    INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped, user_uuid)
+                    VALUES (:matchId, :artistId, 0, 0, 1, 0, :uuid)
+                    ON CONFLICT (match_id, artist_id, user_uuid) DO UPDATE SET draws = results_app.draws + 1;
+                """;
+
+        jdbi.withHandle(
+                handle ->
+                        handle.createUpdate(sql)
+                                .bind("artistId", artist)
+                                .bind("matchId", matchId)
+                                .bind("uuid", uuid)
                                 .execute());
     }
 
@@ -197,12 +295,36 @@ public class JdbiService {
                                 .execute());
     }
 
+    public void incrementarSkippedByUser(int matchId, int artist, UUID uuid) {
+        System.out.println(uuid);
+        System.out.println("incrementarSkippedByUser");
+        String sql =
+                """
+                    INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped, user_uuid)
+                    VALUES (:matchId, :artistId, 0, 0, 0, 1, :uuid)
+                    ON CONFLICT (match_id, artist_id, user_uuid) DO UPDATE SET skipped = results_app.skipped + 1;
+                """;
+
+        System.out.println(artist);
+        System.out.println(matchId);
+
+        Integer integer = jdbi.withHandle(
+                handle ->
+                        handle.createUpdate(sql)
+                                .bind("artistId", artist)
+                                .bind("matchId", matchId)
+                                .bind("uuid", uuid)
+                                .execute());
+
+        System.out.println(integer);
+    }
+
     public void voteLogSave(VoteLog voteLog) {
         String sql =
                 """
                             INSERT INTO log_app
-                            (match_id, vote, ip_addr, instant, artist_id)
-                            values (:matchId, :vote, :ipAddr, :instant, :artistId);
+                            (match_id, vote, ip_addr, instant, artist_id, user_email, user_uuid)
+                            values (:matchId, :vote, :ipAddr, :instant, :artistId, :user, :uuid);
                 """;
 
         jdbi.withHandle(
@@ -213,6 +335,8 @@ public class JdbiService {
                                 .bind("ipAddr", voteLog.getIpAddr())
                                 .bind("instant", voteLog.getTimestamp())
                                 .bind("artistId", voteLog.getArtistId())
+                                .bind("user", voteLog.getUser())
+                                .bind("uuid", voteLog.getUuid())
                                 .execute());
     }
 }

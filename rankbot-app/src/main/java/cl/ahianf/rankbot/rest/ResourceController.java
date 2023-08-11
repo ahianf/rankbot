@@ -1,44 +1,53 @@
-/* (C)2022-2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.rest;
-
-import static cl.ahianf.rankbot.entity.Elo.eloRating;
-import static cl.ahianf.rankbot.extra.Functions.nMenosUnoTriangular;
-import static cl.ahianf.rankbot.extra.Functions.unrollMatchId;
 
 import cl.ahianf.rankbot.config.annotation.RateLimited;
 import cl.ahianf.rankbot.entity.*;
+import cl.ahianf.rankbot.entity.dto.MessageDto;
+import cl.ahianf.rankbot.extra.Functions;
 import cl.ahianf.rankbot.service.JdbiService;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(
-        origins = "*",
-        methods = {RequestMethod.GET, RequestMethod.POST})
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import static cl.ahianf.rankbot.entity.Elo.eloRating;
+import static cl.ahianf.rankbot.extra.Functions.nMenosUnoTriangular;
+import static cl.ahianf.rankbot.extra.Functions.unrollMatchId;
+
 @RestController
-@RequestMapping("/api")
-public class RankbotController {
+@RequestMapping("/api/v2")
+public class ResourceController {
+
+    @GetMapping("/user")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
+    public ResponseEntity<MessageDto> user(Authentication authentication){
+        System.out.println(authentication.getName());
+        return ResponseEntity.ok(new MessageDto("Hello " + authentication.getName()));
+    }
 
     JdbiService jdbiService;
     Logger logger = LoggerFactory.getLogger(RankbotController.class);
     final Random rand = new Random();
     Map<String, Integer> hashMap;
-    final Map<Long, Par> map =
+    final Map<Long, Triple> map =
             ExpiringMap.builder().maxSize(50000).expiration(60, TimeUnit.SECONDS).build();
 
     @Autowired
-    public RankbotController(MeterRegistry registry, JdbiService jdbiService) {
+    public ResourceController(MeterRegistry registry, JdbiService jdbiService) {
         this.jdbiService = jdbiService;
 
         this.hashMap = new HashMap<>();
@@ -55,8 +64,9 @@ public class RankbotController {
 
     @RateLimited(45)
     @GetMapping("/match/{artist}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     public ResponseEntity<Match> generarMatchRest(
-            @PathVariable(value = "artist") String param, HttpServletRequest request) {
+            @PathVariable(value = "artist") String param, HttpServletRequest request, Authentication authentication) {
 
         Integer artist = hashMap.get(param.toLowerCase().replace('-', ' '));
 
@@ -72,17 +82,18 @@ public class RankbotController {
         Song songB = jdbiService.encontrarSong(matchIdToPar.right(), artist);
 
         long token = rand.nextLong(9007199254740991L); // JavaScript max value
-        map.put(token, new Par(matchId, artist));
+        map.put(token, new Triple(matchId, artist, authentication.getName()));
 
         Match match = new Match(songA, songB, matchId, token);
         logger.info(
-                "Match: " + songA.getArtist() + " | " + match + ", ip: " + request.getRemoteAddr());
+                "Match: " + songA.getArtist() + " | " + match + ", user: " + authentication.getName());
 
         return new ResponseEntity<>(match, HttpStatus.OK);
     }
 
     @RateLimited(23)
     @PostMapping("/match")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     @CrossOrigin(origins = "http://localhost")
     public ResponseEntity<Vote> recibirVotoRest(
             @RequestBody Vote voteBody, HttpServletRequest request) {
@@ -98,12 +109,14 @@ public class RankbotController {
         int vote = voteBody.getVote();
         int matchId = map.get(token).left();
         int artist = map.get(token).right();
+        String user = map.get(token).center();
+        UUID uuid = Functions.stringToUUID(user);
 
         switch (vote) {
-            case 1 -> jdbiService.incrementarWinsX(matchId, artist);
-            case 2 -> jdbiService.incrementarWinsY(matchId, artist);
-            case 3 -> jdbiService.incrementarDraws(matchId, artist);
-            case 4 -> jdbiService.incrementarSkipped(matchId, artist);
+            case 1 -> jdbiService.incrementarWinsXByUser(matchId, artist, uuid);
+            case 2 -> jdbiService.incrementarWinsYByUser(matchId, artist, uuid);
+            case 3 -> jdbiService.incrementarDrawsByUser(matchId, artist, uuid);
+            case 4 -> jdbiService.incrementarSkippedByUser(matchId, artist, uuid);
             default -> {
                 map.remove(token);
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -112,8 +125,8 @@ public class RankbotController {
 
         map.remove(token);
         jdbiService.voteLogSave(
-                new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now(), artist, "", new UUID(0,0)));
-
+                new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now(), artist, user, uuid));
+        calculateElo(uuid);
         return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
 
@@ -125,16 +138,16 @@ public class RankbotController {
         return jdbiService.obtenerCanciones(artist);
     }
 
-//    @Scheduled(fixedRateString = "${rankbot.elo.scheduling}")
-    public void calculateElo() {
+    //    @Scheduled(fixedRateString = "${rankbot.elo.scheduling}")
+    public void calculateElo(UUID uuid) {
         long startTime = System.nanoTime();
         List<Artist> all = jdbiService.findAllArtist();
         for (Artist artist : all) {
             int artistId = artist.getId();
 
             List<Results> listaResultados =
-                    jdbiService.findAllByArtistId(
-                            artistId); // se hace en memoria para evitar golpear la db excesivamente
+                    jdbiService.findAllByArtistIdAndUserUuid(
+                            artistId, uuid); // se hace en memoria para evitar golpear la db excesivamente
 
             List<Song> listaCanciones =
                     jdbiService.findAllByArtistIdOrderBySongIdAsc(
@@ -181,7 +194,10 @@ public class RankbotController {
                 listaCanciones.get(songAIndex).setElo(eloCalculado.playerA());
                 listaCanciones.get(songBIndex).setElo(eloCalculado.playerB());
             }
-            jdbiService.saveAllListaSongs(listaCanciones);
+
+            List<Song> filteredList = listaCanciones.parallelStream().filter(i -> !i.getElo().equals(1000.0)).toList();
+
+            jdbiService.saveAllListaSongsPerUser(filteredList, uuid);
         }
 
         long endTime = System.nanoTime();
@@ -192,4 +208,5 @@ public class RankbotController {
     private Supplier<Number> fetchExpiringMapSize() {
         return map::size;
     }
+
 }
