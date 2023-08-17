@@ -15,7 +15,7 @@ public class BeansConfig {
         cors.addAllowedHeader("*");
         cors.addAllowedMethod("*");
         cors.setAllowCredentials(true);
-        cors.addAllowedOrigin("https://*.rankmachine.me");
+        cors.addAllowedOrigin("https://rankmachine.me");
 //        cors.addAllowedOrigin("http://127.0.0.1:4200");
         source.registerCorsConfiguration("/**", cors);
         return source;
