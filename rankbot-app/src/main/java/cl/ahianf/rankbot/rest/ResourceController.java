@@ -64,7 +64,7 @@ public class ResourceController {
                 .register(registry);
     }
 
-    @RateLimited(45)
+//    @RateLimited(45)
     @GetMapping("/match/{artist}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     public ResponseEntity<Match> generarMatchRest(
@@ -93,7 +93,7 @@ public class ResourceController {
         return new ResponseEntity<>(match, HttpStatus.OK);
     }
 
-    @RateLimited(23)
+//    @RateLimited(23)
     @PostMapping("/match")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     @CrossOrigin(origins = "http://localhost")
@@ -131,7 +131,7 @@ public class ResourceController {
         return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
 
-    @RateLimited(100)
+//    @RateLimited(100)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     @GetMapping("/results/{artist}")
     public List<Song> devolverSongsElo(@PathVariable(value = "artist") String artist, @RequestParam(name = "global", defaultValue = "false") boolean global, Authentication authentication) {

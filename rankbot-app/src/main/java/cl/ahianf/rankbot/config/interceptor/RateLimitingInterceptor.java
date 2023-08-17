@@ -18,7 +18,7 @@ public class RateLimitingInterceptor implements HandlerInterceptor {
 
     private final ConcurrentMap<String, Integer> requestCounts;
     private ScheduledExecutorService scheduler;
-    private final Logger logger = LoggerFactory.getLogger(RankbotController.class);
+    private final Logger logger = LoggerFactory.getLogger(RateLimitingInterceptor.class);
 
     public RateLimitingInterceptor() {
         requestCounts = new ConcurrentHashMap<>();

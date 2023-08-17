@@ -27,7 +27,6 @@ public class ResourceServerConfig {
                         .anyRequest().permitAll())  // Allow all other requests without authentication
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(issuerUri))))
-                .csrf().disable()
                 .build();
     }
 
