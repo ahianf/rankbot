@@ -14,9 +14,7 @@ export class RateComponent implements OnInit {
   fontType = 'sans';
   artista: string = ''
 
-  constructor(private route: ActivatedRoute,
-              private renderer: Renderer2,
-              @Inject(DOCUMENT) private document: Document) {
+  constructor(private route: ActivatedRoute, private renderer: Renderer2, @Inject(DOCUMENT) private document: Document) {
   }
 
   ngOnInit(): void {

@@ -21,4 +21,4 @@ server:
       enabled: 'false'
 rankbot:
   elo:
-    scheduling: '60000'
+    scheduling: '600000'

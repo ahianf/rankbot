@@ -1,27 +1,29 @@
 /* (C)2022-2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.rest;
 
-import static cl.ahianf.rankbot.entity.Elo.eloRating;
-import static cl.ahianf.rankbot.extra.Functions.nMenosUnoTriangular;
-import static cl.ahianf.rankbot.extra.Functions.unrollMatchId;
-
 import cl.ahianf.rankbot.config.annotation.RateLimited;
 import cl.ahianf.rankbot.entity.*;
 import cl.ahianf.rankbot.service.JdbiService;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+
+import static cl.ahianf.rankbot.entity.Elo.eloRating;
+import static cl.ahianf.rankbot.extra.Functions.nMenosUnoTriangular;
+import static cl.ahianf.rankbot.extra.Functions.unrollMatchId;
 
 @CrossOrigin(
         origins = "*",
@@ -100,10 +102,10 @@ public class RankbotController {
         int artist = map.get(token).right();
 
         switch (vote) {
-            case 1 -> jdbiService.incrementarWinsX(matchId, artist);
-            case 2 -> jdbiService.incrementarWinsY(matchId, artist);
-            case 3 -> jdbiService.incrementarDraws(matchId, artist);
-            case 4 -> jdbiService.incrementarSkipped(matchId, artist);
+            case 1 -> jdbiService.incrementarWinsXByUser(matchId, artist, new UUID(0, 0));
+            case 2 -> jdbiService.incrementarWinsYByUser(matchId, artist, new UUID(0, 0));
+            case 3 -> jdbiService.incrementarDrawsByUser(matchId, artist, new UUID(0, 0));
+            case 4 -> jdbiService.incrementarSkippedByUser(matchId, artist, new UUID(0, 0));
             default -> {
                 map.remove(token);
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -112,7 +114,7 @@ public class RankbotController {
 
         map.remove(token);
         jdbiService.voteLogSave(
-                new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now(), artist, "", new UUID(0,0)));
+                new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now(), artist, "", new UUID(0, 0)));
 
         return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
@@ -125,7 +127,7 @@ public class RankbotController {
         return jdbiService.obtenerCanciones(artist);
     }
 
-//    @Scheduled(fixedRateString = "${rankbot.elo.scheduling}")
+    @Scheduled(fixedRateString = "${rankbot.elo.scheduling}")
     public void calculateElo() {
         long startTime = System.nanoTime();
         List<Artist> all = jdbiService.findAllArtist();

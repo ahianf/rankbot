@@ -54,6 +54,34 @@ public class JdbiService {
                                 .list());
     }
 
+    public List<Song> obtenerCancionesByUser(int artistId, UUID uuid) {
+
+        var sql =
+                """
+                        SELECT
+                            ta.song_id,
+                            ta.title,
+                            ta.album,
+                            ta.artist,
+                            ta.artist_id,
+                            COALESCE(sea.elo, 1000.0) AS elo,
+                            ta.art_url,
+                            ta.enabled
+                        FROM public.track_app ta
+                        LEFT JOIN public.songs_elo_app sea ON sea.song_id = ta.song_id AND sea.user_uuid = :uuid AND sea.artist_id = ta.artist_id
+                        where ta.artist_id = :artistId
+                        ORDER BY elo desc;
+                """;
+
+        return jdbi.withHandle(
+                handle ->
+                        handle.createQuery(sql)
+                                .bind("artistId", artistId)
+                                .bind("uuid", uuid)
+                                .mapToBean(Song.class)
+                                .list());
+    }
+
     public Integer countAllByArtistId(int artistId) {
         var sql =
                 """
@@ -173,23 +201,6 @@ public class JdbiService {
         }
     }
 
-    public void incrementarWinsX(int matchId, int artist) {
-
-        String sql =
-                """
-                    INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped)
-                    VALUES (:matchId, :artistId, 1, 0, 0, 0)
-                    ON CONFLICT (match_id, artist_id) DO UPDATE SET wins_x = results_app.wins_x + 1;
-                """;
-
-        jdbi.withHandle(
-                handle ->
-                        handle.createUpdate(sql)
-                                .bind("artistId", artist)
-                                .bind("matchId", matchId)
-                                .execute());
-    }
-
     public void incrementarWinsXByUser(int matchId, int artist, UUID uuid) {
 
         String sql =
@@ -205,23 +216,6 @@ public class JdbiService {
                                 .bind("artistId", artist)
                                 .bind("matchId", matchId)
                                 .bind("uuid", uuid)
-                                .execute());
-    }
-
-    public void incrementarWinsY(int matchId, int artist) {
-
-        String sql =
-                """
-                    INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped)
-                    VALUES (:matchId, :artistId, 0, 1, 0, 0)
-                    ON CONFLICT (match_id, artist_id) DO UPDATE SET wins_y = results_app.wins_y + 1;
-                """;
-
-        jdbi.withHandle(
-                handle ->
-                        handle.createUpdate(sql)
-                                .bind("artistId", artist)
-                                .bind("matchId", matchId)
                                 .execute());
     }
 
@@ -244,22 +238,6 @@ public class JdbiService {
                                 .execute());
     }
 
-    public void incrementarDraws(int matchId, int artist) {
-
-        String sql =
-                """
-                    INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped)
-                    VALUES (:matchId, :artistId, 0, 0, 1, 0)
-                    ON CONFLICT (match_id, artist_id) DO UPDATE SET draws = results_app.draws + 1;
-                """;
-
-        jdbi.withHandle(
-                handle ->
-                        handle.createUpdate(sql)
-                                .bind("artistId", artist)
-                                .bind("matchId", matchId)
-                                .execute());
-    }
     public void incrementarDrawsByUser(int matchId, int artist, UUID uuid) {
 
         String sql =
@@ -278,26 +256,7 @@ public class JdbiService {
                                 .execute());
     }
 
-    public void incrementarSkipped(int matchId, int artist) {
-
-        String sql =
-                """
-                    INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped)
-                    VALUES (:matchId, :artistId, 0, 0, 0, 1)
-                    ON CONFLICT (match_id, artist_id) DO UPDATE SET skipped = results_app.skipped + 1;
-                """;
-
-        jdbi.withHandle(
-                handle ->
-                        handle.createUpdate(sql)
-                                .bind("artistId", artist)
-                                .bind("matchId", matchId)
-                                .execute());
-    }
-
     public void incrementarSkippedByUser(int matchId, int artist, UUID uuid) {
-        System.out.println(uuid);
-        System.out.println("incrementarSkippedByUser");
         String sql =
                 """
                     INSERT INTO results_app (match_id, artist_id, wins_x, wins_y, draws, skipped, user_uuid)
@@ -305,18 +264,13 @@ public class JdbiService {
                     ON CONFLICT (match_id, artist_id, user_uuid) DO UPDATE SET skipped = results_app.skipped + 1;
                 """;
 
-        System.out.println(artist);
-        System.out.println(matchId);
-
-        Integer integer = jdbi.withHandle(
+        jdbi.withHandle(
                 handle ->
                         handle.createUpdate(sql)
                                 .bind("artistId", artist)
                                 .bind("matchId", matchId)
                                 .bind("uuid", uuid)
                                 .execute());
-
-        System.out.println(integer);
     }
 
     public void voteLogSave(VoteLog voteLog) {

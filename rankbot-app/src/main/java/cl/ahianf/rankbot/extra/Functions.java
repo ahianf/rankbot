@@ -31,13 +31,7 @@ public class Functions {
     }
 
     public static UUID stringToUUID(String string){
-
-        System.out.println(string);
-
         long[] hash = LongTupleHashFunction.xx128().hashChars(string);
-        UUID uuid = new UUID(hash[0], hash[1]);
-
-        System.out.println(uuid);
-        return uuid;
+        return new UUID(hash[0], hash[1]);
     }
 }

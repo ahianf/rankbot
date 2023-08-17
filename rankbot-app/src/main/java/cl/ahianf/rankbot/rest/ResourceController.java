@@ -22,7 +22,6 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static cl.ahianf.rankbot.entity.Elo.eloRating;
 import static cl.ahianf.rankbot.extra.Functions.nMenosUnoTriangular;
@@ -34,17 +33,20 @@ public class ResourceController {
 
     @GetMapping("/user")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
-    public ResponseEntity<MessageDto> user(Authentication authentication){
-        System.out.println(authentication.getName());
+    public ResponseEntity<MessageDto> user(Authentication authentication) {
         return ResponseEntity.ok(new MessageDto("Hello " + authentication.getName()));
     }
 
     JdbiService jdbiService;
-    Logger logger = LoggerFactory.getLogger(RankbotController.class);
+    Logger logger = LoggerFactory.getLogger(ResourceController.class);
     final Random rand = new Random();
     Map<String, Integer> hashMap;
     final Map<Long, Triple> map =
             ExpiringMap.builder().maxSize(50000).expiration(60, TimeUnit.SECONDS).build();
+    final Map<UUID, Integer> userEloCalculateTime =
+            ExpiringMap.builder().maxSize(50000).expiration(1, TimeUnit.MINUTES).build();
+
+
 
     @Autowired
     public ResourceController(MeterRegistry registry, JdbiService jdbiService) {
@@ -126,83 +128,90 @@ public class ResourceController {
         map.remove(token);
         jdbiService.voteLogSave(
                 new VoteLog(matchId, vote, request.getRemoteAddr(), Instant.now(), artist, user, uuid));
-        calculateElo(uuid);
         return new ResponseEntity<>(voteBody, HttpStatus.OK);
     }
 
     @RateLimited(100)
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     @GetMapping("/results/{artist}")
-    public List<Song> devolverSongsElo(@PathVariable(value = "artist") String param) {
-        int artist = hashMap.get(param.toLowerCase().replace('-', ' '));
+    public List<Song> devolverSongsElo(@PathVariable(value = "artist") String artist, @RequestParam(name = "global", defaultValue = "false") boolean global, Authentication authentication) {
+        int artistId = hashMap.get(artist.toLowerCase().replace('-', ' '));
 
-        return jdbiService.obtenerCanciones(artist);
+        if (global) {
+            return jdbiService.obtenerCanciones(artistId);
+        } else {
+            UUID uuid = Functions.stringToUUID(authentication.getName());
+
+            if (!userEloCalculateTime.containsKey(uuid)) {
+                calculateEloByUser(uuid, artistId);
+                userEloCalculateTime.put(uuid, null); // dummy value
+            }
+
+            return jdbiService.obtenerCancionesByUser(artistId, uuid);
+        }
     }
 
-    //    @Scheduled(fixedRateString = "${rankbot.elo.scheduling}")
-    public void calculateElo(UUID uuid) {
+    private void calculateEloByUser(UUID uuid, int artistId) {
         long startTime = System.nanoTime();
-        List<Artist> all = jdbiService.findAllArtist();
-        for (Artist artist : all) {
-            int artistId = artist.getId();
 
-            List<Results> listaResultados =
-                    jdbiService.findAllByArtistIdAndUserUuid(
-                            artistId, uuid); // se hace en memoria para evitar golpear la db excesivamente
+        List<Results> listaResultados =
+                jdbiService.findAllByArtistIdAndUserUuid(
+                        artistId, uuid); // se hace en memoria para evitar golpear la db excesivamente
 
-            List<Song> listaCanciones =
-                    jdbiService.findAllByArtistIdOrderBySongIdAsc(
-                            artistId); // La db las envía sin orden, y estamos usando indices.
-            for (Song cancion : listaCanciones) {
-                // Inicializar valores de Elo a 1000
-                cancion.setElo(1000.0);
-            }
-
-            for (Results resultado : listaResultados) {
-
-                int matchId = resultado.getMatchId();
-
-                int songAIndex = unrollMatchId(matchId).left() - 1;
-                int songBIndex = unrollMatchId(matchId).right() - 1;
-
-                double eloSongA = listaCanciones.get(songAIndex).getElo();
-                double eloSongB = listaCanciones.get(songBIndex).getElo();
-
-                Elo eloCalculado = new Elo(eloSongA, eloSongB);
-
-                // Este bloque permite que los valores de Elo sean evaluados de manera aleatoria,
-                // de lo contrario los resultados se sesgan terriblemente a favor de los primeros
-                // elementos
-                // de la lista de canciones. Es una limitación de Elo.
-                ArrayList<Integer> listaDeResultsShuffled = new ArrayList<>();
-                for (int i = 0; i < resultado.getWinsX(); i++) {
-                    listaDeResultsShuffled.add(1);
-                }
-
-                for (int i = 0; i < resultado.getWinsY(); i++) {
-                    listaDeResultsShuffled.add(2);
-                }
-
-                for (int i = 0; i < resultado.getDraws(); i++) {
-                    listaDeResultsShuffled.add(3);
-                }
-
-                Collections.shuffle(listaDeResultsShuffled);
-
-                for (int i : listaDeResultsShuffled) {
-                    eloCalculado = eloRating(eloCalculado, i);
-                }
-                listaCanciones.get(songAIndex).setElo(eloCalculado.playerA());
-                listaCanciones.get(songBIndex).setElo(eloCalculado.playerB());
-            }
-
-            List<Song> filteredList = listaCanciones.parallelStream().filter(i -> !i.getElo().equals(1000.0)).toList();
-
-            jdbiService.saveAllListaSongsPerUser(filteredList, uuid);
+        List<Song> listaCanciones =
+                jdbiService.findAllByArtistIdOrderBySongIdAsc(
+                        artistId); // La db las envía sin orden, y estamos usando indices.
+        for (Song cancion : listaCanciones) {
+            // Inicializar valores de Elo a 1000
+            cancion.setElo(1000.0);
         }
+
+        for (Results resultado : listaResultados) {
+
+            int matchId = resultado.getMatchId();
+
+            int songAIndex = unrollMatchId(matchId).left() - 1;
+            int songBIndex = unrollMatchId(matchId).right() - 1;
+
+            double eloSongA = listaCanciones.get(songAIndex).getElo();
+            double eloSongB = listaCanciones.get(songBIndex).getElo();
+
+            Elo eloCalculado = new Elo(eloSongA, eloSongB);
+
+            // Este bloque permite que los valores de Elo sean evaluados de manera aleatoria,
+            // de lo contrario los resultados se sesgan terriblemente a favor de los primeros
+            // elementos
+            // de la lista de canciones. Es una limitación de Elo.
+            ArrayList<Integer> listaDeResultsShuffled = new ArrayList<>();
+            for (int i = 0; i < resultado.getWinsX(); i++) {
+                listaDeResultsShuffled.add(1);
+            }
+
+            for (int i = 0; i < resultado.getWinsY(); i++) {
+                listaDeResultsShuffled.add(2);
+            }
+
+            for (int i = 0; i < resultado.getDraws(); i++) {
+                listaDeResultsShuffled.add(3);
+            }
+
+            Collections.shuffle(listaDeResultsShuffled);
+
+            for (int i : listaDeResultsShuffled) {
+                eloCalculado = eloRating(eloCalculado, i);
+            }
+            listaCanciones.get(songAIndex).setElo(eloCalculado.playerA());
+            listaCanciones.get(songBIndex).setElo(eloCalculado.playerB());
+        }
+
+        List<Song> filteredList = listaCanciones.parallelStream().filter(i -> !i.getElo().equals(1000.0)).toList();
+
+        jdbiService.saveAllListaSongsPerUser(filteredList, uuid);
+
 
         long endTime = System.nanoTime();
         long duration = (endTime - startTime); // divide by 1000000 to get milliseconds.
-        logger.info("Elo scores calculated. Time elapsed: " + duration / 1000000 + " ms");
+        logger.info("Elo scores calculated for user " + uuid + ". Time elapsed: " + duration / 1000000 + " ms");
     }
 
     private Supplier<Number> fetchExpiringMapSize() {
