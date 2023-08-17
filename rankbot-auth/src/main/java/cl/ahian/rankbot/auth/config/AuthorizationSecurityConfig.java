@@ -30,6 +30,7 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -77,8 +78,10 @@ public class AuthorizationSecurityConfig {
                 .apply(federatedIdentityConfigurer);
         http.logout().logoutSuccessUrl("https://rankmachine.me/logout");
 //        http.logout().logoutSuccessUrl("http://127.0.0.1:4200/logout");
-//        http.csrf().ignoringRequestMatchers("/auth/**", "/client/**");
-        http.csrf().disable();
+        http.csrf().ignoringRequestMatchers("/auth/**", "/client/**");
+        http.csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/auth/**"), new AntPathRequestMatcher("/client/**"));
+        http.csrf()
+                .ignoringRequestMatchers(new SubdomainRequestMatcher("auth.rankmachine.me"));
         return http.build();
     }
 
