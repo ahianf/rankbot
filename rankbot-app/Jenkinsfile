@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def tagImagen = "local/rankbot-auth:1.0.0"
+def tagImagen = "local/rankbot:0.9.0"
 def ipServidor = "ubuntu@141.148.185.27"
 pipeline {
 
