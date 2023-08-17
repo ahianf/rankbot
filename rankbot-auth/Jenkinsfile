@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp && rm -rf /tmp/rankbot-auth && git clone git@github.com:ahianf/rankbot.git'"
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp && rm -rf /tmp/rankbot && git clone --depth 1 git@github.com:ahianf/rankbot.git'"
                     }
                 }
             }
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp/rankbot-auth/ && docker build --target build -t ${tagImagen} ./rankbot-auth'"
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp/rankbot/ && docker build --target build -t ${tagImagen} ./rankbot-auth'"
                     }
                 }
             }
@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp/rankbot-auth/ && docker build --target final -t ${tagImagen} ./rankbot-auth'"
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp/rankbot/ && docker build --target final -t ${tagImagen} ./rankbot-auth'"
                     }
                 }
             }
