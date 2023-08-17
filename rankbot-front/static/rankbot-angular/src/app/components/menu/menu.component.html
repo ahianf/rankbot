@@ -1,0 +1,16 @@
+<ul class="nav nav-pills nav-justified">
+  <li class="nav-item">
+    <a class="nav-link" href="ranking/{{artista}}" *ngIf="getCurrentComponent() !== 'HomeComponent' && getCurrentComponent() !== 'RankingComponent'">Ranking
+      List</a>
+    <a class="nav-link" href="user/{{artista}}" *ngIf="getCurrentComponent() === 'RankingComponent'">Back</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://rankmachine.me">Rankmachine.me</a>
+  </li>
+  <li class="nav-item">
+    <button type="button" class="btn btn-sm btn-outline-success" (click)="onLogin()" *ngIf="!isLogged">Login
+    </button>
+    <button type="button" class="btn btn-sm btn-outline-danger" (click)="onLogout()" *ngIf="isLogged">Logout
+    </button>
+  </li>
+</ul>
