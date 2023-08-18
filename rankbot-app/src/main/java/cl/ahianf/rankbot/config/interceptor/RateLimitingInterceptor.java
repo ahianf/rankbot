@@ -1,17 +1,16 @@
+/* (C)2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.config.interceptor;
 
 import cl.ahianf.rankbot.config.annotation.RateLimited;
-import cl.ahianf.rankbot.rest.RankbotController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.concurrent.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.concurrent.*;
 
 @Component
 public class RateLimitingInterceptor implements HandlerInterceptor {
@@ -24,18 +23,20 @@ public class RateLimitingInterceptor implements HandlerInterceptor {
         requestCounts = new ConcurrentHashMap<>();
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduleResetTask(15);
-
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(
+            HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
 
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             RateLimited rateLimited = handlerMethod.getMethod().getAnnotation(RateLimited.class);
             if (rateLimited != null) {
                 int limit = rateLimited.value();
-                String clientKey = getClientKey(request); // Replace with your logic to get the client key
+                String clientKey =
+                        getClientKey(request); // Replace with your logic to get the client key
                 int count = requestCounts.getOrDefault(clientKey, 0);
                 if (count >= limit) {
                     response.setStatus(429);
@@ -51,21 +52,29 @@ public class RateLimitingInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler,
+            ModelAndView modelAndView)
+            throws Exception {
         // No action needed
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(
+            HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+            throws Exception {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             RateLimited rateLimited = handlerMethod.getMethod().getAnnotation(RateLimited.class);
             if (rateLimited != null) {
-                String clientKey = getClientKey(request); // Replace with your logic to get the client key
+                String clientKey =
+                        getClientKey(request); // Replace with your logic to get the client key
                 int count = requestCounts.getOrDefault(clientKey, 0);
-//                if (count > 0) {
-//                    requestCounts.put(clientKey, count - 1);
-//                }
+                //                if (count > 0) {
+                //                    requestCounts.put(clientKey, count - 1);
+                //                }
             }
         }
     }
@@ -76,6 +85,7 @@ public class RateLimitingInterceptor implements HandlerInterceptor {
     }
 
     private void scheduleResetTask(long resetInterval) {
-        scheduler.scheduleAtFixedRate(requestCounts::clear, resetInterval, resetInterval, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(
+                requestCounts::clear, resetInterval, resetInterval, TimeUnit.SECONDS);
     }
 }

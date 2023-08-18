@@ -16,7 +16,9 @@ public record Triple(int left, int right, String center) {
             return false;
         }
 
-        return left == triple.left && right == triple.right && Objects.equals(center, triple.center);
+        return left == triple.left
+                && right == triple.right
+                && Objects.equals(center, triple.center);
     }
 
     @Override

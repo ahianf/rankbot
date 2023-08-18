@@ -34,7 +34,7 @@ export class MenuComponent implements OnInit {
   }
 
   getLogged(): void {
-    this.isLogged = false;
+    this.isLogged = true;
   }
 
   getCurrentComponent(): string {

@@ -1,6 +1,7 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ResourceService} from "../../services/resource.service";
+import {StorageService} from "../../services/storage.service";
 
 @Component({
   selector: 'app-rank',
@@ -16,15 +17,14 @@ export class RankingComponent implements OnInit {
   fontType = 'sans';
   rankingsData: any[] = [];
   showGlobalRankings: boolean = false;
-  isLogged: boolean;
+  uuid: string = this.storageService.getUUID();
 
-  constructor(private route: ActivatedRoute, private renderer: Renderer2, private resourceService: ResourceService) {
+  constructor(private route: ActivatedRoute, private renderer: Renderer2, private resourceService: ResourceService, private storageService: StorageService) {
   }
 
   ngOnInit(): void {
-    this.getLogged();
-    if (this.isLogged === false){
-      this.showGlobalRankings = true;
+    if (this.storageService.getUUID() === null) {
+      this.storageService.generateUUID();
     }
 
     this.artista = this.route.snapshot.paramMap.get('artist');
@@ -83,23 +83,19 @@ export class RankingComponent implements OnInit {
       this.backgroundColor = 'rgba(0,0,0,0.5)';
     }
 
-    this.loadRankingsData(this.artista);
+    this.uuid = this.storageService.getUUID();
+    this.loadRankingsData(this.artista, this.uuid);
   }
 
-  loadRankingsData(artista: string) {
+  loadRankingsData(artista: string, uuid: string) {
     if (this.showGlobalRankings) {
-      this.resourceService.globalRanking(artista, this.isLogged).subscribe(data => {
+      this.resourceService.globalRanking(artista, uuid).subscribe(data => {
         this.rankingsData = data;
       });
     } else {
-      this.resourceService.ranking(artista).subscribe(data => {
+      this.resourceService.ranking(artista, uuid).subscribe(data => {
         this.rankingsData = data;
       });
     }
   }
-
-  getLogged(): void {
-    this.isLogged = false;
-  }
-
 }

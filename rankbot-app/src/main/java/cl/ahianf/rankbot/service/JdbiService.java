@@ -5,13 +5,8 @@ import cl.ahianf.rankbot.entity.Artist;
 import cl.ahianf.rankbot.entity.Results;
 import cl.ahianf.rankbot.entity.Song;
 import cl.ahianf.rankbot.entity.VoteLog;
-
-import java.sql.SQLOutput;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.PreparedBatch;
@@ -234,7 +229,6 @@ public class JdbiService {
                                 .bind("artistId", artist)
                                 .bind("matchId", matchId)
                                 .bind("uuid", uuid)
-
                                 .execute());
     }
 
@@ -277,8 +271,8 @@ public class JdbiService {
         String sql =
                 """
                             INSERT INTO log_app
-                            (match_id, vote, ip_addr, instant, artist_id, user_email, user_uuid)
-                            values (:matchId, :vote, :ipAddr, :instant, :artistId, :user, :uuid);
+                            (match_id, vote, ip_addr, instant, artist_id, user_uuid)
+                            values (:matchId, :vote, :ipAddr, :instant, :artistId, :uuid);
                 """;
 
         jdbi.withHandle(
@@ -289,7 +283,6 @@ public class JdbiService {
                                 .bind("ipAddr", voteLog.getIpAddr())
                                 .bind("instant", voteLog.getTimestamp())
                                 .bind("artistId", voteLog.getArtistId())
-                                .bind("user", voteLog.getUser())
                                 .bind("uuid", voteLog.getUuid())
                                 .execute());
     }

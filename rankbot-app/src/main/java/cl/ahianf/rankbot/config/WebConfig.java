@@ -1,3 +1,4 @@
+/* (C)2023 - Ahian Fernández Puelles*/
 package cl.ahianf.rankbot.config;
 
 import cl.ahianf.rankbot.config.interceptor.RateLimitingInterceptor;
@@ -27,4 +28,3 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**").allowedMethods("*");
     }
 }
-

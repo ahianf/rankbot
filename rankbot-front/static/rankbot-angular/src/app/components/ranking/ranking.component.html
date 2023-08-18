@@ -8,7 +8,7 @@
       <div class="d-flex justify-content-end mb-3">
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" id="resultsToggle" [(ngModel)]="showGlobalRankings"
-                 (change)="loadRankingsData(artista)" [disabled]="!isLogged">
+                 (change)="loadRankingsData(artista, uuid)">
           <label class="form-check-label white-label " for="resultsToggle">Show Worldwide</label>
         </div>
       </div>

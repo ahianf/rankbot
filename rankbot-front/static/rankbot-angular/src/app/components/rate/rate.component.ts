@@ -3,6 +3,7 @@ import {Component, Inject, OnInit, Renderer2} from '@angular/core';
 import {DOCUMENT} from "@angular/common";
 import {ActivatedRoute} from "@angular/router";
 import {Song, SongData} from "../../model/song";
+import {StorageService} from "../../services/storage.service";
 
 @Component({
   selector: 'app-user',
@@ -21,19 +22,22 @@ export class RateComponent implements OnInit {
   song: Song;
   animacionEntrada: boolean = false;
   animacionSalida: boolean = false;
-  isLogged: boolean;
+  uuid: string = this.storageService.getUUID();
 
   constructor(
-    private resourceService: ResourceService
-    , private route: ActivatedRoute,
+    private resourceService: ResourceService,
+    private storageService: StorageService,
+    private route: ActivatedRoute,
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
   ) {
   }
 
   ngOnInit(): void {
+    if (this.storageService.getUUID() === null) {
+      this.storageService.generateUUID();
+    }
     this.initEmptySong();
-    this.getLogged();
     const link = this.renderer.createElement('link');
     this.route.url.subscribe(url => {
       this.artista = url[1]?.path
@@ -92,11 +96,11 @@ export class RateComponent implements OnInit {
       }
     });
     this.obtenerMatch(this.artista);
-
+    this.uuid = this.storageService.getUUID();
   }
 
   obtenerMatch(artist) {
-    this.resourceService.match(artist, this.isLogged).subscribe(data => {
+    this.resourceService.match(artist, this.uuid).subscribe(data => {
         this.song = data;
         this.animacionSalida = false;
         this.animacionEntrada = true;
@@ -108,7 +112,7 @@ export class RateComponent implements OnInit {
 
   enviarVoto(vote: number) {
     this.animacionSalida = true;
-    this.resourceService.vote(this.song.token, vote, this.isLogged).subscribe(
+    this.resourceService.vote(this.song.token, vote).subscribe(
       (response) => {
         this.obtenerMatch(this.artista);
       },
@@ -116,10 +120,6 @@ export class RateComponent implements OnInit {
         console.error(`enviarVoto(${vote})`, error);
       }
     );
-  }
-
-  getLogged(): void {
-    this.isLogged = false;
   }
 
   initEmptySong() {
