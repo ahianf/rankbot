@@ -3,7 +3,6 @@ import {Component, Inject, OnInit, Renderer2} from '@angular/core';
 import {DOCUMENT} from "@angular/common";
 import {ActivatedRoute} from "@angular/router";
 import {Song, SongData} from "../../model/song";
-import {TokenService} from "../../services/token.service";
 
 @Component({
   selector: 'app-user',
@@ -29,7 +28,6 @@ export class RateComponent implements OnInit {
     , private route: ActivatedRoute,
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
-    private tokenService: TokenService,
   ) {
   }
 
@@ -121,7 +119,7 @@ export class RateComponent implements OnInit {
   }
 
   getLogged(): void {
-    this.isLogged = this.tokenService.isLogged();
+    this.isLogged = false;
   }
 
   initEmptySong() {

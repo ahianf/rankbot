@@ -1,7 +1,6 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ResourceService} from "../../services/resource.service";
-import {TokenService} from "../../services/token.service";
 
 @Component({
   selector: 'app-rank',
@@ -19,7 +18,7 @@ export class RankingComponent implements OnInit {
   showGlobalRankings: boolean = false;
   isLogged: boolean;
 
-  constructor(private route: ActivatedRoute, private renderer: Renderer2, private resourceService: ResourceService, private tokenService: TokenService,) {
+  constructor(private route: ActivatedRoute, private renderer: Renderer2, private resourceService: ResourceService) {
   }
 
   ngOnInit(): void {
@@ -100,7 +99,7 @@ export class RankingComponent implements OnInit {
   }
 
   getLogged(): void {
-    this.isLogged = this.tokenService.isLogged();
+    this.isLogged = false;
   }
 
 }

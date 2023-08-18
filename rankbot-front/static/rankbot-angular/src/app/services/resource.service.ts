@@ -1,8 +1,8 @@
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 import {environment} from 'src/environments/environment';
 import {Song, SongData} from "../model/song";
+import {Injectable} from "@angular/core";
 
 
 @Injectable({
