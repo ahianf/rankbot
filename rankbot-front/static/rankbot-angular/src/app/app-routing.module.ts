@@ -1,6 +1,4 @@
-import {LogoutComponent} from './components/logout/logout.component';
 import {RateComponent} from './components/rate/rate.component';
-import {AuthorizedComponent} from './components/authorized/authorized.component';
 import {HomeComponent} from './components/home/home.component';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
@@ -14,8 +12,6 @@ const routes: Routes = [
   {path: 'rate/taylor-swift', component: RateComponent},
   {path: 'rate/wilco', component: RateComponent},
   {path: '', component: HomeComponent},
-  {path: 'authorized', component: AuthorizedComponent},
-  {path: 'logout', component: LogoutComponent},
   {path: 'ranking/:artist', component: RankingComponent},
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];

@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -30,12 +28,6 @@ import static cl.ahianf.rankbot.extra.Functions.unrollMatchId;
 @RestController
 @RequestMapping("/api/v2")
 public class ResourceController {
-
-    @GetMapping("/user")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
-    public ResponseEntity<MessageDto> user(Authentication authentication) {
-        return ResponseEntity.ok(new MessageDto("Hello " + authentication.getName()));
-    }
 
     JdbiService jdbiService;
     Logger logger = LoggerFactory.getLogger(ResourceController.class);
@@ -66,9 +58,8 @@ public class ResourceController {
 
 //    @RateLimited(45)
     @GetMapping("/match/{artist}")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     public ResponseEntity<Match> generarMatchRest(
-            @PathVariable(value = "artist") String param, HttpServletRequest request, Authentication authentication) {
+            @PathVariable(value = "artist") String param, HttpServletRequest request) {
 
         Integer artist = hashMap.get(param.toLowerCase().replace('-', ' '));
 
@@ -84,18 +75,17 @@ public class ResourceController {
         Song songB = jdbiService.encontrarSong(matchIdToPar.right(), artist);
 
         long token = rand.nextLong(9007199254740991L); // JavaScript max value
-        map.put(token, new Triple(matchId, artist, authentication.getName()));
+        map.put(token, new Triple(matchId, artist, "authentication.getName()"));
 
         Match match = new Match(songA, songB, matchId, token);
         logger.info(
-                "Match: " + songA.getArtist() + " | " + match + ", user: " + authentication.getName());
+                "Match: " + songA.getArtist() + " | " + match + ", user: " + "+ authentication.getName()");
 
         return new ResponseEntity<>(match, HttpStatus.OK);
     }
 
 //    @RateLimited(23)
     @PostMapping("/match")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     @CrossOrigin(origins = "http://localhost")
     public ResponseEntity<Vote> recibirVotoRest(
             @RequestBody Vote voteBody, HttpServletRequest request) {
@@ -132,15 +122,14 @@ public class ResourceController {
     }
 
 //    @RateLimited(100)
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'OIDC_USER')")
     @GetMapping("/results/{artist}")
-    public List<Song> devolverSongsElo(@PathVariable(value = "artist") String artist, @RequestParam(name = "global", defaultValue = "false") boolean global, Authentication authentication) {
+    public List<Song> devolverSongsElo(@PathVariable(value = "artist") String artist, @RequestParam(name = "global", defaultValue = "false") boolean global) {
         int artistId = hashMap.get(artist.toLowerCase().replace('-', ' '));
 
         if (global) {
             return jdbiService.obtenerCanciones(artistId);
         } else {
-            UUID uuid = Functions.stringToUUID(authentication.getName());
+            UUID uuid = Functions.stringToUUID("authentication.getName()");
 
             if (!userEloCalculateTime.containsKey(uuid)) {
                 calculateEloByUser(uuid, artistId);
