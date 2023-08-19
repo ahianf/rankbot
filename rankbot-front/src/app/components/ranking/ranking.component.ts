@@ -17,14 +17,16 @@ export class RankingComponent implements OnInit {
   fontType = 'sans';
   rankingsData: any[] = [];
   showGlobalRankings: boolean = false;
-  uuid: string = this.storageService.getUUID();
+  uuid: string = '00000000-0000-0000-0000-000000000000';
 
   constructor(private route: ActivatedRoute, private renderer: Renderer2, private resourceService: ResourceService, private storageService: StorageService) {
   }
 
   ngOnInit(): void {
     if (this.storageService.getUUID() === null) {
-      this.storageService.generateUUID();
+      this.uuid = this.storageService.generateUUID();
+    } else {
+      this.uuid = this.storageService.getUUID();
     }
 
     this.artista = this.route.snapshot.paramMap.get('artist');
@@ -82,12 +84,6 @@ export class RankingComponent implements OnInit {
     } else {
       this.backgroundColor = 'rgba(0,0,0,0.5)';
     }
-
-
-
-
-
-    this.uuid = this.storageService.getUUID();
     this.loadRankingsData(this.artista, this.uuid);
   }
 

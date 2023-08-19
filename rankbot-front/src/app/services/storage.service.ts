@@ -17,6 +17,8 @@ export class StorageService {
   }
 
   generateUUID() {
-    this.setUUID(uuidv4());
+    let uuid: string = uuidv4();
+    this.setUUID(uuid);
+    return uuid;
   }
 }

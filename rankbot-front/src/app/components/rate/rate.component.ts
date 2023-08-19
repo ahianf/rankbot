@@ -22,7 +22,7 @@ export class RateComponent implements OnInit {
   song: Song;
   animacionEntrada: boolean = false;
   animacionSalida: boolean = false;
-  uuid: string = this.storageService.getUUID();
+  uuid: string = '00000000-0000-0000-0000-000000000000';
 
   constructor(
     private resourceService: ResourceService,
@@ -35,7 +35,9 @@ export class RateComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.storageService.getUUID() === null) {
-      this.storageService.generateUUID();
+      this.uuid = this.storageService.generateUUID();
+    } else {
+      this.uuid = this.storageService.getUUID();
     }
     this.initEmptySong();
     const link = this.renderer.createElement('link');
@@ -96,7 +98,6 @@ export class RateComponent implements OnInit {
       }
     });
     this.obtenerMatch(this.artista);
-    this.uuid = this.storageService.getUUID();
   }
 
   obtenerMatch(artist) {

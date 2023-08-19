@@ -14,7 +14,5 @@ export class HomeComponent implements OnInit {
     if (this.storageService.getUUID() === null) {
       this.storageService.generateUUID();
     }
-
   }
-
 }
