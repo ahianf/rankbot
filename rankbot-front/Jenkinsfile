@@ -42,7 +42,7 @@ pipeline {
                     sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker stop rankbot-front || true'"
                         sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker rm rankbot-front || true'"
-                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker run -d --name rankbot-front --restart unless-stopped --network rankbot_default -v \"/etc/localtime:/etc/localtime:ro\" -v \"/etc/timezone:/etc/timezone:ro\" ${tagImagen}'"
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'docker run -d --name rankbot-front --restart unless-stopped --network rankbot_default -v \"/etc/localtime:/etc/localtime:ro\" -v \"/etc/timezone:/etc/timezone:ro\" -p 80:80 ${tagImagen}'"
                     }
                 }
             }
