@@ -38,7 +38,7 @@ public class RankbotV2Controller {
     final Map<Long, Triple> map =
             ExpiringMap.builder().maxSize(50000).expiration(60, TimeUnit.SECONDS).build();
     final Map<UUID, Integer> userEloCalculateTime =
-            ExpiringMap.builder().maxSize(50000).expiration(5, TimeUnit.MINUTES).build();
+            ExpiringMap.builder().maxSize(50000).expiration(1, TimeUnit.MINUTES).build();
 
     @Autowired
     public RankbotV2Controller(MeterRegistry registry, JdbiService jdbiService) {

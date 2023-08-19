@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['0e7f6e3a-8c8e-49c7-ba2b-9fba8e4cfdcc']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp && rm -rf /tmp/rankbot && git clone git@github.com:ahianf/rankbot.git && cd /tmp/rankbot && git checkout jenkins'"
+                        sh "ssh -o StrictHostKeyChecking=no ${ipServidor} 'cd /tmp && rm -rf /tmp/rankbot && git clone git@github.com:ahianf/rankbot.git'"
                     }
                 }
             }
