@@ -2,6 +2,7 @@ FROM node:latest as build
 COPY . rankbot
 WORKDIR rankbot
 RUN npm install -g @angular/cli
+RUN npm install
 RUN ng build --configuration production --aot
 
 FROM nginx:latest as final
