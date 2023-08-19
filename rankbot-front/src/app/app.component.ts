@@ -9,7 +9,7 @@ import { filter} from 'rxjs/operators';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'oauth2-client-angular';
+  title = 'rankbot-front';
 
   @ViewChild('menu') menu: MenuComponent;
 

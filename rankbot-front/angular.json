@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "oauth2-client-angular": {
+    "rankbot-front": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/oauth2-client-angular",
+            "outputPath": "dist/rankbot-front",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "oauth2-client-angular:build:production"
+              "browserTarget": "rankbot-front:build:production"
             },
             "development": {
-              "browserTarget": "oauth2-client-angular:build:development"
+              "browserTarget": "rankbot-front:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "oauth2-client-angular:build"
+            "browserTarget": "rankbot-front:build"
           }
         },
         "test": {

@@ -83,6 +83,10 @@ export class RankingComponent implements OnInit {
       this.backgroundColor = 'rgba(0,0,0,0.5)';
     }
 
+
+
+
+
     this.uuid = this.storageService.getUUID();
     this.loadRankingsData(this.artista, this.uuid);
   }

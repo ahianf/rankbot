@@ -38,7 +38,7 @@ public class RankbotV2Controller {
     final Map<Long, Triple> map =
             ExpiringMap.builder().maxSize(50000).expiration(60, TimeUnit.SECONDS).build();
     final Map<UUID, Integer> userEloCalculateTime =
-            ExpiringMap.builder().maxSize(50000).expiration(5, TimeUnit.MINUTES).build();
+            ExpiringMap.builder().maxSize(50000).expiration(1, TimeUnit.MINUTES).build();
 
     @Autowired
     public RankbotV2Controller(MeterRegistry registry, JdbiService jdbiService) {
@@ -131,9 +131,9 @@ public class RankbotV2Controller {
     public List<Song> devolverSongsElo(
             @PathVariable(value = "artist") String artist,
             @RequestParam(name = "global", defaultValue = "false") boolean global,
-            @RequestParam(name = "uuid") UUID uuid) {
+            @RequestParam(name = "uuid") String uuidstr) {
         int artistId = hashMap.get(artist.toLowerCase().replace('-', ' '));
-
+        UUID uuid = UUID.fromString(uuidstr);
         if (global) {
             return jdbiService.obtenerCanciones(artistId);
         } else {
