@@ -1,0 +1,31 @@
+<body [style.font-family]="fontFamily"
+      [ngClass]="{'font-sans': fontType === 'sans', 'font-serif': fontType === 'serif'}">
+<div id="vineta" [style.background-color]="backgroundColor" [style.background-image]="backgroundImage">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <div (click)="enviarVoto(1)" (keydown.arrowLeft)="enviarVoto(1)" style="cursor: pointer" class="img-container">
+          <img [class.animate__animated]="animacionEntrada" [class.animate__zoomIn]="animacionEntrada" [class.animate__zoomOut]="animacionSalida" [src]="song.songA.artUrl" [alt]="song.songA.title" id="image-a">
+          <div class="caption" *ngIf="animacionEntrada">
+            <h3 id="title-a" [class.animate__animated]="animacionEntrada" [class.animate__fadeIn]="animacionEntrada" [class.animate__fadeOut]="animacionSalida">{{ song.songA.title }}</h3>
+            <p id="album-a" [class.animate__animated]="animacionEntrada" [class.animate__fadeIn]="animacionEntrada" [class.animate__fadeOut]="animacionSalida">{{ song.songA.album }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <div (click)="enviarVoto(2)" (keydown.arrowRight)="enviarVoto(2)" style="cursor: pointer" class="img-container">
+          <img [class.animate__animated]="animacionEntrada" [class.animate__zoomIn]="animacionEntrada" [class.animate__zoomOut]="animacionSalida" [src]="song.songB.artUrl" [alt]="song.songB.title" id="image-b">
+          <div class="caption" *ngIf="animacionEntrada">
+            <h3 id="title-b" [class.animate__animated]="animacionEntrada" [class.animate__fadeIn]="animacionEntrada" [class.animate__fadeOut]="animacionSalida">{{ song.songB.title }}</h3>
+            <p id="album-b" [class.animate__animated]="animacionEntrada" [class.animate__fadeIn]="animacionEntrada" [class.animate__fadeOut]="animacionSalida">{{ song.songB.album }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button-container">
+      <button (click)="enviarVoto(3)" class="btn btn-dark" id="draw-button" >Draw</button>
+      <button (click)="enviarVoto(4)" class="btn btn-dark" id="next-button">I don't know</button>
+    </div>
+  </div>
+</div>
+</body>
